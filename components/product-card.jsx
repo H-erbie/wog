@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const ProductCard = ({ category, products }) => {
   const matchedProduct = products.find((item) =>
-    item.categories.includes(category)
+    item?.categories?.includes(category)
   );
 
 
