@@ -22,7 +22,7 @@ const YouMayAlsoLike = ({ products, category, productId }) => {
 
   let filteredProducts = newProducts.filter(
     (product) =>
-      product.categories.includes(category) && product._id !== productId
+      product?.categories?.includes(category) && product._id !== productId
   );
 if(filteredProducts.length === 0) return
   return (
