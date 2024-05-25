@@ -84,7 +84,7 @@ const Avatar = () => {
             </Link>
             <Link href="/profile">
               <DropdownMenuItem className="dark:hover:bg-[#191c22]">
-                <User2 className="mr-2 h-4 w-4" />
+                <User2 className="mr-2 h-6 w-6" />
                 <span>Profile</span>
               </DropdownMenuItem>
             </Link>
