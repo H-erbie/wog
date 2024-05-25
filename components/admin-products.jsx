@@ -502,9 +502,9 @@ const AdminProducts = ({ products, ads, sellers }) => {
       <h1 className="text-xl my-3 w-max font-bold flex items-center gap-x-2 mx-auto">
         Manage Prducts <ShoppingBag />
       </h1>
-      <Tabs defaultValue="upload" className="">
+      <Tabs defaultValue="products" className="">
         <TabsList className="lg:text-lg mx-auto mt-4 text-sm md:text-base">
-          <TabsTrigger value="upload">Upload Products</TabsTrigger>
+          {/* <TabsTrigger value="upload">Upload Products</TabsTrigger> */}
           <TabsTrigger value="products">All Products</TabsTrigger>
           <TabsTrigger value="ads">Upload ADs</TabsTrigger>
           <TabsTrigger value="all-ads">All ADs</TabsTrigger>

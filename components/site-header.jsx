@@ -84,7 +84,7 @@ const SiteHeader = ({ products, siteInfos }) => {
   let categories = [];
   const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"))
   products.map((product) => {
-    product.categories.map((cat) => {
+    product?.categories?.map((cat) => {
       if (!categories.includes(cat)) categories.push(cat);
     });
   });

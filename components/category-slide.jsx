@@ -18,6 +18,8 @@ const CategorySlide = ({products}) => {
     return categories;
   }
   const newCategories = prioritizeArrivals(categories)
+
+  
    return (
     <>
     {newCategories.map((category, index) => (
