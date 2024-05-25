@@ -1,3 +1,7 @@
+'use client'
+import React, {Suspense} from 'react'
+import Link from 'next/link'
+import Img from '@/components/ui/image'
 const ProductCard = ({ category, products }) => {
   const matchedProduct = products.find((item) =>
     item?.categories?.includes(category)
