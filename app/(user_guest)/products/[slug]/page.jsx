@@ -51,7 +51,6 @@ const Page = async({params}) => {
         </div>
         
       </div>  
-      <h2 className="text-2xl font-bold capitalize text-center mb-6">You may also like</h2> 
           <YouMayAlsoLike products={products} category={product.categories[0].toLowerCase()} productId={product._id}/>
  </div>
   )

@@ -27,7 +27,10 @@ const YouMayAlsoLike = ({ products, category, productId }) => {
 if(filteredProducts.length === 0) return
   return (
     <>
+          <h2 className="text-2xl font-bold capitalize text-center mb-6">You may also like</h2> 
+
       <div className="container dark:border-zinc-600 h-48 border border-gray-200   rounded-lg my-3 py-2 px-0">
+
         <Carousel
           opts={{
             align: "start",
