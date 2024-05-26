@@ -53,7 +53,7 @@ if(filteredProducts.length === 0) return
                       className={`flex relative gap-2 flex-col  w-full items-center justify-center`}
                     >
                       <Image
-                        src={urlForImage(product?.images?.[0]).url()}
+                        src={urlForImage(product?.images?.[0])}
                         alt={product.name}
                         width={96}
                         height={96}
