@@ -32,7 +32,7 @@ const SiteFooter = ({siteInfos}) => {
         >
           {siteConfig.footer.map((item) => (
             <div key={item.name} className="w-max ">
-              <Link href='#' className="text-sm  leading-6">
+              <Link href={item.href} className="text-sm  leading-6">
                 <Button variant='link'>
                 {item.name}
                 </Button>

@@ -319,7 +319,7 @@ const SiteHeader = ({ products, siteInfos }) => {
             </NavigationMenuContent> */}
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <div className="flex items-center sm:space-x-1 ">
+              <div className="flex items-center space-x-2 ">
                 {process.env.NEXT_PUBLIC_SANITY_DATASET === "development" && (
                   <Link href="/studio">
                     <Button
@@ -338,11 +338,11 @@ const SiteHeader = ({ products, siteInfos }) => {
                   className={
                     dropSearch
                       ? "gap-2 py-4 px-3 lg:hidden hidden"
-                      : "gap-2 flex sm:py-2 sm:px-3 dark:hover:bg-[#292e36]  w-max h-max lg:hidden "
+                      : "gap-2 flex py-2 px-2 dark:hover:bg-[#292e36]  w-max h-max lg:hidden "
                   }
                   onClick={() => setDropSearch(true)}
                 >
-                  <Search className=" w-6 h-6 sm:h-5 sm:w-5 text-yellow-500  " />
+                  <Search className=" w-6 h-6  sm:h-5 sm:w-5 text-yellow-500  " />
                   <span className="font-semibold text-base hidden sm:block ">
                     Search
                   </span>

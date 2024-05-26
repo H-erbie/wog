@@ -106,9 +106,9 @@ const Avatar = () => {
   }
   return (
     <Link href="/auth/sign-in">
-      <Button size="sm" variant="ghost" className="flex dark:hover:bg-[#292e36]   items-center gap-2">
-        <User2 className="h-5 w-5 text-yellow-500" />
-        <span className="capitalize font-semibold hidden sm:block text-base">
+      <Button size="sm" variant="ghost" className="flex px-1 py-1 dark:hover:bg-[#292e36]   items-center gap-2">
+        <User2 className="h-6 w-6 text-yellow-500" />
+        <span className="capitalize font-semibold block text-base">
           sign in
         </span>
       </Button>

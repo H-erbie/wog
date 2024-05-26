@@ -1,6 +1,6 @@
 export const siteConfig = {
     name: "Andamo Express",
-    description: "Description",
+    description: "Find everything you need, fast! Huge selection of products delivered at lightning speed.",
     footer: [
       { name: "Home", href: "/" },
       { name: "About Us", href: "/about" },
@@ -15,7 +15,7 @@ export const siteConfig = {
       { name: "Terms & Conditions", href: "/terms-and-conditions" },
       { name: "Shipping & Return Policy", href: "/shipping-and-return-policy" },
       { name: "Privacy Policy", href: "/privacy-policy" },
-      { name: "FAQ", href: "/faq" },
+      // { name: "FAQ", href: "/faq" },
     ],
   }
   

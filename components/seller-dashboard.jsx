@@ -41,7 +41,6 @@ import { auth, db } from "@/firebase/config";
 // } from "@/components/ui/select";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-
 const SellerDashboard = ({ products, orders }) => {
   const [user] = useAuthState(auth);
   const isSeller = JSON.parse(sessionStorage.getItem("andamo-seller"));
@@ -51,77 +50,80 @@ const SellerDashboard = ({ products, orders }) => {
     slugifySku();
   }, []);
 
-  
-  const filteredProducts = products.filter((product) => product?.sku?.current === uks.current);
+  const filteredProducts = products.filter(
+    (product) => product?.sku?.current === uks.current
+  );
 
-    let totalProfit = 0
-    orders.forEach((order) => {
-      if (!order.isDelivered) { // Early exit for non-delivered orders
-        return;
-      }
-    
-      const orderProductsMap = new Map(); // Map for efficient lookup
-      order.orderProducts.forEach((orderProduct) => {
-        orderProductsMap.set(orderProduct.name, orderProduct.price);  // Store price
-      });
-    
-      filteredProducts.forEach((newProduct) => {
-        if (orderProductsMap.has(newProduct.name)) { // Efficient price lookup
-          totalProfit += orderProductsMap.get(newProduct.name);  // Retrieve price
-        }
-      });
+  let totalProfit = 0;
+  orders.forEach((order) => {
+    if (!order.isDelivered) {
+      // Early exit for non-delivered orders
+      return;
+    }
+
+    const orderProductsMap = new Map(); // Map for efficient lookup
+    order.orderProducts.forEach((orderProduct) => {
+      orderProductsMap.set(orderProduct.name, orderProduct.price); // Store price
     });
-    const [business, setBusiness] = 
-      useState({
+
+    filteredProducts.forEach((newProduct) => {
+      if (orderProductsMap.has(newProduct.name)) {
+        // Efficient price lookup
+        totalProfit += orderProductsMap.get(newProduct.name); // Retrieve price
+      }
+    });
+  });
+  const [business, setBusiness] = useState({
+    businessName: "",
+    location: "",
+    sellerName: isSeller?.sellerName,
+    sellerContact: isSeller?.sellerContact,
+    paymentMethod: "",
+  });
+  const { businessName, location, sellerContact, paymentMethod, sellerName } =
+    business;
+
+  const handleSeller = ({ target }) => {
+    const { name, value } = target;
+    setBusiness({ ...business, [name]: value });
+  };
+
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const updateSeller = async (e) => {
+    e.preventDefault();
+    setUpdateLoading(true);
+    const currentCategory = e.target[5].value;
+
+    try {
+      await updateDoc(doc(db, "sellers", user.uid), {
+        name: businessName,
+        location,
+        sellerContact,
+        paymentMethod,
+        sellerName,
+        category: currentCategory,
+      });
+
+      // Update local state and UI
+      setUpdateLoading(false);
+      setBusiness({
+        ...business,
         businessName: "",
         location: "",
-        sellerName: isSeller?.sellerName,
-        sellerContact: isSeller?.sellerContact,
+        sellerName: isUserDataStored?.displayName,
+        sellerContact: isUserDataStored?.phoneNumber,
         paymentMethod: "",
-    })
-    const { businessName, location, sellerContact, paymentMethod, sellerName } = business;
+      });
+      setCategory("");
 
-    const handleSeller = ({ target }) => {
-      const { name, value } = target;
-      setBusiness({ ...business, [name]: value });
-    };
-  
-    const [updateLoading, setUpdateLoading] = useState(false)
-    const updateSeller = async (e) => {
-      e.preventDefault();
-      setUpdateLoading(true);
-      const currentCategory = e.target[5].value;
-    
-      try {
-        await updateDoc(doc(db, "sellers", user.uid), {
-          name:businessName,
-          location,
-          sellerContact,
-          paymentMethod,
-          sellerName,
-          category: currentCategory,
-        });
-    
-        // Update local state and UI
-        setUpdateLoading(false);
-        setBusiness({
-          ...business,
-          businessName: "",
-          location: "",
-          sellerName: isUserDataStored?.displayName,
-          sellerContact: isUserDataStored?.phoneNumber,
-          paymentMethod: "",
-        });
-        setCategory("");
-    
-        // Show success message or redirect to seller dashboard
-      } catch (error) {
-        console.log(error);
-        setUpdateLoading(false);
-      }
-    };
+      // Show success message or redirect to seller dashboard
+    } catch (error) {
+      console.log(error);
+      setUpdateLoading(false);
+    }
+  };
   // const [prods, setProds] = useState(filteredProducts);
-  const [ind, setInd] = useState(0)
+  const [ind, setInd] = useState(0);
   // console.log(totalProfit);
   const [delProdLoading, setDelProdLoading] = useState(false);
   const deleteProduct = async (_id, index) => {
@@ -162,7 +164,7 @@ const SellerDashboard = ({ products, orders }) => {
     }
   };
 
-  const [edit, setEdit] = useState(false)
+  const [edit, setEdit] = useState(false);
 
   const { toast } = useToast();
   const categories = [
@@ -427,192 +429,224 @@ const SellerDashboard = ({ products, orders }) => {
           </form>
         </TabsContent>
         <TabsContent value="products">
-          {filteredProducts.length === 0 ? <NoOrders text="No uploaded products" /> : <div className="w-full flex flex-wrap gap-3 justify-center items-center">
-            {filteredProducts.map((product, index) => (
-              <div className="flex relative flex-col gap-y-2" key={product._id}>
-                <button
-                  disabled={delProdLoading}
-                  onClick={() => deleteProduct(product._id, index)}
-                  className="p-2 cursor-pointer disabled:cursor-not-allowed absolute top-0 left-0 bg-red-400 hover:bg-red-500 dark:bg-white rounded-[100%]"
+          {filteredProducts.length === 0 ? (
+            <NoOrders text="No uploaded products" />
+          ) : (
+            <div className="w-full flex flex-wrap gap-3 justify-center items-center">
+              {filteredProducts.map((product, index) => (
+                <div
+                  className="flex relative flex-col gap-y-2"
+                  key={product._id}
                 >
-                  {delProdLoading && index === ind ? (
-                    <Loader2 className="text-black animate-spin" />
+                  <button
+                    disabled={delProdLoading}
+                    onClick={() => deleteProduct(product._id, index)}
+                    className="p-2 cursor-pointer disabled:cursor-not-allowed absolute top-0 left-0 bg-red-400 hover:bg-red-500 dark:bg-white rounded-[100%]"
+                  >
+                    {delProdLoading && index === ind ? (
+                      <Loader2 className="text-black animate-spin" />
+                    ) : (
+                      <Trash2 className="dark:text-red-500 text-white" />
+                    )}
+                  </button>
+
+                  <Image
+                    src={urlForImage(product.images[0]).url()}
+                    alt={product.name}
+                    width={120}
+                    height={120}
+                    className={`block bg-gray-100 dark:bg-[#292e36]  rounded-lg h-36 w-36 sm:h-36 sm:w-36 object-cover `}
+                  />
+                  <p className="text-sm text-center sm:text-base">
+                    {product.name}
+                  </p>
+                  <p className="text-sm text-center sm:text-base">
+                    {product.price}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+        <TabsContent
+          value="stats"
+          className="grid gap-3 py-4 place-items-center grid-cols-2 lg:grid-cols-3"
+        >
+          <div className="p-3 w-3/4 h-[150px] flex items-center flex-col justify-center dark:bg-[#3c3d3f] hover:bg-gray-50 cursor-default dark:hover:bg-[#4e4f52]  rounded-xl shadow-md text-center">
+            <p className="text-xl sm:text-3xl text-yellow-500 font-semibold">
+              {Number(totalProfit).toFixed(2)}
+            </p>
+            <p className="text-gray-400 dark:text-zinc-400">Total Profit</p>
+          </div>
+          <div className="p-3 w-3/4 h-[150px] flex items-center flex-col justify-center dark:bg-[#3c3d3f] hover:bg-gray-50 cursor-default dark:hover:bg-[#4e4f52]  rounded-xl shadow-md text-center">
+            <p className="text-xl sm:text-3xl text-yellow-500 font-semibold">
+              {filteredProducts.length}
+            </p>
+            <p className="text-gray-400 dark:text-zinc-400">
+              Approved Products
+            </p>
+          </div>
+        </TabsContent>
+        <TabsContent
+          value="business"
+          className="flex relative flex-col gap-y-3 justify-center items-center"
+        >
+          {/* <button className='absolute top-3 hover:bg-gray-200 dark:hover:bg-zinc-600 px-3 py-2 rounded-lg right-4 flex gap-x-2' onClick={()=>setEdit(true)} >Edit <Pencil/></button> */}
+          <Briefcase className="mx-auto w-16 h-16" />
+          <p>
+            {" "}
+            <span className="font-semibold">Business Name:</span>{" "}
+            {isSeller.name}
+          </p>
+          <p>
+            {" "}
+            <span className="font-semibold">Business Specialty:</span>{" "}
+            {isSeller.category}
+          </p>
+          <p>
+            {" "}
+            <span className="font-semibold">Business Location:</span>{" "}
+            {isSeller.location}
+          </p>
+          <p>
+            {" "}
+            <span className="font-semibold">Your Contact:</span>{" "}
+            {isSeller.sellerContact}
+          </p>
+          <p>
+            {" "}
+            <span className="font-semibold">Payment Method:</span>{" "}
+            {isSeller.paymentMethod}
+          </p>
+          {edit && (
+            <>
+              <div
+                className="dark:backdrop-brightness-0 backdrop-brightness-50 z-[60]  fixed w-screen h-screen top-0 left-0"
+                onClick={() => setEdit(false)}
+              ></div>{" "}
+              <button
+                onClick={() => setEdit(false)}
+                className="top-6 z-[70]  right-5 fixed"
+              >
+                <X className="text-white" />
+              </button>{" "}
+              <form
+                onSubmit={updateSeller}
+                className="flex w-3/4 fixed py-5 top-24 z-[70] bg-white p-2 rounded-lg left-[12%] flex-col gap-y-3"
+              >
+                <div className="w-[90%]  gap-x-2 sm:w-3/4 mx-auto">
+                  <label>Name of Business</label>
+                  <Input
+                    type="text"
+                    value={businessName}
+                    onChange={handleSeller}
+                    required
+                    name="businessName"
+                    id="name"
+                    className=""
+                  />
+                </div>
+                <div className="w-[90%]  gap-x-2 sm:w-3/4 mx-auto">
+                  <label>Location of Business</label>
+
+                  <Input
+                    type="text"
+                    value={location}
+                    onChange={handleSeller}
+                    required
+                    name="location"
+                    id="location"
+                    className=""
+                  />
+                </div>
+                <div className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
+                  <label>Payment Method</label>
+
+                  <div className="flex items-center gap-x-3">
+                    <div className="flex gap-x-3">
+                      <label>MoMo</label>
+
+                      <Input
+                        type="radio"
+                        value="MoMo"
+                        onChange={handleSeller}
+                        required
+                        name="paymentMethod"
+                        id="paymentMethod"
+                        className="h-5"
+                      />
+                    </div>
+                    <div className="flex gap-x-3">
+                      <label>Card</label>
+
+                      <Input
+                        type="radio"
+                        value="card"
+                        onChange={handleSeller}
+                        required
+                        name="paymentMethod"
+                        id="paymentMethod"
+                        className="h-5"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <Select required className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
+                  <SelectTrigger className="w-[90%] gap-x-2 sm:w-3/4 mx-auto dark:border-zinc-600">
+                    <SelectValue placeholder="choose a category" />
+                  </SelectTrigger>
+                  <SelectContent className="focus:outline-none bg-background  dark:bg-[#292e36] dark:border-zinc-600 border-black ">
+                    <SelectGroup className="grid grid-cols-2">
+                      {categories.map((category) => (
+                        <SelectItem
+                          value={category.value}
+                          key={category.name}
+                          className="dark:hover:bg-[#191c22]"
+                          onClick={() => setCategory(category.value)}
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <div className="flex w-[90%] gap-x-2 sm:w-3/4 items-center mx-auto">
+                  <Input
+                    type="checkbox"
+                    value="card"
+                    required
+                    id="paymentMethod"
+                    className="h-5 w-max"
+                  />
+                  <span>
+                    Agree to{" "}
+                    <Link
+                      href="/become-seller/seller-terms-and-conditions"
+                      className="underline"
+                    >
+                      Terms and Conditions
+                    </Link>
+                  </span>
+                </div>
+                <button
+                  type="submit"
+                  // onClick={uploadVideoAd}
+                  disabled={updateLoading}
+                  className="py-2 flex gap-x-3 items-center justify-center px-3 mx-auto disabled:opacity-50  w-3/4 sm:w-1/2 bg-yellow-200 dark:bg-yellow-500"
+                >
+                  {" "}
+                  {updateLoading ? (
+                    <>
+                      <Loader2 className="animate-spin" /> registering
+                      business...
+                    </>
                   ) : (
-                    <Trash2 className="dark:text-red-500 text-white" />
+                    "Become a seller"
                   )}
                 </button>
-                
-                <Image
-                  src={urlForImage(product.images[0]).url()}
-                  alt={product.name}
-                  width={120}
-                  height={120}
-                  className={`block bg-gray-100 dark:bg-[#292e36]  rounded-lg h-36 w-36 sm:h-36 sm:w-36 object-cover `}
-                />
-                <p className="text-sm text-center sm:text-base">
-                  {product.name}
-                </p>
-                <p className="text-sm text-center sm:text-base">
-                  {product.price}
-                </p>
-              </div>
-            ))}
-          </div>}
-        </TabsContent>
-        <TabsContent value='stats' className="grid gap-3 py-4 place-items-center grid-cols-2 lg:grid-cols-3">
-        <div className="p-3 w-3/4 h-[150px] flex items-center flex-col justify-center dark:bg-[#3c3d3f] hover:bg-gray-50 cursor-default dark:hover:bg-[#4e4f52]  rounded-xl shadow-md text-center">
-          <p className="text-xl sm:text-3xl text-yellow-500 font-semibold">
-            {Number(totalProfit).toFixed(2)}
-          </p>
-          <p className="text-gray-400 dark:text-zinc-400">
-           Total Profit
-          </p>
-        </div>
-         <div className="p-3 w-3/4 h-[150px] flex items-center flex-col justify-center dark:bg-[#3c3d3f] hover:bg-gray-50 cursor-default dark:hover:bg-[#4e4f52]  rounded-xl shadow-md text-center">
-          <p className="text-xl sm:text-3xl text-yellow-500 font-semibold">
-            {filteredProducts.length}
-          </p>
-          <p className="text-gray-400 dark:text-zinc-400">
-           Approved Products
-          </p>
-        </div>
-        </TabsContent>
-        <TabsContent value='business' className='flex relative flex-col gap-y-3 justify-center items-center'>
-            {/* <button className='absolute top-3 hover:bg-gray-200 dark:hover:bg-zinc-600 px-3 py-2 rounded-lg right-4 flex gap-x-2' onClick={()=>setEdit(true)} >Edit <Pencil/></button> */}
-            <Briefcase className='mx-auto w-16 h-16'/>
-            <p > <span className='font-semibold'>Business Name:</span> {isSeller.name}</p>
-            <p > <span className='font-semibold'>Business Specialty:</span> {isSeller.category}</p>
-            <p > <span className='font-semibold'>Business Location:</span> {isSeller.location}</p>
-            <p > <span className='font-semibold'>Your Contact:</span> {isSeller.sellerContact}</p>
-            <p > <span className='font-semibold'>Payment Method:</span> {isSeller.paymentMethod}</p>
-            {
-              edit && <><div className="dark:backdrop-brightness-0 backdrop-brightness-50 z-[60]  fixed w-screen h-screen top-0 left-0"
-              onClick={() =>
-                setEdit(false
-                )
-              }
-              >
-               
-                </div> <button
-                  onClick={() =>
-                    setEdit(false
-                    )
-                  }
-                  className='top-6 z-[70]  right-5 fixed'
-                >
-                  <X className="text-white" />
-                </button> <form onSubmit={updateSeller} className="flex w-3/4 fixed py-5 top-24 z-[70] bg-white p-2 rounded-lg left-[12%] flex-col gap-y-3">
-            <div className="w-[90%]  gap-x-2 sm:w-3/4 mx-auto">
-              <label>Name of Business</label>
-              <Input
-                type="text"
-                value={businessName}
-                onChange={handleSeller}
-                required
-                name="businessName"
-                id="name"
-                className=""
-              />
-            </div>
-            <div className="w-[90%]  gap-x-2 sm:w-3/4 mx-auto">
-              <label>Location of Business</label>
-
-              <Input
-                type="text"
-                value={location}
-                onChange={handleSeller}
-                required
-                name="location"
-                id="location"
-                className=""
-              />
-            </div>
-            <div className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
-              <label>Payment Method</label>
-
-              <div className="flex items-center gap-x-3">
-                <div className="flex gap-x-3">
-                  <label>MoMo</label>
-
-                  <Input
-                    type="radio"
-                    value="MoMo"
-                    onChange={handleSeller}
-                    required
-                    name="paymentMethod"
-                    id="paymentMethod"
-                    className="h-5"
-                  />
-                </div>
-                <div className="flex gap-x-3">
-                  <label>Card</label>
-
-                  <Input
-                    type="radio"
-                    value="card"
-                    onChange={handleSeller}
-                    required
-                    name="paymentMethod"
-                    id="paymentMethod"
-                    className="h-5"
-                  />
-                </div>
-              </div>
-            </div>
-            <Select required className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
-              <SelectTrigger className="w-[90%] gap-x-2 sm:w-3/4 mx-auto dark:border-zinc-600">
-                <SelectValue placeholder="choose a category" />
-              </SelectTrigger>
-              <SelectContent className="focus:outline-none bg-background  dark:bg-[#292e36] dark:border-zinc-600 border-black ">
-                <SelectGroup className="grid grid-cols-2">
-                  {categories.map((category) => (
-                    <SelectItem
-                      value={category.value}
-                      key={category.name}
-                      className="dark:hover:bg-[#191c22]"
-                      onClick={() => setCategory(category.value)}
-                    >
-                      {category.name}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <div className="flex w-[90%] gap-x-2 sm:w-3/4 items-center mx-auto">
-              <Input
-                type="checkbox"
-                value="card"
-                required
-                id="paymentMethod"
-                className="h-5 w-max"
-              />
-              <span>
-                Agree to{" "}
-                <Link
-                  href="/become-seller/seller-terms-and-conditions"
-                  className="underline"
-                >
-                  Terms and Conditions
-                </Link>
-              </span>
-            </div>
-            <button
-              type="submit"
-              // onClick={uploadVideoAd}
-              disabled={updateLoading}
-              className="py-2 flex gap-x-3 items-center justify-center px-3 mx-auto disabled:opacity-50  w-3/4 sm:w-1/2 bg-yellow-200 dark:bg-yellow-500"
-            >
-              {" "}
-              {updateLoading ? (
-                <>
-                  <Loader2 className="animate-spin" /> registering business...
-                </>
-              ) : (
-                "Become a seller"
-              )}
-            </button>
-          </form></> 
-            }
+              </form>
+            </>
+          )}
         </TabsContent>
       </Tabs>
     </div>

@@ -87,7 +87,7 @@ const Page = () => {
         {/*  */}
         <p>
           The Website and all of its content, including but not limited to
-          trademarks, copyrights, and trade secrets, are the property of Babygirl Company or its licensors. You may not use the Website&apos;s
+          trademarks, copyrights, and trade secrets, are the property of Andamo Express Company or its licensors. You may not use the Website&apos;s
           intellectual property without our express written permission.
         </p>
         <h3 className="text-xl font-semibold capitalize my-1">Disclaimers</h3>
@@ -118,7 +118,7 @@ const Page = () => {
         </h3>
         {/*  */}
         <p>
-          These Terms constitute the entire agreement between you and Babygirl Company with respect to your access to and use of the Website.
+          These Terms constitute the entire agreement between you and Andamo Express Company with respect to your access to and use of the Website.
         </p>
         <h3 className="text-xl font-semibold capitalize my-1">Severability</h3>
         <p>
@@ -141,10 +141,10 @@ const Page = () => {
           addressed as follows:
         </p>
 {/*  */}
-        <p>If to Babygirl company:</p>
+        <p>If to Andamo Express:</p>
         <ul>
-          <li>Babygirl company</li>
-          <li>P.O Box 123, Kumasi</li>
+          <li>Andamo Express</li>
+          <li>weareandamo@gmail.com</li>
         </ul>
 {/*  */}
         <p>If to you:</p>

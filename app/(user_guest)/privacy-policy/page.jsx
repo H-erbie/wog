@@ -85,7 +85,7 @@ const Page = () => {
             {" "}
             You can request access to your personal information, have it
             corrected or deleted, or restrict our processing of it by contacting
-            us at Babygirl email
+            us at weareandamo@gmail.com
           </li>
         </ul>
         <h3 className="text-xl font-semibold capitalize my-1">Changes to this Privacy Policy</h3>

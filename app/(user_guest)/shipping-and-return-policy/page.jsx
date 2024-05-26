@@ -34,13 +34,13 @@ const Page = () => {
       <p>
         We accept returns within 30 days of purchase. All returns must be in new
         and unused condition with the original packaging. To return an item,
-        please contact us at Babygirl@gmail.com for a return authorization number
+        please contact us at weareandamo@gmail.com for a return authorization number
         (RAN). Once you have received an RAN, please ship the item back to us at
         the following address:
       </p>
       <ul>
-        <li>Babygirl Company</li>
-        <li>Babygirl Address</li>
+        <li>Andamo Express</li>
+        <li>weareandamo@gmail.com</li>
       </ul>
       {/*  */}
       <p>
@@ -60,7 +60,7 @@ const Page = () => {
       {/*  */}
       <p>
         If you have any questions about our shipping or return policy, please
-        contact us at Babygirl email
+        contact us at weareandamo@gmail.com
       </p>
      </div>
      {" "}
