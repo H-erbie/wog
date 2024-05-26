@@ -451,7 +451,7 @@ const SellerDashboard = ({ products, orders }) => {
                   </button>
 
                   <Image
-                    src={urlForImage(product.images[0]).url()}
+                    src={urlForImage(product?.images?.[0]).url()}
                     alt={product.name}
                     width={120}
                     height={120}

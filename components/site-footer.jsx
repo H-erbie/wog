@@ -21,7 +21,7 @@ const SiteFooter = ({siteInfos}) => {
       {siteInfos.map(siteInfo => (
       <Link href="/" key={siteInfo._id} className="flex  items-center justify-center space-x-2">
         {/*LOGO*/}
-        <Image src={urlForImage(siteInfo.images).url()} width={180} height={150} alt="LOGO" className="text-yellow-500 min-w-[6rem] w-48 h-16"/>
+        <Image src={urlForImage(siteInfo?.images)} width={180} height={150} alt="LOGO" className="text-yellow-500 min-w-[6rem] w-48 h-16"/>
         
       </Link>
     ))}

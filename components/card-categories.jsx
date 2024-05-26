@@ -56,7 +56,7 @@ const Cardcategories = ({ products, category }) => {
                     className={`flex relative gap-2 flex-col hover:brightness-[.8]  w-full items-center justify-center`}
                   >
                     <Image
-                      src={urlForImage(product.images[0]).url()}
+                      src={urlForImage(product?.images?.[0])}
                       alt={product.name}
                       width={96}
                       height={96}

@@ -20,7 +20,7 @@ const ProductCard = ({ category, products }) => {
   }
 
   const newCategory = encodeURIComponent(category);
-  const imageSrc = urlForImage(matchedProduct.images[0]).url();
+  const imageSrc = urlForImage(matchedProduct?.images?.[0]);
 
   return (
     <Suspense fallback={<div className="sm:w=[150px] md:w-[158px] lg:w-[200px] rounded-md  bg-gray-400 animate-pulse"></div>}>

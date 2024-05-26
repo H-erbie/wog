@@ -86,9 +86,9 @@ const AdminTabs = ({ orders, siteInfos }) => {
   });
   const router = useRouter();
 
-  useEffect(() => {
-    router.refresh();
-  }, [orders]);
+  // useEffect(() => {
+  //   router.refresh();
+  // }, [orders]);
 
   return (
     <>
@@ -231,7 +231,7 @@ const AdminTabs = ({ orders, siteInfos }) => {
             )}
           </TabsContent>
           <TabsContent value="history">
-            {orders === 0 ? (
+            {orders.length === 0 ? (
               <NoOrders text="No Orders" />
             ) : (
               <>

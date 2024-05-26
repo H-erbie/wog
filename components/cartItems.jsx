@@ -46,7 +46,7 @@ export default function CartItems() {
           <li key={product._id} className="flex py-6 sm:py-10">
             <div className="shrink-0">
               <Image
-                src={urlForImage(product.images[0]).url()}
+                src={urlForImage(product?.images?.[0])}
                 alt={product.name}
                 width={200}
                 height={200}

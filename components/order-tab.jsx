@@ -593,7 +593,7 @@ py-4 justify-center font-semibold flex flex-col sm:flex-row items-center gap-x-3
           >
             <div className="">
               <Image
-                src={urlForImage(orderProduct.image).url()}
+                src={urlForImage(orderProduct?.image)}
                 alt={orderProduct.name}
                 width={200}
                 height={200}

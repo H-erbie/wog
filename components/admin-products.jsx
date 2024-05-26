@@ -18,6 +18,7 @@ import {
 } from "firebase/storage";
 // import thumb from "public/thumbnail.png";
 import NoOrders from "./no-orders";
+import defaultImageUrl from "@/public/andamo-logo.png";
 
 const AdminProducts = ({ products, ads, sellers }) => {
   const [prods, setProds] = useState(products);
@@ -506,7 +507,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
         <TabsList className="lg:text-lg mx-auto mt-4 text-sm md:text-base">
           {/* <TabsTrigger value="upload">Upload Products</TabsTrigger> */}
           <TabsTrigger value="products">All Products</TabsTrigger>
-          <TabsTrigger value="ads">Upload ADs</TabsTrigger>
+          {/* <TabsTrigger value="ads">Upload ADs</TabsTrigger> */}
           <TabsTrigger value="all-ads">All ADs</TabsTrigger>
           <TabsTrigger value="requests">Sellers Requests</TabsTrigger>
         </TabsList>
@@ -667,8 +668,11 @@ const AdminProducts = ({ products, ads, sellers }) => {
                     <Pencil className="text-yellow-500" />
                   )}
                 </button>
+
                 <Image
-                  src={urlForImage(product.images[0]).url()}
+                  src={urlForImage(
+                    product?.images?.[0] && product?.images?.[0]
+                  )}
                   alt={product.name}
                   width={120}
                   height={120}
@@ -1021,7 +1025,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
                   </button>
 
                   <Image
-                    src={urlForImage(product.images[0]).url()}
+                    src={urlForImage(product.images[0])}
                     alt={product.name}
                     width={120}
                     height={120}

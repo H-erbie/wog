@@ -8,7 +8,7 @@ const CategoryCard = ({ category, product }) => {
       <div className="overflow-hidden rounded-md w-32 h-32 mx-auto">
         {" "}
         <Img
-          src={urlForImage(product.images[0]).url()}
+          src={urlForImage(product?.images?.[0])}
           alt={product.name}
           width={128}
           height={128}

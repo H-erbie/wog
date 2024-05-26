@@ -401,7 +401,7 @@ const AdminOrder = ({
                     key={orderItem.name}
                   >
                     <Image
-                      src={urlForImage(orderItem.image).url()}
+                      src={urlForImage(orderItem?.image)}
                       width={200}
                       height={200}
                       alt={order.name}

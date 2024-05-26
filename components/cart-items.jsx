@@ -73,7 +73,7 @@ export default function CartItems() {
                         className="font-medium"
                       >
               <Image
-                src={urlForImage(product.images[0]).url()}
+                src={urlForImage(product?.images?.[0])}
                 alt={product.name}
                 width={200}
                 height={200}

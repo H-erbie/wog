@@ -202,7 +202,7 @@ const Page = () => {
           {!mode.editMode && !mode.deleteMode && (
             <div className="flex flex-col  mt-6  w-full   h-max ">
               <div className="mx-auto flex flex-col gap-3 justify-evenly items-start">
-                <div className="rounded-xl animate-pulse px-20 py-16 h-full font-bold capitalize text-6xl text-center text-yellow-500 dark:bg-[#3f434a] bg-gray-100 ">
+                <div className="rounded-xl mx-auto animate-pulse px-20 py-16 h-full font-bold capitalize text-6xl text-center text-yellow-500 dark:bg-[#3f434a] bg-gray-100 ">
                   {avatar && avatar[0]}
                 </div>
                 <div className="flex flex-col gap-y-2">

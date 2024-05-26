@@ -58,7 +58,7 @@ if(videos.length === 0) return
         <Suspense           key={ad.name}
         fallback={<div className="bg-gray-100 animate-pulse dark:bg-[#292e36] rounded-[100%] h-36 w-36"></div>}>
         <Image
-          src={urlForImage(ad?.thumbnail)?.url()}
+          src={urlForImage(ad?.thumbnail)}
           alt={ad.name}
           width={120}
           height={120}

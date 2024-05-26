@@ -37,7 +37,7 @@ const Page = async ({ params }) => {
           <Link href={`/products/${product.slug.current}`}  key={product._id}  className="w-3/4 flex-col flex items-center justify-center hover:brightness-50 h-[160px]">
           <div className=" w-full overflow-hidden rounded-md bg-gray-100 flex items-center justify-center" key={product._id}>
             <Img
-              src={urlForImage(product.images[0]).url()}
+              src={urlForImage(product?.images?.[0])}
               width={200}
               height={200}
               alt={product.name}

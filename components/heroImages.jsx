@@ -13,7 +13,7 @@ const HeroImages = async ({img}) => {
                   <p className="font-bold text-2xl sm:text-3xl w-48 sm:w-max md:text-4xl lg:text-5xl text-white capitalize">{img.detail}</p>
                 </div>
                 <Image
-                  src={urlForImage(img.images).url()}
+                  src={urlForImage(img?.images)}
                   alt={img.detail}
                   width={500}
                   height={300}

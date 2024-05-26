@@ -32,7 +32,7 @@ const AdminHeader = ({siteInfos}) => {
           >
             {/*LOGO*/}
             <Image
-              src={urlForImage(siteInfo.images).url()}
+              src={urlForImage(siteInfo?.images)}
               width={180}
               height={150}
               alt="LOGO"
