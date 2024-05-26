@@ -43,7 +43,7 @@ const Avatar = () => {
 
   useEffect(()=>{
     getRole()
-  },[user])
+  },[user, userRole])
   const router = useRouter()
   const revalidateOrders = async() => {
     const orders = await sanityFetch({
