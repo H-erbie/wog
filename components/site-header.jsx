@@ -140,6 +140,7 @@ const SiteHeader = ({ products, siteInfos }) => {
               sessionStorage.removeItem('andamo-user')
               sessionStorage.removeItem('andamo-seller')
               sessionStorage.removeItem('andamo-driver')
+              sessionStorage.removeItem('temp-url')
 
               }}>log out</span>
                         </SheetClose>

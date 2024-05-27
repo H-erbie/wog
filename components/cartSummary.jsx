@@ -63,7 +63,7 @@ const CartSummary = () => {
       "order-contact",
       JSON.stringify(phone)
     );
-    user ? router.replace("/cart/checkout") : router.replace("/auth/sign-in");
+    router.replace("/cart/checkout");
   };
   // console.log(ads);
   const regions = [

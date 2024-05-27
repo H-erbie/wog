@@ -48,7 +48,7 @@ if(filteredProducts.length === 0) return
                 key={product._id}
               >
                 <CarouselItem className="lg:basis-1/6 md:basis-1/5 sm:basis-1/4 basis-1/3 w-full transition-all hover:brighness-50 px-3 border-none  border">
-                  <Link href={`/products/${product.slug.current}`}>
+                  <Link href={`/products/${product?.slug?.current}`}>
                     <div
                       className={`flex relative gap-2 flex-col  w-full items-center justify-center`}
                     >

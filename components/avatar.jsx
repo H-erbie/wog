@@ -93,6 +93,7 @@ const Avatar = () => {
               sessionStorage.removeItem('andamo-user')
               sessionStorage.removeItem('andamo-seller')
               sessionStorage.removeItem('andamo-driver')
+              sessionStorage.removeItem('temp-url')
 
               }}>
               <LogOut className="mr-2 h-4 w-4" />

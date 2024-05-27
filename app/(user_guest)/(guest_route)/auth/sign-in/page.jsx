@@ -29,6 +29,7 @@ const Page = () => {
     const [data, setData] = useState(null)
     const [seller, setSeller] = useState(null)
     const [driver, setDriver] = useState(null)
+    const tempUrl = JSON.parse(sessionStorage.getItem("temp-url"));
 
   // Handle user data retrieval on successful sign-in
   useEffect(() => {
@@ -87,7 +88,7 @@ const Page = () => {
         );
         data.isAdmin
           ? router.replace("/admin-dashboard/overview")
-          : router.replace("/");
+          : tempUrl ? router.replace(tempUrl) : router.replace("/");
       }
       
     }
@@ -98,7 +99,7 @@ const Page = () => {
   //     // Fetch data only after successful sign-in
       fetchUserData();
   //   }
-  }, [user, data]);
+  }, [user, data, seller, driver]);
   console.log(data);
   const handleChange = async ({ target }) => {
     const { name, value } = target;

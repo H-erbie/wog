@@ -56,6 +56,7 @@ const AdminHeader = ({siteInfos}) => {
   sessionStorage.removeItem('andamo-user')
   sessionStorage.removeItem('andamo-seller')
   sessionStorage.removeItem('andamo-driver')
+  sessionStorage.removeItem('temp-url')
 
   }}>Logout</button>
            {!pathname.endsWith("/checkout") && <ThemeToggle />}

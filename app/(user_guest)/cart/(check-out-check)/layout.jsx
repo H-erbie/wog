@@ -8,10 +8,18 @@ export default function PrivateLayout({ children }) {
   const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
 // console.log(!user?.emailVerified)
   useEffect(() => {
-    if ((!user && !isUserDataStored) || !isUserDataStored) redirect("/auth/sign-in");
+    if ((!user && !isUserDataStored) || !isUserDataStored) {
+      console.log('tempTry  ')
+      sessionStorage.setItem('temp-url', JSON.stringify('/cart/checkout'))
+      redirect("/auth/sign-in"); 
+    } 
   }, [isUserDataStored, user]);
   useEffect(() => {
-    if (!user?.emailVerified) redirect("/verify-email/reverify-email");
+    if (!user?.emailVerified){
+      
+      redirect("/verify-email/reverify-email");
+      
+    }
   }, [user]);
   return <>{children}</>;
 }

@@ -18,6 +18,7 @@ import { auth, db } from "@/firebase/config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { DateTime } from "luxon";
 
 
 const Chat = ({ orders }) => {
@@ -218,6 +219,33 @@ const Chat = ({ orders }) => {
       !userOrders.includes(roomMessages[0].orderId)
   );
   // console.log(activeOrders);
+
+  const makeDate = (timestamp) => {
+    const parsedDateTime = DateTime.fromMillis(timestamp);
+    let  userTimeZone = null
+    if (userTimeZone) {
+      return parsedDateTime.setZone(userTimeZone).toLocaleString({
+        weekday: 'long',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true, // Adjust for 12-hour format (optional)
+      });
+    } else {
+      return parsedDateTime.toLocaleString({
+        weekday: 'long',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true, // Adjust for 12-hour format (optional)
+      });
+    }
+  };
+
   return (
     <div className={`min-h-screen ${pathname.startsWith("/admin-dashboard") ? "pt-4 sm:pb-32": "pt-[66px]"} `}>
       <section className="flex overflow-hidden chat-height">
@@ -278,7 +306,7 @@ const Chat = ({ orders }) => {
                           >
                             <ul
                               ref={chatContainerRef}
-                              className={`relative overflow-y-scroll no-scroll pb-16 pt-5  h-full px-4 sm:pr-14`}
+                              className={`relative overflow-y-scroll no-scroll pb-16 pt-10  h-full px-4 sm:pr-14`}
                             >
                               <p className="text-center text-sm my-4 text-gray-400 dark:text-gray-500  ">
                                 This chat room will disappear after your order
@@ -321,9 +349,11 @@ const Chat = ({ orders }) => {
                                         {message.content}
                                       </p>
                                       <p className="text-[12px] flex justify-between text-gray-400">
-                                        {new Date(
+                                      {makeDate(message.timestamp)}
+                                        
+                                        {/* {new Date(
                                           message.timestamp
-                                        ).toLocaleTimeString()}
+                                        ).toLocaleTimeString()} */}
                                          
                                         {/* {isSending && (
                                           <Clock

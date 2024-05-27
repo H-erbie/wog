@@ -51,7 +51,7 @@ const Page = async({params}) => {
         </div>
         
       </div>  
-          <YouMayAlsoLike products={products} category={product.categories[0].toLowerCase()} productId={product._id}/>
+          <YouMayAlsoLike products={products} category={product?.categories?.[0].toLowerCase()} productId={product?._id}/>
  </div>
   )
 }

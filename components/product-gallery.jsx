@@ -13,7 +13,7 @@ export default function ProductGallery({ product }) {
       {/* Image Grid */}
       <div className="mx-auto mt-6 w-max ">
         <ul className="grid w-max grid-cols-3  gap-x-5">
-          {product.images.map((image, index) => {
+          {product?.images?.map((image, index) => {
             return (
               <div
                 key={image._key}
