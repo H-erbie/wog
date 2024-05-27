@@ -26,12 +26,13 @@ import { GrDeliver } from "react-icons/gr";
 import { FcProcess } from "react-icons/fc";
 import { DateTime } from "luxon";
 
-const AdminTabs = ({ orders, siteInfos }) => {
+const AdminTabs = ({ adminOrders, siteInfos }) => {
   // const [isConfirmed, setIsConfirmed] = useState(false);
   // const [isProcessing, setIsProcessing] = useState(false);
   // const [isShipped, setIsShipped] = useState(false);
   // const [isDelivered, setIsDelivered] = useState(false);
   // const [isCancelled, setIsCancelled] = useState(false);
+  const [orders, setOrders] = useState(adminOrders)
   const newOrders = orders.filter(
     (order) => !order.isDelivered && !order.isCancelled
   );
@@ -86,9 +87,9 @@ const AdminTabs = ({ orders, siteInfos }) => {
   });
   const router = useRouter();
 
-  // useEffect(() => {
-  //   router.refresh();
-  // }, [orders]);
+  useEffect(() => {
+    setOrders(adminOrders)
+  }, [adminOrders]);
 
   return (
     <>

@@ -9,9 +9,9 @@ const Overview = ({ orders, products }) => {
   const [prods, setProds] = useState(products)
   const router = useRouter()
   useEffect(()=>{
-    router.refresh()
+    // router.refresh()
     setProds(products)
-  },[])
+  },[products])
   const activeOrders = orders.filter(
     (order) => !order.isDelivered && !order.isCancelled
   );

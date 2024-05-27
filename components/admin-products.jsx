@@ -505,9 +505,9 @@ const AdminProducts = ({ products, ads, sellers }) => {
       </h1>
       <Tabs defaultValue="products" className="">
         <TabsList className="lg:text-lg mx-auto mt-4 text-sm md:text-base">
-          {/* <TabsTrigger value="upload">Upload Products</TabsTrigger> */}
+          <TabsTrigger value="upload">Upload Products</TabsTrigger>
           <TabsTrigger value="products">All Products</TabsTrigger>
-          {/* <TabsTrigger value="ads">Upload ADs</TabsTrigger> */}
+          <TabsTrigger value="ads">Upload ADs</TabsTrigger>
           <TabsTrigger value="all-ads">All ADs</TabsTrigger>
           <TabsTrigger value="requests">Sellers Requests</TabsTrigger>
         </TabsList>

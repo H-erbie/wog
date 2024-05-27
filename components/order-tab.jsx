@@ -196,7 +196,7 @@ const OrderTab = ({ userOrders, order }) => {
   };
 
   useEffect(() => {
-    router.refresh();
+    setUserOrder(userOrders)
   }, [userOrders]);
   return (
     <div className="">

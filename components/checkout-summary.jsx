@@ -101,6 +101,7 @@ const CheckoutSummary = ({
         userId: adminId,
         id: uuidv4(),
         orderId,
+        seen: false
       };
 
       await addDoc(messageRef, message);
@@ -175,7 +176,7 @@ const CheckoutSummary = ({
 
     onSuccess: () => {
       orderOnSuccess();
-      sendWelcomeMessage(user.uid, "i98Cv19XjNQxx2jlpaUXaG5F4oP2");
+      sendWelcomeMessage(user.uid, "XlXX0oq60kbjoeIi2S3Pm0VJ4nq2");
       clearCart();
 
       router.replace(`/chats`);

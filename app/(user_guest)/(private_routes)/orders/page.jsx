@@ -35,7 +35,7 @@ const Page = async () => {
       {/* <MainNav siteInfos={siteInfos} /> */}
 
       {/* <VerifyDialog /> */}
-      <OrdersTab orders={sanityOrders} />
+      <OrdersTab sanityOrders={sanityOrders} />
     </div>
   );
 };

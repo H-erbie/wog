@@ -35,10 +35,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 // export const storedUser = JSON.parse(sessionStorage.getItem("andamo-user"))
 
-const OrdersTab = ({orders}) => {
+const OrdersTab = ({sanityOrders}) => {
   // const { data } = useSession();
   const [user] = useAuthState(auth);
   console.log(orders.length );
+  const [orders, setOrders] = useState(sanityOrders)
 
   // const getAllOrders = async () => {
   //   const orders = await sanityFetch({
@@ -70,12 +71,13 @@ const OrdersTab = ({orders}) => {
   const sortedUserOrdersHistory = userOrdersHistory.slice().sort((a, b) => {
     return new Date(b._createdAt) - new Date(a._createdAt);
   });
+
   // console.log(orders, userOrders);
   // console.log(userOrders);
   const router = useRouter();
   useEffect(() => {
-    router.refresh();
-  }, [orders]);
+    setOrders(sanityOrders)
+  }, [sanityOrders]);
 
   return (
     <div>

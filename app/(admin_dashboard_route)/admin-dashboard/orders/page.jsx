@@ -20,7 +20,7 @@ const Page = async () => {
   return (
     <div className="main pt-24 pb-[90px] px-0">
         <AdminTabs
-          orders={orders}
+          adminOrders={orders}
           siteInfos={siteInfos}
         />
       

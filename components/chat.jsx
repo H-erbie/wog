@@ -5,6 +5,8 @@ import {
   getDoc,
   setDoc,
   addDoc,
+  writeBatch,
+  updateDoc,
   getDocs,
   collection,
   onSnapshot,
@@ -12,14 +14,21 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { Bell, Loader2, Clock, Check, Send, ChevronLeft, ShoppingCart } from "lucide-react";
+import {
+  Bell,
+  Loader2,
+  Clock,
+  Check,
+  Send,
+  ChevronLeft,
+  ShoppingCart,
+} from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { auth, db } from "@/firebase/config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { DateTime } from "luxon";
-
 
 const Chat = ({ orders }) => {
   const [messages, setMessages] = useState([]);
@@ -32,7 +41,6 @@ const Chat = ({ orders }) => {
   const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
 
   const pathname = usePathname();
-
 
   const userOrders = orders
     .filter(
@@ -150,6 +158,7 @@ const Chat = ({ orders }) => {
         timestamp: Date.now(),
         userId: user.uid,
         id: uuidv4(), // Generate unique message ID
+        seen: false, // Set seen to false for new messages
       };
       await addDoc(messageCollectionRef, messageData);
 
@@ -196,22 +205,36 @@ const Chat = ({ orders }) => {
       setScrolled(false);
     }
   }, [currentRoomIndex, scrolled, messages]);
-  const handleRoomClick = (roomId) => {
+  const handleRoomClick = async (roomId) => {
     setCurrentRoomIndex(roomId); // Find the index of the clicked room
     setScrolled(true);
 
-    // if (chatContainerRef.current) {
-    //   chatContainerRef.current.scrollTo({
-    //     top: chatContainerRef.current.scrollHeight,
-    //     behavior: "smooth",
-    //   })}
-    //   if (chatContainerRef.current) {
-    //     chatContainerRef.current.scrollTo({
-    //       top: chatContainerRef.current.scrollHeight,
-    //       behavior: "smooth",
-    //     });
+    const unreadMessages = messages[roomId].filter((message) => !message.seen && message.userId !== user.uid);
 
-    //   }
+    // Update "seen" field for unread messages (if any)
+    if (unreadMessages.length > 0) {
+      // Option 1: Update state locally (for immediate UI update)
+      const updatedMessages = {
+        ...messages,
+        [roomId]: messages[roomId].map((message) =>
+          unreadMessages.includes(message)
+            ? { ...message, seen: true } // Update seen for unread messages
+            : message
+        ),
+      };
+      setMessages(updatedMessages);
+      
+      const messageCollectionRef = collection(db, `rooms/${roomId}/messages`);
+      // const batch = writeBatch(db);
+      const q = query(messageCollectionRef, where("roomId", "==", roomId));
+      const querySnapshot = await getDocs(q);
+      // console.log(querySnapshot)
+      // if (querySnapshot.length > 0) {
+        querySnapshot.forEach((doc) => {
+          updateDoc(doc.ref, { seen: true });
+        });
+      // }
+    }
   };
   // console.log(messages)
   const activeOrders = Object.entries(messages).filter(
@@ -222,32 +245,36 @@ const Chat = ({ orders }) => {
 
   const makeDate = (timestamp) => {
     const parsedDateTime = DateTime.fromMillis(timestamp);
-    let  userTimeZone = null
+    let userTimeZone = null;
     if (userTimeZone) {
       return parsedDateTime.setZone(userTimeZone).toLocaleString({
-        weekday: 'long',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
+        weekday: "long",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
         hour12: true, // Adjust for 12-hour format (optional)
       });
     } else {
       return parsedDateTime.toLocaleString({
-        weekday: 'long',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
+        weekday: "long",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
         hour12: true, // Adjust for 12-hour format (optional)
       });
     }
   };
 
   return (
-    <div className={`min-h-screen ${pathname.startsWith("/admin-dashboard") ? "pt-4 sm:pb-32": "pt-[66px]"} `}>
+    <div
+      className={`min-h-screen ${
+        pathname.startsWith("/admin-dashboard") ? "pt-4 sm:pb-32" : "pt-[66px]"
+      } `}
+    >
       <section className="flex overflow-hidden chat-height">
         {rooms.length > 0 && activeOrders.length > 0 ? (
           <>
@@ -256,7 +283,9 @@ const Chat = ({ orders }) => {
                 currentRoomIndex !== ""
                   ? "hidden sm:block w-full sm:w-[30%]"
                   : "block w-full sm:w-[30%]"
-              } relative ${pathname.startsWith("/admin-dashboard") ? "pt-0" : "pt-[50px]" }  no-scroll overflow-y-scroll h-full border-r  border-gray-200 dark:border-zinc-600`}
+              } relative ${
+                pathname.startsWith("/admin-dashboard") ? "pt-0" : "pt-[50px]"
+              }  no-scroll overflow-y-scroll h-full border-r  border-gray-200 dark:border-zinc-600`}
             >
               <h1 className="text-3xl border-r w-full sm:w-[30%] dark:bg-[#26272B] bg-white fixed top-[61px] z-20 left-0 font-bold text-center border-b border-gray-200 dark:border-zinc-600 pb-3">
                 Chats ({activeOrders.length})
@@ -268,6 +297,9 @@ const Chat = ({ orders }) => {
               ) : (
                 Object.entries(messages).map(
                   ([roomId, roomMessages], index) => {
+                    const unreadCount = roomMessages.filter(
+                      (message) => !message.seen && message.userId !== user.uid
+                    ).length;
                     if (!userOrders.includes(roomMessages[0].orderId))
                       return (
                         <p
@@ -277,9 +309,18 @@ const Chat = ({ orders }) => {
                             roomId === currentRoomIndex
                               ? " border-y border-black  hover:opacity-80  text-white dark:text-black bg-[#292e36] dark:bg-white "
                               : " border-y border-gray-200 hover:opacity-80  dark:border-zinc-600  "
-                          }  font-semibold flex gap-x-2 items-center cursor-pointer p-5`}
+                          }  font-semibold relative flex gap-x-2 items-center cursor-pointer p-5`}
                         >
-                       <div className="p-3 rounded-[100%] dark:bg-zinc-600 bg-gray-200"> <ShoppingCart className='text-black dark:text-white'/></div>  {roomMessages[0].orderId}&apos;s chat
+                          {unreadCount > 0 && ( // Show unread count only if there are unread messages
+                            <span className="bg-yellow-500 absolute top-8 right-1 text-white px-2  flex rounded-[100%] mr-2">
+                              {unreadCount}
+                            </span>
+                          )}
+                          <div className="p-3 rounded-[100%] dark:bg-zinc-600 bg-gray-200">
+                            {" "}
+                            <ShoppingCart className="text-black dark:text-white" />
+                          </div>{" "}
+                          {roomMessages[0].orderId}&apos;s chat
                         </p>
                       );
                   }
@@ -319,14 +360,29 @@ const Chat = ({ orders }) => {
                                 ) // Sort messages by timestamp (ascending)
                                 .map((message, index) => (
                                   <>
-                                    <div className={`sm:w-[70%] w-full flex border-b p-3 bg-white border-gray-200 items-center dark:border-zinc-600 text-center dark:bg-[#26272B] fixed ${pathname.startsWith("/admin-dashboard") ? "top-[61px]" : " top-[64px]"}  right-0 justify-between`}>
-                                    <div className="p-3 cursor-pointerhover:bg-gray-300 dark:hover:bg-zinc-500 rounded-[100%] sm:hidden dark:bg-zinc-600 bg-gray-200" onClick={()=> setCurrentRoomIndex('')}> <ChevronLeft /></div> 
-                                      {isUserDataStored?.you !== "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="  && <Link
-                                        href={`/orders/${message.orderId}`}
-                                        className="text-yellow-500 sm:mr-0 mr-[40%] hover:underline"
+                                    <div
+                                      className={`sm:w-[70%] w-full flex border-b p-3 bg-white border-gray-200 items-center dark:border-zinc-600 text-center dark:bg-[#26272B] fixed ${
+                                        pathname.startsWith("/admin-dashboard")
+                                          ? "top-[61px]"
+                                          : " top-[64px]"
+                                      }  right-0 justify-between`}
+                                    >
+                                      <div
+                                        className="p-3 cursor-pointerhover:bg-gray-300 dark:hover:bg-zinc-500 rounded-[100%] sm:hidden dark:bg-zinc-600 bg-gray-200"
+                                        onClick={() => setCurrentRoomIndex("")}
                                       >
-                                        Track this order
-                                      </Link>}
+                                        {" "}
+                                        <ChevronLeft />
+                                      </div>
+                                      {isUserDataStored?.you !==
+                                        "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=" && (
+                                        <Link
+                                          href={`/orders/${message.orderId}`}
+                                          className="text-yellow-500 sm:mr-0 mr-[40%] hover:underline"
+                                        >
+                                          Track this order
+                                        </Link>
+                                      )}
                                     </div>
                                     <li
                                       key={message.id}
@@ -342,15 +398,17 @@ const Chat = ({ orders }) => {
                                         </p>
                                       ) : (
                                         <p className="text-[15px] text-yellow-500">
-                                           {isUserDataStored?.you === "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=" ? message.user : "Andamo Team"}
+                                          {isUserDataStored?.you ===
+                                          "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
+                                            ? message.user
+                                            : "Andamo Team"}
                                         </p>
                                       )}
                                       <p className="text-[15px] break-words  w-full my-2">
                                         {message.content}
                                       </p>
                                       <p className="text-[12px] flex justify-between text-gray-400">
-                                      {makeDate(message.timestamp)}
-                                        
+                                        {makeDate(message.timestamp)}
                                         {/* {new Date(
                                           message.timestamp
                                         ).toLocaleTimeString()} */}

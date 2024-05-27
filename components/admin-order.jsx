@@ -377,8 +377,8 @@ const AdminOrder = ({
   //   currentStat
   // );
   useEffect(() => {
-    router.refresh();
-  }, []);
+    setOrder(currentOrder);
+  }, [currentOrder]);
   const parsedDateTime = DateTime.fromISO(order._createdAt);
   const formattedDate = parsedDateTime.toFormat("yyyy.MM.dd 'at' HH:mm a");
   const devDateTime = DateTime.fromISO(order._updatedAt);
