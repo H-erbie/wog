@@ -220,7 +220,7 @@ const CheckoutSummary = ({
                   <TableBody className="w-full dark:hover:bg-[#292e36] border dark:border-zinc-600">
                     <TableRow key={cartItem.id} className="flex flex-col ">
                       <TableCell>{cartItem.name}</TableCell>
-                      <TableCell>GHS {cartItem.price.toFixed(2)}</TableCell>
+                      <TableCell>GHS {Number(cartItem.price).toFixed(2)}</TableCell>
                       <TableCell>{cartItem.quantity}</TableCell>
                       {/* <TableCell></TableCell>
                       <TableCell>GHS {totalPrice}</TableCell>
