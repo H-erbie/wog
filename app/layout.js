@@ -46,6 +46,7 @@ export default async function RootLayout({ children }) {
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#292e36" />
+        <meta name="google-site-verification" content="zLkWB96jEYLxf5AWuzTVoOCWfKl23-g1nJBKT0YSZQI" />
       </head>
       <body className={fontSans.variable}>
         {" "}
