@@ -139,7 +139,7 @@ export default function ProductInfo({ product, orders }) {
 
       <div className="mt-3 mx-0 lg:mx-0 sm:mx-auto sm:w-max lg:w-full">
         <h2 className="sr-only">Product information</h2>
-        <p className="text-3xl tracking-tight">GHS {product.price}</p>
+        <p className="text-3xl tracking-tight">GHS {product.price.toFixed()}</p>
       </div>
       <div className="border-b dark:border-zinc-600 py-3 flex gap-3 mx-0 lg:mx-0 sm:mx-auto sm:w-max lg:w-full items-center">
         <DropdownMenu>

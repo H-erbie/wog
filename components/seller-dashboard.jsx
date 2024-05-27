@@ -451,7 +451,7 @@ const SellerDashboard = ({ products, orders }) => {
                   </button>
 
                   <Image
-                    src={urlForImage(product?.images?.[0]).url()}
+                    src={urlForImage(product?.images?.[0])}
                     alt={product.name}
                     width={120}
                     height={120}
@@ -470,7 +470,7 @@ const SellerDashboard = ({ products, orders }) => {
         </TabsContent>
         <TabsContent
           value="stats"
-          className="grid gap-3 py-4 place-items-center grid-cols-2 lg:grid-cols-3"
+          className="grid gap-3 py-4 justify-center items-center place-items-center place-content-center grid-cols-2 lg:grid-cols-3"
         >
           <div className="p-3 w-3/4 h-[150px] flex items-center flex-col justify-center dark:bg-[#3c3d3f] hover:bg-gray-50 cursor-default dark:hover:bg-[#4e4f52]  rounded-xl shadow-md text-center">
             <p className="text-xl sm:text-3xl text-yellow-500 font-semibold">

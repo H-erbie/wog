@@ -67,7 +67,7 @@ const Cardcategories = ({ products, category }) => {
                       {product.name}
                     </p>
                     <div className="flex flex-col justify-evenly gap-y-2">
-                      <span className="text-center">GHS {product.price}</span>
+                      <span className="text-center">GHS {product.price.toFixed(2)}</span>
                       <span className="flex items-center gap-[2px] dark:text-pink-400 text-pink-500 w-max text-lg ">
                         <>
                           {" "}

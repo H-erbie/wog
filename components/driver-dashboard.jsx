@@ -179,7 +179,7 @@ const DriverDashboard = ({ orders }) => {
               <ToggleLeft className="w-10 h-10" />
             )}
           </button>
-          <p className=' italic'>By continuing to use the app as a driver, you agree to the <Link href='/driver-dashboard/driver-terms-and-conditions' className='underline'> terms and condtions</Link></p>
+          <p className='text-center italic'>By continuing to use the app as a driver, you agree to the <Link href='/driver-dashboard/driver-terms-and-conditions' className='underline'> terms and condtions</Link></p>
 
         </TabsContent>
         <TabsContent value="requests">

@@ -95,7 +95,7 @@ export default function CartItems() {
                     </h3>
                   </div>
                   <p className="mt-1 text-sm font-medium">
-                    GHS {product.price}
+                    GHS {product.price.toFixed(2)}
                   </p>
                   <p className="mt-1 text-sm font-medium">Location: {product.loc}
                </p>

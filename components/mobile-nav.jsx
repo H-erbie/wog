@@ -103,7 +103,7 @@ bg-background"
                 <p className="text-center text-base hidden sm:block ">Products</p>
             </Link>
 
-         { user.uid === 'i98Cv19XjNQxx2jlpaUXaG5F4oP2' && <Link href="/admin-dashboard/messages" className="">
+         { user?.uid === 'i98Cv19XjNQxx2jlpaUXaG5F4oP2' && <Link href="/admin-dashboard/messages" className="">
             <div className="rounded-[100%] dark:hover:bg-[#292e36] w-max mx-auto hover:bg-secondary p-3">
               <MessageCircle className="w-7 h-7 " />
             </div>{" "}
