@@ -8,6 +8,7 @@ import {
   Search,
   X,
   Bell,
+  Car,
   AlignJustify,
   Edit,
   ChevronDown,
@@ -82,14 +83,15 @@ const SiteHeader = ({ products, siteInfos }) => {
   const defaultSearchQuery = searchParams.get("search") ?? "";
 
   let categories = [];
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"))
+  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
   products.map((product) => {
     product?.categories?.map((cat) => {
       if (!categories.includes(cat)) categories.push(cat);
     });
   });
 
-  if (pathname.startsWith("/auth") || pathname.startsWith("/admin-dashboard")) return null;
+  if (pathname.startsWith("/auth") || pathname.startsWith("/admin-dashboard"))
+    return null;
   return (
     <>
       <NavigationMenu className="fixed transition-all top-0 z-40 w-screen  bg-white dark:bg-[#131418] border-b-[0.01px] border-gray-200 dark:border-zinc-700  flex flex-col">
@@ -100,7 +102,11 @@ const SiteHeader = ({ products, siteInfos }) => {
             <NavigationMenuItem>
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button className=" dark:hover:bg-[#292e36]" size="sm" variant="primary">
+                  <Button
+                    className=" dark:hover:bg-[#292e36]"
+                    size="sm"
+                    variant="primary"
+                  >
                     <AlignJustify className="" />
                   </Button>
                 </SheetTrigger>
@@ -135,14 +141,17 @@ const SiteHeader = ({ products, siteInfos }) => {
                     {isUserDataStored && (
                       <SheetDescription className="border-t-[0.01px] dark:border-zinc-700 border-slate-200 text-base px-4 py-3 flex justify-between ">
                         <SheetClose className="capitalize hover:text-yellow-300">
-                          <span onClick={() =>{ 
-              signOut(auth)
-              sessionStorage.removeItem('andamo-user')
-              sessionStorage.removeItem('andamo-seller')
-              sessionStorage.removeItem('andamo-driver')
-              sessionStorage.removeItem('temp-url')
-
-              }}>log out</span>
+                          <span
+                            onClick={() => {
+                              signOut(auth);
+                              sessionStorage.removeItem("andamo-user");
+                              sessionStorage.removeItem("andamo-seller");
+                              sessionStorage.removeItem("andamo-driver");
+                              sessionStorage.removeItem("temp-url");
+                            }}
+                          >
+                            log out
+                          </span>
                         </SheetClose>
                         <Link href="/profile">
                           <SheetClose className="capitalize hover:text-yellow-300">
@@ -152,10 +161,32 @@ const SiteHeader = ({ products, siteInfos }) => {
                       </SheetDescription>
                     )}
                   </SheetHeader>
-                  <Link href={isUserDataStored ? "/become-seller" : '/auth/sign-in'} >
-                  <SheetClose className="border rounded-lg w-max gap-x-2 text-center mx-auto  px-6 py-3 hover:border-secondary dark:hover:bg-white bg-[#292e36] hover:bg-white text-white hover:text-black dark:hover:text-black dark:border-zinc-700 flex items-center ">
-                          Become a seller <ShoppingBag className="text-yellow-500 "/>
-                        </SheetClose></Link>
+                  <Link
+                    href={
+                      isUserDataStored?.spr === "YW5kYW1vLXVzZXI="
+                        ? "/seller-dashboard"
+                        : isUserDataStored?.spr === "YW5kYW1vLWRyaXZlcg=="
+                        ? "/driver-dashboard"
+                        : !isUserDataStored?.spr
+                        ? "/become-seller"
+                        : "/auth/sign-in"
+                    }
+                  >
+                    <SheetClose className="border rounded-lg w-max gap-x-2 text-center mx-auto  px-6 py-3 hover:border-secondary dark:hover:bg-white bg-[#292e36] hover:bg-white text-white hover:text-black dark:hover:text-black dark:border-zinc-700 flex items-center ">
+                      {isUserDataStored.spr === "YW5kYW1vLXVzZXI=" ? (
+                        <span>Seller&apos;s Dashboard </span>
+                      ) : isUserDataStored.spr === "YW5kYW1vLWRyaXZlcg==" ? (
+                        <span>Driver Dashboard </span>
+                      ) : (
+                        <span>Become a Seller </span>
+                      )}
+                      {isUserDataStored.spr === "YW5kYW1vLWRyaXZlcg==" ? (
+                        <Car />
+                      ) : (
+                        <ShoppingBag className="text-yellow-500 " />
+                      )}
+                    </SheetClose>
+                  </Link>
                   <div className="w-full h-5/6 px-2 py-3 flex flex-col justify-between">
                     <div className="pl-5">
                       <h2 className="capitalize py-3 font-bold text-xl">
@@ -177,7 +208,8 @@ const SiteHeader = ({ products, siteInfos }) => {
                       </div>{" "}
                       <Link href="/categories">
                         <SheetClose className="capitalize flex items-center hover:underline w-full text-base text-start text-yellow-500">
-                          see more categories <ChevronRight className="text-yellow-500 ml-3"/> {" "}
+                          see more categories{" "}
+                          <ChevronRight className="text-yellow-500 ml-3" />{" "}
                         </SheetClose>{" "}
                       </Link>
                     </div>
@@ -195,13 +227,11 @@ const SiteHeader = ({ products, siteInfos }) => {
                           </Link>
                         ))}
                       </div>
-                      <SheetClose >
+                      <SheetClose>
                         <div className="my-3 pl-3 flex sm:flex-wrap sm:flex-row flex-col gap-x-2 w-full  sm:mx-auto gap-y-2 border-t-[0.01px] dark:border-zinc-700 border-slate-200 pt-3">
                           <Socials siteInfos={siteInfos} />
                         </div>
-                        
                       </SheetClose>
-
                     </SheetFooter>
                   </div>
                 </SheetContent>
@@ -213,7 +243,9 @@ const SiteHeader = ({ products, siteInfos }) => {
               <MainNav siteInfos={siteInfos} />
             </NavigationMenuItem>
             <NavigationMenuItem
-              className={dropSearch ? "block w-3/4 lg:w-[40%]" : "hidden lg:block"}
+              className={
+                dropSearch ? "block w-3/4 lg:w-[40%]" : "hidden lg:block"
+              }
             >
               <form
                 onSubmit={submitHandler}
@@ -267,23 +299,27 @@ const SiteHeader = ({ products, siteInfos }) => {
                 )}
               </form>
             </NavigationMenuItem>
-            <NavigationMenuItem className={   dropSearch ?"hidden lg:block" : "hidden sm:block"}>
-                           <DropdownMenu>
-                <DropdownMenuTrigger className="outline-none focus:outline-none flex items-center gap-x-2 dark:hover:bg-[#292e36]  dark:bg-[#1f2227] p-2 rounded-lg ">Categories <ChevronDown className="text-yellow-500"/></DropdownMenuTrigger>
-                <DropdownMenuContent className='dark:bg-[#1f2227] max-h-[80vh] overflow-y-scroll dark:border-zinc-700'>
+            <NavigationMenuItem
+              className={dropSearch ? "hidden lg:block" : "hidden sm:block"}
+            >
+              <DropdownMenu>
+                <DropdownMenuTrigger className="outline-none focus:outline-none flex items-center gap-x-2 dark:hover:bg-[#292e36]  dark:bg-[#1f2227] p-2 rounded-lg ">
+                  Categories <ChevronDown className="text-yellow-500" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="dark:bg-[#1f2227] max-h-[80vh] overflow-y-scroll dark:border-zinc-700">
                   {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
                   {/* <DropdownMenuSeparator /> */}
                   {categories.map((category, index) => (
-                          <Link
-                            href={`/categories/${category.toLowerCase()}`}
-                            key={index}
-                          >
-                            {" "}
-                            <DropdownMenuItem className="capitalize dark:hover:bg-[#292e36]  pr-16 pl-2 hover:underline h-7 w-full text-start text-base py-0 ">
-                              {category}
-                            </DropdownMenuItem>
-                          </Link>
-                        ))}
+                    <Link
+                      href={`/categories/${category.toLowerCase()}`}
+                      key={index}
+                    >
+                      {" "}
+                      <DropdownMenuItem className="capitalize dark:hover:bg-[#292e36]  pr-16 pl-2 hover:underline h-7 w-full text-start text-base py-0 ">
+                        {category}
+                      </DropdownMenuItem>
+                    </Link>
+                  ))}
                   {/* <DropdownMenuItem>Profile</DropdownMenuItem>
                   <DropdownMenuItem>Billing</DropdownMenuItem>
                   <DropdownMenuItem>Team</DropdownMenuItem>
@@ -369,10 +405,8 @@ const SiteHeader = ({ products, siteInfos }) => {
                     </span>
                   </Button>
                 </Link>
-               
               </div>
             </NavigationMenuItem>
- 
           </div>
         </NavigationMenuList>
       </NavigationMenu>
