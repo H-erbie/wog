@@ -51,8 +51,9 @@ const SellerDashboard = ({ products, orders }) => {
   }, []);
 
   const filteredProducts = products.filter(
-    (product) => product?.sku?.current === uks.current
+    (product) => product?.sku && product?.sku?.current === uks.current 
   );
+  console.log(filteredProducts)
 
   let totalProfit = 0;
   orders.forEach((order) => {
@@ -73,6 +74,7 @@ const SellerDashboard = ({ products, orders }) => {
       }
     });
   });
+
   const [business, setBusiness] = useState({
     businessName: "",
     location: "",
@@ -338,7 +340,7 @@ const SellerDashboard = ({ products, orders }) => {
                 id="sku"
               />
             </div> */}
-            <Select required className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
+            {/* <Select required className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
               <SelectTrigger className="w-[90%] gap-x-2 sm:w-3/4 mx-auto dark:border-zinc-600">
                 <SelectValue placeholder="choose a category" />
               </SelectTrigger>
@@ -356,7 +358,7 @@ const SellerDashboard = ({ products, orders }) => {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {/* <div className="w-[90%] sm:w-3/4 mx-auto">
+            <div className="w-[90%] sm:w-3/4 mx-auto">
               <label htmlFor="categories" className="mb-2">
                 Categories
               </label>
@@ -451,7 +453,7 @@ const SellerDashboard = ({ products, orders }) => {
                   </button>
 
                   <Image
-                    src={urlForImage(product?.images?.[0])}
+                    src={urlForImage(product?.images?.[0] && product?.images?.[0])}
                     alt={product.name}
                     width={120}
                     height={120}

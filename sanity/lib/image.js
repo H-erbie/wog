@@ -21,5 +21,5 @@ export const urlForImage = (source, options = {}) => {
   } // Allow customization of width and height
 
   // Ensure the .url() method is called to return the actual URL
-  return imageUrl.url();
+  return imageUrl?.url();
 }

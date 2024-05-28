@@ -12,7 +12,7 @@ import Image from "next/image";
 const SiteFooter = ({siteInfos}) => {
   const pathname = usePathname()
 
-  if (pathname.startsWith("/auth") || pathname.startsWith("/admin-dashboard")) return null;
+  if (pathname.startsWith("/auth") || pathname.startsWith("/chats") || pathname.startsWith("/admin-dashboard")) return null;
 
   return (
     <footer className="border-t border-gray-200 pb-20 dark:border-zinc-600">

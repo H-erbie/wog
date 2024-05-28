@@ -90,7 +90,7 @@ const SiteHeader = ({ products, siteInfos }) => {
     });
   });
 
-  if (pathname.startsWith("/auth") || pathname.startsWith("/admin-dashboard"))
+  if (pathname.startsWith("/auth") || pathname.startsWith("/chats") || pathname.startsWith("/admin-dashboard"))
     return null;
   return (
     <>

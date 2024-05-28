@@ -209,7 +209,9 @@ const Chat = ({ orders }) => {
     setCurrentRoomIndex(roomId); // Find the index of the clicked room
     setScrolled(true);
 
-    const unreadMessages = messages[roomId].filter((message) => !message.seen && message.userId !== user.uid);
+    const unreadMessages = messages[roomId].filter(
+      (message) => !message.seen && message.userId !== user.uid
+    );
 
     // Update "seen" field for unread messages (if any)
     if (unreadMessages.length > 0) {
@@ -223,16 +225,16 @@ const Chat = ({ orders }) => {
         ),
       };
       setMessages(updatedMessages);
-      
+
       const messageCollectionRef = collection(db, `rooms/${roomId}/messages`);
       // const batch = writeBatch(db);
       const q = query(messageCollectionRef, where("roomId", "==", roomId));
       const querySnapshot = await getDocs(q);
       // console.log(querySnapshot)
       // if (querySnapshot.length > 0) {
-        querySnapshot.forEach((doc) => {
-          updateDoc(doc.ref, { seen: true });
-        });
+      querySnapshot.forEach((doc) => {
+        updateDoc(doc.ref, { seen: true });
+      });
       // }
     }
   };
@@ -272,7 +274,7 @@ const Chat = ({ orders }) => {
   return (
     <div
       className={`min-h-screen ${
-        pathname.startsWith("/admin-dashboard") ? "pt-4 sm:pb-32" : "pt-[66px]"
+        pathname.startsWith("/admin-dashboard") ? "pt-4 sm:pb-32" : "pt-0"
       } `}
     >
       <section className="flex overflow-hidden chat-height">
@@ -284,10 +286,10 @@ const Chat = ({ orders }) => {
                   ? "hidden sm:block w-full sm:w-[30%]"
                   : "block w-full sm:w-[30%]"
               } relative ${
-                pathname.startsWith("/admin-dashboard") ? "pt-0" : "pt-[50px]"
+                pathname.startsWith("/admin-dashboard") ? "pt-0" : "pt-[62px]"
               }  no-scroll overflow-y-scroll h-full border-r  border-gray-200 dark:border-zinc-600`}
             >
-              <h1 className="text-3xl border-r w-full sm:w-[30%] dark:bg-[#26272B] bg-white fixed top-[61px] z-20 left-0 font-bold text-center border-b border-gray-200 dark:border-zinc-600 pb-3">
+              <h1 className="text-3xl border-r w-full sm:w-[30%] dark:bg-[#26272B] bg-white fixed top-0 z-20 left-0 font-bold text-center border-b border-gray-200 dark:border-zinc-600 pb-3">
                 Chats ({activeOrders.length})
               </h1>
               {messages.length === 0 ? (
@@ -384,36 +386,38 @@ const Chat = ({ orders }) => {
                                         </Link>
                                       )}
                                     </div>
-                                    <li
-                                      key={message.id}
-                                      className={`w-max max-w-[90%] sm:max-w-[60%] rounded-3xl p-3 my-4 ${
-                                        message.userId === user.uid
-                                          ? "ml-auto dark:bg-[#3c3d3f] bg-yellow-100"
-                                          : "mr-auto dark:bg-gray-600 bg-gray-200"
-                                      }`}
-                                    >
-                                      {message.userId === user.uid ? ( // Check if current user's message
-                                        <p className="text-[15px] text-yellow-500">
-                                          You{" "}
+
+                                    <li className="w-full my-4">
+                                      <div
+                                        key={message.id}
+                                        className={`w-max max-w-[90%] sm:max-w-[60%] rounded-3xl p-3  ${
+                                          message.userId === user.uid
+                                            ? "ml-auto dark:bg-[#3c3d3f] bg-yellow-100"
+                                            : "mr-auto dark:bg-gray-600 bg-gray-200"
+                                        }`}
+                                      >
+                                        {message.userId === user.uid ? ( // Check if current user's message
+                                          <p className="text-[15px] text-yellow-500">
+                                            You{" "}
+                                          </p>
+                                        ) : (
+                                          <p className="text-[15px] text-yellow-500">
+                                            {isUserDataStored?.you ===
+                                            "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
+                                              ? message.user
+                                              : "Andamo Team"}
+                                          </p>
+                                        )}
+                                        <p className="text-[15px] break-words  w-full my-2">
+                                          {message.content}
                                         </p>
-                                      ) : (
-                                        <p className="text-[15px] text-yellow-500">
-                                          {isUserDataStored?.you ===
-                                          "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
-                                            ? message.user
-                                            : "Andamo Team"}
-                                        </p>
-                                      )}
-                                      <p className="text-[15px] break-words  w-full my-2">
-                                        {message.content}
-                                      </p>
-                                      <p className="text-[12px] flex justify-between text-gray-400">
-                                        {makeDate(message.timestamp)}
-                                        {/* {new Date(
+                                        <p className="text-[12px] flex justify-between text-gray-400">
+                                          {makeDate(message.timestamp)}
+                                          {/* {new Date(
                                           message.timestamp
                                         ).toLocaleTimeString()} */}
-                                         
-                                        {/* {isSending && (
+                                           
+                                          {/* {isSending && (
                                           <Clock
                                             className={
                                               index === roomMessages.length - 1
@@ -425,7 +429,13 @@ const Chat = ({ orders }) => {
                                         {!isSending && (
                                           <Check className="w-4 h-4" />
                                         )} */}
-                                      </p>
+                                        </p>
+                                      </div>
+                                      {message.userId === user.uid && (
+                                        <p className="ml-auto italic text-sm w-max">
+                                          {message.seen ? "seen" : "deliverred"}
+                                        </p>
+                                      )}
                                     </li>
                                   </>
                                 ))}

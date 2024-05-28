@@ -1,7 +1,7 @@
 "use client";
 import { Home, ShoppingCart, User, ChevronUp, Users2 } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useShoppingCart } from "use-shopping-cart";
 import { ThemeToggle } from "./themeToggle";
 import {
@@ -39,7 +39,6 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
 import { auth, db } from "@/firebase/config";
-import { doc, getDoc } from "firebase/firestore";
 import {
   Sheet,
   SheetContent,
@@ -50,6 +49,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { usePathname } from "next/navigation";
 
 const MobileNav = () => {
@@ -60,63 +68,116 @@ const MobileNav = () => {
   const [user] = useAuthState(auth);
   const username = user && user?.displayName;
   const profileName = username && username.split("");
+
+  const [unreadMessageCounts, setUnreadMessageCounts] = useState({});
+
+  const fetchUnreadMessages = async (userId) => {
+    const roomsRef = collection(db, "rooms");
+    const roomsQuery = query(
+      roomsRef,
+      where("userIds", "array-contains", userId)
+    );
+    const roomsSnapshot = await getDocs(roomsQuery);
+
+    const unreadCounts = {};
+    for (const roomDoc of roomsSnapshot.docs) {
+      const roomId = roomDoc.id;
+      const messagesRef = collection(db, `rooms/${roomId}/messages`);
+      const messagesQuery = query(messagesRef, where("seen", "==", false)); // No userId filter
+
+      const messageSnapshot = await getDocs(messagesQuery);
+
+      // Filter messages on the client-side
+      const unreadMessages = messageSnapshot.docs.filter(
+        (doc) => doc.data().userId !== user.uid
+      );
+
+      unreadCounts[roomId] = unreadMessages.length;
+    }
+
+    setUnreadMessageCounts(unreadCounts);
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    fetchUnreadMessages(user?.uid);
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const unsubscribe = onSnapshot(query(collection(db, "rooms")), () => {
+      fetchUnreadMessages(user?.uid);
+    });
+
+    return unsubscribe;
+  }, [user]);
+
   const getRole = async () => {
-    const docRef = doc(db, "users", user && user.uid);
+    const docRef = doc(db, "users", user && user?.uid);
     const docSnap = await getDoc(docRef);
     // console.log(docSnap.data());
     setUserRole(docSnap.data());
   };
   if (pathname.startsWith("/admin-dashboard"))
     return (
-        <div className="lg:w-1/2 w-full fixed z-50 left-0 sm:left-[13%] md:left-[17%] lg:left-[25%]  bottom-0  sm:bottom-6  flex md:w-2/3 sm:w-3/4 sm:mx-auto p-2 px-4  justify-between border-gray-300 sm:rounded-3xl items-center sm:border  border-t dark:border-zinc-600 bg-white dark:bg-[#191c22]">
-          <Link href="/admin-dashboard/overview" className="">
-            <div className="rounded-[100%] w-max mx-auto dark:hover:bg-[rgb(41,46,54)] hover:bg-secondary p-3">
-              <View className="" />
-            </div>
-            <p className="text-center hidden sm:block">Overview</p>
-          </Link>
-          <Link href="/admin-dashboard/admins" className="">
-            <div className="rounded-[100%] dark:hover:bg-[rgb(41,46,54)] hover:bg-secondary p-3">
-              <User2 className="mx-auto w-max" />
-            </div>
-            <p className="text-center hidden sm:block"> Admins</p>
-          </Link>
-          <Link href="/admin-dashboard/orders" className="">
-            <div
-              className="p-3 rounded-[100%]   
+      <div className="lg:w-1/2 w-full fixed z-50 left-0 sm:left-[13%] md:left-[17%] lg:left-[25%]  bottom-0  sm:bottom-6  flex md:w-2/3 sm:w-3/4 sm:mx-auto p-2 px-4  justify-between border-gray-300 sm:rounded-3xl items-center sm:border  border-t dark:border-zinc-600 bg-white dark:bg-[#191c22]">
+        <Link href="/admin-dashboard/overview" className="">
+          <div className="rounded-[100%] w-max mx-auto dark:hover:bg-[rgb(41,46,54)] hover:bg-secondary p-3">
+            <View className="" />
+          </div>
+          <p className="text-center hidden sm:block">Overview</p>
+        </Link>
+        <Link href="/admin-dashboard/admins" className="">
+          <div className="rounded-[100%] dark:hover:bg-[rgb(41,46,54)] hover:bg-secondary p-3">
+            <User2 className="mx-auto w-max" />
+          </div>
+          <p className="text-center hidden sm:block"> Admins</p>
+        </Link>
+        <Link href="/admin-dashboard/orders" className="">
+          <div
+            className="p-3 rounded-[100%]   
 hover:bg-secondary
 dark:hover:bg-[#292e36]  
 bg-background"
-            >
-              <ArrowDownUp />
-            </div>
-            <p className="text-center hidden sm:block"> Orders</p>
-          </Link>
+          >
+            <ArrowDownUp />
+          </div>
+          <p className="text-center hidden sm:block"> Orders</p>
+        </Link>
 
-          
-              <Link href="/admin-dashboard/products">
-                <div className="p-3 cursor-pointer relative mx-auto w-max rounded-[100%] hover:bg-secondary dark:hover:bg-[#292e36]">
-                  <ShoppingBag className="" />
-                   {/* <span className=" text-base animate-ping bg-yellow-500 w-2 h-2 rounded-[100%] font-bold absolute top-[1px]  right-1"></span> */}
+        <Link href="/admin-dashboard/products">
+          <div className="p-3 cursor-pointer relative mx-auto w-max rounded-[100%] hover:bg-secondary dark:hover:bg-[#292e36]">
+            <ShoppingBag className="" />
+            {/* <span className=" text-base animate-ping bg-yellow-500 w-2 h-2 rounded-[100%] font-bold absolute top-[1px]  right-1"></span> */}
+          </div>{" "}
+          <p className="text-center text-base hidden sm:block ">Products</p>
+        </Link>
 
-                </div>{" "}
-                <p className="text-center text-base hidden sm:block ">Products</p>
-            </Link>
-
-         { user?.uid === 'XlXX0oq60kbjoeIi2S3Pm0VJ4nq2' && <Link href="/admin-dashboard/messages" className="">
+        {user?.uid === "XlXX0oq60kbjoeIi2S3Pm0VJ4nq2" && (
+          <Link href="/admin-dashboard/messages" className="relative">
             <div className="rounded-[100%] dark:hover:bg-[#292e36] w-max mx-auto hover:bg-secondary p-3">
               <MessageCircle className="w-7 h-7 " />
             </div>{" "}
+            {Object.entries(unreadMessageCounts).length > 0 && (
+              <span className="ml-2 text-base font-bold px-2 text-white bg-yellow-500 rounded-[100%] absolute -top-2  right-0">
+                {Object.values(unreadMessageCounts).reduce(
+                  (acc, count) => acc + count,
+                  0
+                )}
+              </span>
+            )}
             <p className="text-center hidden sm:block">Messages</p>
-          </Link>}
-          <Link href="/admin-dashboard/special-roles" className="">
-            <div className="rounded-[100%] dark:hover:bg-[#292e36] w-max mx-auto hover:bg-secondary p-3">
-              <Users2 className="w-7 h-7 " /> 
-            </div>{" "}
-            <p className="text-center hidden sm:block">S/D</p>
           </Link>
-         {/* {!pathname.endsWith("/checkout") && <ThemeToggle />} */}
-        </div>
+        )}
+        <Link href="/admin-dashboard/special-roles" className="">
+          <div className="rounded-[100%] dark:hover:bg-[#292e36] w-max mx-auto hover:bg-secondary p-3">
+            <Users2 className="w-7 h-7 " />
+          </div>{" "}
+          <p className="text-center hidden sm:block">S/D</p>
+        </Link>
+        {/* {!pathname.endsWith("/checkout") && <ThemeToggle />} */}
+      </div>
     );
 
   return (
@@ -128,7 +189,7 @@ bg-background"
         <HiOutlineHome className="text-3xl" />
       </Link>
 
-      <Link
+      {/* <Link
         href="/chats"
         className="p-3 rounded-[100%] sm:my-4  
 hover:bg-gray-200
@@ -136,7 +197,24 @@ dark:hover:bg-[#292e36]
 bg-background"
       >
         <MessageCircle />
-      </Link>
+      </Link> */}
+
+      <div className="relative flex">
+        <Link
+          href="/chats"
+          className="rounded-[100%] dark:hover:bg-[#292e36] hover:bg-secondary p-3"
+        >
+          <MessageCircle />
+        </Link>
+        {Object.entries(unreadMessageCounts).length > 0 && (
+          <span className="text-base font-bold px-2 text-white bg-yellow-500 rounded-[100%] absolute -top-2  right-0">
+            {Object.values(unreadMessageCounts).reduce(
+              (acc, count) => acc + count,
+              0
+            )}
+          </span>
+        )}
+      </div>
 
       {/* <Sheet>
         <SheetTrigger asChild>

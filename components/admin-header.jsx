@@ -21,7 +21,8 @@ const AdminHeader = ({siteInfos}) => {
 
     const pathname = usePathname()
 
-    if ( pathname.startsWith("/admin-dashboard")) 
+
+    if ( pathname.startsWith("/admin-dashboard") && !pathname.endsWith("/messages") ) 
   return (
     <div className="flex w-screen px-5 z-50 bg-white dark:bg-[#131418] border-b fixed top-0 left-0 border-gray-200 dark:border-zinc-600 justify-between items-center  p-2 gap-6 md:gap-10 ">
         {siteInfos.map((siteInfo) => (
