@@ -173,14 +173,14 @@ const SiteHeader = ({ products, siteInfos }) => {
                     }
                   >
                     <SheetClose className="border rounded-lg w-max gap-x-2 text-center mx-auto  px-6 py-3 hover:border-secondary dark:hover:bg-white bg-[#292e36] hover:bg-white text-white hover:text-black dark:hover:text-black dark:border-zinc-700 flex items-center ">
-                      {isUserDataStored.spr === "YW5kYW1vLXVzZXI=" ? (
+                      {isUserDataStored?.spr === "YW5kYW1vLXVzZXI=" ? (
                         <span>Seller&apos;s Dashboard </span>
-                      ) : isUserDataStored.spr === "YW5kYW1vLWRyaXZlcg==" ? (
+                      ) : isUserDataStored?.spr === "YW5kYW1vLWRyaXZlcg==" ? (
                         <span>Driver Dashboard </span>
                       ) : (
                         <span>Become a Seller </span>
                       )}
-                      {isUserDataStored.spr === "YW5kYW1vLWRyaXZlcg==" ? (
+                      {isUserDataStored?.spr === "YW5kYW1vLWRyaXZlcg==" ? (
                         <Car />
                       ) : (
                         <ShoppingBag className="text-yellow-500 " />
