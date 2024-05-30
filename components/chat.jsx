@@ -19,6 +19,7 @@ import {
   Loader2,
   Clock,
   Check,
+  View,
   Send,
   ChevronLeft,
   ShoppingCart,
@@ -126,7 +127,7 @@ const Chat = ({ orders }) => {
     const fetchData = async () => {
       if (!user) return;
 
-      const roomIds = await filterRoomsByUserId(user.uid);
+      const roomIds = await filterRoomsByUserId(user?.uid);
       const roomMessages = {};
       for (const roomId of roomIds) {
         roomMessages[roomId] = await getMessagesByRoomId(roomId);
@@ -156,7 +157,7 @@ const Chat = ({ orders }) => {
         orderId,
         user: user.displayName || user.email, // Use display name or email
         timestamp: Date.now(),
-        userId: user.uid,
+        userId: user?.uid,
         id: uuidv4(), // Generate unique message ID
         seen: false, // Set seen to false for new messages
       };
@@ -210,7 +211,7 @@ const Chat = ({ orders }) => {
     setScrolled(true);
 
     const unreadMessages = messages[roomId].filter(
-      (message) => !message.seen && message.userId !== user.uid
+      (message) => !message.seen && message.userId !== user?.uid
     );
 
     // Update "seen" field for unread messages (if any)
@@ -241,7 +242,7 @@ const Chat = ({ orders }) => {
   // console.log(messages)
   const activeOrders = Object.entries(messages).filter(
     ([roomId, roomMessages], index) =>
-      !userOrders.includes(roomMessages[0].orderId)
+      !userOrders.includes(roomMessages?.[0]?.orderId)
   );
   // console.log(activeOrders);
 
@@ -274,7 +275,7 @@ const Chat = ({ orders }) => {
   return (
     <div
       className={`min-h-screen ${
-        pathname.startsWith("/admin-dashboard") ? "pt-4 sm:pb-32" : "pt-0"
+        pathname.startsWith("/admin-dashboard") ? "pt-0 pb-32 sm:pb-0" : "pt-0"
       } `}
     >
       <section className="flex overflow-hidden chat-height">
@@ -286,11 +287,15 @@ const Chat = ({ orders }) => {
                   ? "hidden sm:block w-full sm:w-[30%]"
                   : "block w-full sm:w-[30%]"
               } relative ${
-                pathname.startsWith("/admin-dashboard") ? "pt-0" : "pt-[62px]"
+                pathname.startsWith("/admin-dashboard") ? "pt-[60px]" : "pt-[62px]"
               }  no-scroll overflow-y-scroll h-full border-r  border-gray-200 dark:border-zinc-600`}
             >
-              <h1 className="text-3xl border-r w-full sm:w-[30%] dark:bg-[#26272B] bg-white fixed top-0 z-20 left-0 font-bold text-center border-b border-gray-200 dark:border-zinc-600 pb-3">
-                Chats ({activeOrders.length})
+              <h1 className="text-3xl flex items-center justify-evenly border-r w-full sm:w-[30%] dark:bg-[#26272B] bg-white fixed top-0 z-20 left-0 font-bold text-center border-b border-gray-200 dark:border-zinc-600 py-3">
+              <Link href="/admin-dashboard/overview" className="">
+          <div className="rounded-xl flex gap-x-2 items-center w-max mx-auto dark:hover:bg-[rgb(41,46,54)] hover:bg-secondary p-3">
+          <ChevronLeft/>  <View className="" />
+          </div>
+        </Link> Chats ({activeOrders.length})
               </h1>
               {messages.length === 0 ? (
                 <div className="w-[30%] h-full flex  text-sm items-center justify-center">
@@ -300,9 +305,9 @@ const Chat = ({ orders }) => {
                 Object.entries(messages).map(
                   ([roomId, roomMessages], index) => {
                     const unreadCount = roomMessages.filter(
-                      (message) => !message.seen && message.userId !== user.uid
+                      (message) => !message.seen && message.userId !== user?.uid
                     ).length;
-                    if (!userOrders.includes(roomMessages[0].orderId))
+                    if (!userOrders.includes(roomMessages?.[0]?.orderId))
                       return (
                         <p
                           onClick={() => handleRoomClick(roomId)}
@@ -322,7 +327,7 @@ const Chat = ({ orders }) => {
                             {" "}
                             <ShoppingCart className="text-black dark:text-white" />
                           </div>{" "}
-                          {roomMessages[0].orderId}&apos;s chat
+                          {roomMessages?.[0]?.orderId}&apos;s chat
                         </p>
                       );
                   }
@@ -339,7 +344,7 @@ const Chat = ({ orders }) => {
                   Object.entries(messages).map(
                     ([roomId, roomMessages], index) => {
                       if (
-                        !userOrders.includes(roomMessages[0].orderId) &&
+                        !userOrders.includes(roomMessages?.[0]?.orderId) &&
                         roomId === currentRoomIndex
                       )
                         return (
@@ -349,12 +354,37 @@ const Chat = ({ orders }) => {
                           >
                             <ul
                               ref={chatContainerRef}
-                              className={`relative overflow-y-scroll no-scroll pb-16 pt-10  h-full px-4 sm:pr-14`}
+                              className={`relative overflow-y-scroll no-scroll pb-[125px] pt-16 h-full px-4 sm:pr-14`}
                             >
-                              <p className="text-center text-sm my-4 text-gray-400 dark:text-gray-500  ">
-                                This chat room will disappear after your order
-                                is delivered or cancelled.
-                              </p>
+                              {/* {!pathname.startsWith("/admin-dashboard") && (
+                                <div
+                                  className={`sm:w-[70%] w-full flex border-b p-3 bg-white border-gray-200 items-center dark:border-zinc-600 text-center dark:bg-[#26272B] fixed t-0 right-0 justify-between`}
+                                >
+                               
+                                  {isUserDataStored?.you !==
+                                    "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=" && (
+                                    <Link
+                                      href={`/orders/${message.orderId}`}
+                                      className="text-yellow-500 sm:mr-0 mr-[40%] hover:underline"
+                                    >
+                                      Track this order
+                                    </Link>
+                                  )}
+                                </div>
+                              )} */}
+                              <div className="flex fixed top-0 bg-white dark:bg-[#3c3d3f] border-gray-300 dark:border-zinc-600 w-full sm:right-0 left-0 sm:un-left sm:w-[70%] p-2 border-b items-center justify-between">
+                                <div
+                                  className="p-3 w-max cursor-pointer hover:bg-gray-300 dark:hover:bg-zinc-500 rounded-[100%] sm:hidden dark:bg-zinc-600 bg-gray-200"
+                                  onClick={() => setCurrentRoomIndex("")}
+                                >
+                                  {" "}
+                                  <ChevronLeft />
+                                </div>
+                                <p className="text-center text-sm  text-gray-400 dark:text-white  ">
+                                  This chat room will disappear after your order
+                                  is delivered or cancelled.
+                                </p>
+                              </div>
                               {roomMessages
                                 .sort(
                                   (message1, message2) =>
@@ -362,41 +392,16 @@ const Chat = ({ orders }) => {
                                 ) // Sort messages by timestamp (ascending)
                                 .map((message, index) => (
                                   <>
-                                    <div
-                                      className={`sm:w-[70%] w-full flex border-b p-3 bg-white border-gray-200 items-center dark:border-zinc-600 text-center dark:bg-[#26272B] fixed ${
-                                        pathname.startsWith("/admin-dashboard")
-                                          ? "top-[61px]"
-                                          : " top-[64px]"
-                                      }  right-0 justify-between`}
-                                    >
-                                      <div
-                                        className="p-3 cursor-pointerhover:bg-gray-300 dark:hover:bg-zinc-500 rounded-[100%] sm:hidden dark:bg-zinc-600 bg-gray-200"
-                                        onClick={() => setCurrentRoomIndex("")}
-                                      >
-                                        {" "}
-                                        <ChevronLeft />
-                                      </div>
-                                      {isUserDataStored?.you !==
-                                        "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=" && (
-                                        <Link
-                                          href={`/orders/${message.orderId}`}
-                                          className="text-yellow-500 sm:mr-0 mr-[40%] hover:underline"
-                                        >
-                                          Track this order
-                                        </Link>
-                                      )}
-                                    </div>
-
                                     <li className="w-full my-4">
                                       <div
                                         key={message.id}
                                         className={`w-max max-w-[90%] sm:max-w-[60%] rounded-3xl p-3  ${
-                                          message.userId === user.uid
+                                          message.userId === user?.uid
                                             ? "ml-auto dark:bg-[#3c3d3f] bg-yellow-100"
                                             : "mr-auto dark:bg-gray-600 bg-gray-200"
                                         }`}
                                       >
-                                        {message.userId === user.uid ? ( // Check if current user's message
+                                        {message.userId === user?.uid ? ( // Check if current user's message
                                           <p className="text-[15px] text-yellow-500">
                                             You{" "}
                                           </p>
@@ -431,7 +436,7 @@ const Chat = ({ orders }) => {
                                         )} */}
                                         </p>
                                       </div>
-                                      {message.userId === user.uid && (
+                                      {message.userId === user?.uid && (
                                         <p className="ml-auto italic text-sm w-max">
                                           {message.seen ? "seen" : "deliverred"}
                                         </p>
@@ -454,7 +459,7 @@ const Chat = ({ orders }) => {
                                   ) {
                                     sendMessage(
                                       roomId,
-                                      roomMessages[0].orderId,
+                                      roomMessages?.[0]?.orderId,
                                       index
                                     );
                                   }
@@ -465,7 +470,7 @@ const Chat = ({ orders }) => {
                                 onClick={() =>
                                   sendMessage(
                                     roomId,
-                                    roomMessages[0].orderId,
+                                    roomMessages?.[0]?.orderId,
                                     index
                                   )
                                 }

@@ -48,7 +48,7 @@ const Page = () => {
       const driveSnap = await getDoc(driveRef);
       setDriver(driveSnap.data());
       // console.log(data);
-     if(seller){
+     if(seller && data?.specialRole === 'andamo-seller'){
       sessionStorage.setItem(
         "andamo-seller",
         JSON.stringify({
@@ -61,7 +61,7 @@ const Page = () => {
         })
       );
       } 
-      if(driver){
+      if(driver  && data?.specialRole === 'andamo-driver'){
       sessionStorage.setItem(
         "andamo-driver",
         JSON.stringify({
@@ -100,7 +100,7 @@ const Page = () => {
       fetchUserData();
   //   }
   }, [user, data, seller, driver]);
-  console.log(data);
+  // console.log(data);
   const handleChange = async ({ target }) => {
     const { name, value } = target;
     setUserInfo({ ...userInfo, [name]: value });

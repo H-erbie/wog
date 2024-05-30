@@ -53,8 +53,12 @@ import { auth, db } from "@/firebase/config";
 // } from "@/components/ui/select";
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoOrders from "./no-orders";
+import { redirect, useRouter } from "next/navigation";
 
 const DriverDashboard = ({ orders }) => {
+
+  const router = useRouter();
+
   const [user] = useAuthState(auth);
   const { toast } = useToast();
   const rides = orders.filter(
@@ -127,6 +131,9 @@ const DriverDashboard = ({ orders }) => {
     }
   };
   // console.log(driver)
+  useEffect(()=>{
+    router.refresh()
+  }, [])
   return (
     <div>
       <Tabs defaultValue="profile">
@@ -190,7 +197,7 @@ const DriverDashboard = ({ orders }) => {
               requests.map((ride, index) => (
                 <div
                   key={index}
-                  className="flex relative w-[90%] sm:w-3/4 dark:bg-[#3c3d3f] bg-gray-200 p-3 rounded-lg gap-y-2  my-3 items-center  gap-x-3"
+                  className="flex relative w-[90%] mx-auto sm:w-3/4 dark:bg-[#3c3d3f] bg-gray-200 p-3 rounded-lg gap-y-2  my-3 items-center  gap-x-3"
                 >
                   <CarFront />
                   <div className="flex-col flex ">

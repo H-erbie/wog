@@ -22,6 +22,7 @@ import defaultImageUrl from "@/public/andamo-logo.png";
 
 const AdminProducts = ({ products, ads, sellers }) => {
   const [prods, setProds] = useState(products);
+  // console.log(prods)
   const [sells, setSells] = useState(sellers);
   const router = useRouter();
   const videoRef = useRef(null);
@@ -501,7 +502,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
   return (
     <div className="pb-32">
       <h1 className="text-xl my-3 w-max font-bold flex items-center gap-x-2 mx-auto">
-        Manage Prducts <ShoppingBag />
+        Manage Products <ShoppingBag />
       </h1>
       <Tabs defaultValue="products" className="">
         <TabsList className="lg:text-lg mx-auto mt-4 text-sm md:text-base">
@@ -639,211 +640,243 @@ const AdminProducts = ({ products, ads, sellers }) => {
         <TabsContent value="products" className="pb-7">
           <div className="w-full flex flex-wrap gap-3 justify-center items-center">
             {prods.map((product, index) => (
-              <div className="flex relative flex-col gap-y-2" key={product._id}>
-                <button
-                  disabled={delProdLoading}
-                  onClick={() => deleteProduct(product._id, index)}
-                  className="p-2 cursor-pointer disabled:cursor-not-allowed absolute top-0 left-0 bg-red-400 hover:bg-red-500 dark:bg-white rounded-[100%]"
+              <>
+                {" "}
+                <div
+                  className="flex relative flex-col gap-y-2"
+                  key={product._id}
                 >
-                  {delProdLoading && index === ind ? (
-                    <Loader2 className="text-black animate-spin" />
-                  ) : (
-                    <Trash2 className="dark:text-red-500 text-white" />
-                  )}
-                </button>
-                <button
-                  disabled={delProdLoading}
-                  onClick={() =>
-                    setShowEditProduct({
-                      ...showEditProduct,
-                      show: true,
-                      id: product._id,
-                    })
-                  }
-                  className="p-2 cursor-pointer  absolute top-0 right-0 bg-gray-200 hover:bg-gray-300 dark:bg-zinc-600 rounded-[100%]"
-                >
-                  {delProdLoading && index === ind ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    <Pencil className="text-yellow-500" />
-                  )}
-                </button>
-
-                <Image
-                  src={urlForImage(
-                    product?.images?.[0] && product?.images?.[0]
-                  )}
-                  alt={product.name}
-                  width={120}
-                  height={120}
-                  className={`block bg-gray-100 dark:bg-[#292e36]  rounded-lg h-36 w-36 sm:h-36 sm:w-36 object-cover `}
-                />
-                <p className="text-sm text-center sm:text-base">
-                  {product.name}
-                </p>
-                <p className="text-sm text-center sm:text-base">
-                  {product.price}
-                </p>
-              </div>
-            ))}
-          </div>
-          {showEditProduct.show && (
-            <>
-              <div
-                onClick={() =>
-                  setShowEditProduct({
-                    ...showEditProduct,
-                    id: "",
-                    show: false,
-                  })
-                }
-                className="backdrop-brightness-[.2] z-[60] dark:backdrop-brightness-0 fixed w-screen h-screen top-0 left-0"
-              ></div>
-              <div className="fixed w-screen z-[60] h-screen top-0 left-0 ">
-                <button
-                  onClick={() =>
-                    setShowEditProduct({
-                      ...showEditProduct,
-                      id: "",
-                      show: false,
-                    })
-                  }
-                >
-                  <X className="top-5 text-white right-5 absolute" />
-                </button>
-                {imageFile && (
-                  <div className="w-full flex flex-wrap justify-center items-center gap-2">
-                    {/* // {imageFile.map((img, ind) => ( */}
-                    <img
-                      src={URL.createObjectURL(imageFile)}
-                      // key={ind}
-                      alt="Selected Image Preview"
-                      className="w-[20%] w-max-[150px] w-min-[80px]"
-                    />
-                    {/* // ))} */}
-                  </div>
-                )}
-                <form
-                  onSubmit={updateProduct}
-                  className="flex flex-col gap-y-3"
-                >
-                  <div className="w-[90%] sm:w-3/4 mx-auto">
-                    <label htmlFor="imgs" className="mb-2 text-white">
-                      Product Image
-                    </label>
-                    <Input
-                      type="file"
-                      onChange={handleChange}
-                      accept="image/*"
-                      name="imgs"
-                      id="fileList"
-                      className=""
-                    />
-                  </div>
-                  <div className="w-[90%] sm:w-3/4 mx-auto">
-                    <label htmlFor="name" className="mb-2 text-white">
-                      Name
-                    </label>{" "}
-                    <Input
-                      type="text"
-                      value={name}
-                      onChange={handleChange}
-                      required
-                      name="name"
-                      id="name"
-                      className=""
-                    />
-                  </div>
-                  <div className="w-[90%] sm:w-3/4 mx-auto">
-                    <label htmlFor="sku" className="text-white">
-                      Product Source
-                    </label>
-                    <Input
-                      type="text"
-                      value={sku}
-                      onChange={handleChange}
-                      required
-                      name="sku"
-                      id="sku"
-                    />
-                  </div>
-                  <div className="w-[90%] sm:w-3/4 mx-auto">
-                    <label htmlFor="categories" className="mb-2 text-white">
-                      Categories
-                    </label>
-                    <Input
-                      type="text"
-                      value={categories}
-                      onChange={handleChange}
-                      required
-                      name="categories"
-                      id="categories"
-                      className=""
-                    />
-                  </div>{" "}
-                  <div className="w-[90%] sm:w-3/4 mx-auto">
-                    <label
-                      htmlFor="homepageCategories"
-                      className="mb-2 text-white"
-                    >
-                      Homepage Categories
-                    </label>
-                    <Input
-                      type="text"
-                      value={homepageCategories}
-                      onChange={handleChange}
-                      required
-                      name="homepageCategories"
-                      id="homeCateogories"
-                      className=""
-                    />
-                  </div>{" "}
-                  <div className="w-[90%] sm:w-3/4 mx-auto">
-                    <label htmlFor="description" className="mb-2 text-white">
-                      Description
-                    </label>
-                    <Input
-                      type="text"
-                      value={description}
-                      onChange={handleChange}
-                      required
-                      name="description"
-                      id="description"
-                      className=""
-                    />
-                  </div>
-                  <div className="w-[90%] sm:w-3/4 mx-auto">
-                    <label htmlFor="price" className="mb-2 text-white">
-                      Price
-                    </label>
-                    <Input
-                      type="number"
-                      value={price}
-                      onChange={handleChange}
-                      required
-                      name="price"
-                      id="price"
-                      className=""
-                    />{" "}
-                  </div>
                   <button
-                    type="submit"
-                    disabled={loading}
-                    className="py-2 flex gap-x-3 items-center justify-center px-3 mx-auto disabled:opacity-50  w-3/4 sm:w-1/2 bg-yellow-200 dark:bg-yellow-500"
+                    disabled={delProdLoading}
+                    onClick={() => deleteProduct(product._id, index)}
+                    className="p-2 cursor-pointer disabled:cursor-not-allowed absolute top-0 left-0 bg-red-400 hover:bg-red-500 dark:bg-white rounded-[100%]"
                   >
-                    {" "}
-                    {loading ? (
-                      <>
-                        <Loader2 className="animate-spin" /> updating product...
-                      </>
+                    {delProdLoading && index === ind ? (
+                      <Loader2 className="text-black animate-spin" />
                     ) : (
-                      "update product"
+                      <Trash2 className="dark:text-red-500 text-white" />
                     )}
                   </button>
-                </form>
-              </div>
-            </>
-          )}
+                  <button
+                    disabled={delProdLoading}
+                    onClick={() => {
+                      // setImageFile(
+                      //   urlForImage(
+                      //     product?.images?.[0] && product?.images?.[0]
+                      //   )
+                      // );
+                      setShowEditProduct({
+                        ...showEditProduct,
+                        show: true,
+                        id: product._id,
+                      });
+                      setProductData({
+                        ...productData,
+                        name: product.name,
+                        sku: product.sku,
+                        price: Number(product.price),
+                        categories: product.categories[0],
+                        homepageCategories: product.homepageCategories[0],
+                        description: product.description,
+                      });
+                    }}
+                    className="p-2 cursor-pointer  absolute top-0 right-0 bg-gray-200 hover:bg-gray-300 dark:bg-zinc-600 rounded-[100%]"
+                  >
+                    {delProdLoading && index === ind ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <Pencil className="text-yellow-500" />
+                    )}
+                  </button>
+
+                  <Image
+                    src={urlForImage(
+                      product?.images?.[0] && product?.images?.[0]
+                    )}
+                    alt={product.name}
+                    width={120}
+                    height={120}
+                    className={`block bg-gray-100 dark:bg-[#292e36]  rounded-lg h-36 w-36 sm:h-36 sm:w-36 object-cover `}
+                  />
+                  <p className="text-sm text-center sm:text-base">
+                    {product.name}
+                  </p>
+                  <p className="text-sm text-center sm:text-base">
+                    {Number(product.price).toFixed(2)}
+                  </p>
+                </div>
+                {showEditProduct.show && index == ind && (
+                  <>
+                    <div
+                      onClick={() =>
+                        setShowEditProduct({
+                          ...showEditProduct,
+                          id: "",
+                          show: false,
+                        })
+                      }
+                      className="backdrop-brightness-[.2] backdrop-blur-lg z-[60] dark:backdrop-brightness-0 fixed w-screen h-screen top-0 left-0"
+                    ></div>
+                    <div className="fixed w-screen z-[60] h-screen top-0 left-0 ">
+                      <button
+                        onClick={() => {
+                          setShowEditProduct({
+                            ...showEditProduct,
+                            id: "",
+                            show: false,
+                          });
+                          setProductData({
+                            ...productData,
+                            name: "",
+                            sku: "",
+                            price: 0,
+                            categories: "",
+                            homepageCategories: "",
+                            description: "",
+                          });
+                        }}
+                      >
+                        <X className="top-5 text-white right-5 absolute" />
+                      </button>
+                      
+                      <form
+                        onSubmit={updateProduct}
+                        className="flex flex-col gap-y-3"
+                      >
+                        {/* <div className="w-[90%] sm:w-3/4 mx-auto">
+                          <label htmlFor="imgs" className="mb-2 text-white">
+                            Product Image
+                          </label>
+                          <Input
+                            type="file"
+                            value={() =>
+                              setImageFile(
+                                urlForImage(
+                                  product?.images?.[0] && product?.images?.[0]
+                                )
+                              )
+                            }
+                            onChange={handleChange}
+                            accept="image/*"
+                            name="imgs"
+                            id="fileList"
+                            className=""
+                          />
+                        </div> */}
+                        <div className="w-[90%] sm:w-3/4 mx-auto">
+                          <label htmlFor="name" className="mb-2 text-white">
+                            Name
+                          </label>{" "}
+                          <Input
+                            type="text"
+                            value={name}
+                            onChange={handleChange}
+                            required
+                            name="name"
+                            id="name"
+                            className=""
+                          />
+                        </div>
+                        <div className="w-[90%] sm:w-3/4 mx-auto">
+                          <label htmlFor="sku" className="text-white">
+                            Product Source
+                          </label>
+                          <Input
+                            type="text"
+                            value={sku}
+                            onChange={handleChange}
+                            required
+                            name="sku"
+                            id="sku"
+                          />
+                        </div>
+                        <div className="w-[90%] sm:w-3/4 mx-auto">
+                          <label
+                            htmlFor="categories"
+                            className="mb-2 text-white"
+                          >
+                            Categories
+                          </label>
+                          <Input
+                            type="text"
+                            value={categories}
+                            onChange={handleChange}
+                            required
+                            name="categories"
+                            id="categories"
+                            className=""
+                          />
+                        </div>{" "}
+                        <div className="w-[90%] sm:w-3/4 mx-auto">
+                          <label
+                            htmlFor="homepageCategories"
+                            className="mb-2 text-white"
+                          >
+                            Homepage Categories
+                          </label>
+                          <Input
+                            type="text"
+                            value={homepageCategories}
+                            onChange={handleChange}
+                            required
+                            name="homepageCategories"
+                            id="homeCateogories"
+                            className=""
+                          />
+                        </div>{" "}
+                        <div className="w-[90%] sm:w-3/4 mx-auto">
+                          <label
+                            htmlFor="description"
+                            className="mb-2 text-white"
+                          >
+                            Description
+                          </label>
+                          <Input
+                            type="text"
+                            value={description}
+                            onChange={handleChange}
+                            required
+                            name="description"
+                            id="description"
+                            className=""
+                          />
+                        </div>
+                        <div className="w-[90%] sm:w-3/4 mx-auto">
+                          <label htmlFor="price" className="mb-2 text-white">
+                            Price
+                          </label>
+                          <Input
+                            type="number"
+                            value={price}
+                            onChange={handleChange}
+                            required
+                            name="price"
+                            id="price"
+                            className=""
+                          />{" "}
+                        </div>
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="py-2 flex gap-x-3 items-center justify-center px-3 mx-auto disabled:opacity-50  w-3/4 sm:w-1/2 bg-yellow-200 dark:bg-yellow-500"
+                        >
+                          {" "}
+                          {loading ? (
+                            <>
+                              <Loader2 className="animate-spin" /> updating
+                              product...
+                            </>
+                          ) : (
+                            "update product"
+                          )}
+                        </button>
+                      </form>
+                    </div>
+                  </>
+                )}
+              </>
+            ))}
+          </div>
         </TabsContent>
         <TabsContent value="ads" className="pb-7">
           {thumbnail && (
@@ -1025,7 +1058,9 @@ const AdminProducts = ({ products, ads, sellers }) => {
                   </button>
 
                   <Image
-                    src={urlForImage(product.images[0])}
+                    src={urlForImage(
+                      product?.images?.[0] && product?.images?.[0]
+                    )}
                     alt={product.name}
                     width={120}
                     height={120}

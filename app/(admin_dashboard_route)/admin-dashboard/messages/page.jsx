@@ -12,9 +12,7 @@ const Page = async() => {
   });
   
    return (
-    <div className='pt-24'>
         <Chat orders={sanityOrders}/>
-    </div>
   )
 }
 

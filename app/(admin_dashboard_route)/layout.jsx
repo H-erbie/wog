@@ -16,7 +16,7 @@ export default function PrivateLayout({ children }) {
   }, [isUserDataStored]);
   useEffect(() => {
     const fetchUserData = async () => {
-      const userUID = user.uid;
+      const userUID = user?.uid;
       const docRef = doc(db, "users", userUID);
       const docSnap = await getDoc(docRef);
       const retrievedData = docSnap.data();

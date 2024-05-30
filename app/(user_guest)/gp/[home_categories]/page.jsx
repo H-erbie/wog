@@ -38,7 +38,7 @@ const Page = async ({ params }) => {
         
         {newCategoryProducts.map((product) => (
           // console.log(product.images)
-          <Link href={`/products/${product.slug.current}`} className="items-center justify-center flex-col flex" key={product._id}>
+          <Link href={`/products/${product?.slug?.current}`} className="items-center justify-center flex-col flex" key={product._id}>
           <div className="hover:opacity-50 rounded-md bg-gray-100 flex gap-2 flex-col items-center justify-center w-full" key={product._id}>
             <Img
               src={urlForImage(product.images[0])}

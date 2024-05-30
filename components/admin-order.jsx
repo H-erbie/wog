@@ -50,7 +50,6 @@ const AdminOrder = ({
 }) => {
   const [user] = useAuthState(auth);
 
-  // console.log(order);
   const router = useRouter();
   const { toast } = useToast();
   const [order, setOrder] = useState(currentOrder);
@@ -66,7 +65,8 @@ const AdminOrder = ({
   const [currentStat, setCurrentStat] = useState(order.currentStat);
   useEffect(() => {
     setOrder(currentOrder);
-  }, [currentOrder, order]);
+    router.refresh()
+  }, [currentOrder]);
   const toggleBtn = () => {
     setToggle(!toggle);
   };
@@ -208,7 +208,7 @@ const AdminOrder = ({
   const approveCancel = async () => {
     try {
       setApprove(true);
-      console.log(order.currentStat, currentStat);
+      // console.log(order.currentStat, currentStat);
 
       const res = await fetch("/api/update-order", {
         method: "POST",
@@ -239,7 +239,7 @@ const AdminOrder = ({
           // description: "Product added to cart",
           // action: <Link href="/cart">Open Cart</Link>,
         });
-        console.log(order.currentStat, currentStat);
+        // console.log(order.currentStat, currentStat);
         setApprove(false);
         router.refresh();
       }
@@ -383,6 +383,10 @@ const AdminOrder = ({
   const formattedDate = parsedDateTime.toFormat("yyyy.MM.dd 'at' HH:mm a");
   const devDateTime = DateTime.fromISO(order._updatedAt);
   const formatDev = devDateTime.toFormat("yyyy.MM.dd 'at' HH:mm a");
+  // console.log(isProcessing && drivers.length === 0);
+  useEffect(()=>{
+    router.refresh()
+  }, [])
   return (
     <div className="flex flex-col-reverse pb-28 lg:flex-row">
       <div className="flex flex-col mt-10 gap-y-10 sm:gap-y-0 lg:w-[60%] my-4">
@@ -727,8 +731,10 @@ const AdminOrder = ({
               <span>{drivers[0]?.contact}</span>
             </div>
           </div>
+        ) : order.isProcessing && !order.driverName && drivers.length === 0 ? (
+          <p className="text-center mt-3">No driver is available at the moment</p>
         ) : (
-          <p className="text-center">No driver is available at the moment</p>
+          ""
         )}
         {!order.isCancelled && !order.isDelivered && (
           <div className="flex items-center gap-x-3 justify-center my-8">
@@ -759,7 +765,9 @@ const AdminOrder = ({
               onClick={updateOrder}
               type="submit"
               variant="outline"
-              disabled={loading || !toggle || drivers.length === 0}
+              disabled={
+                loading || !toggle || order.isProcessing && drivers.length === 0
+              }
               className=""
             >
               {loading ? (

@@ -101,7 +101,7 @@ const MobileNav = () => {
   useEffect(() => {
     if (!user) return;
     fetchUnreadMessages(user?.uid);
-  }, [user]);
+  }, [user, unreadMessageCounts]);
 
   useEffect(() => {
     if (!user) return;
@@ -111,7 +111,7 @@ const MobileNav = () => {
     });
 
     return unsubscribe;
-  }, [user]);
+  }, [user, unreadMessageCounts]);
 
   const getRole = async () => {
     const docRef = doc(db, "users", user && user?.uid);
@@ -119,7 +119,7 @@ const MobileNav = () => {
     // console.log(docSnap.data());
     setUserRole(docSnap.data());
   };
-  if (pathname.startsWith("/admin-dashboard"))
+  if (pathname.startsWith("/admin-dashboard") && !pathname.endsWith("/messages"))
     return (
       <div className="lg:w-1/2 w-full fixed z-50 left-0 sm:left-[13%] md:left-[17%] lg:left-[25%]  bottom-0  sm:bottom-6  flex md:w-2/3 sm:w-3/4 sm:mx-auto p-2 px-4  justify-between border-gray-300 sm:rounded-3xl items-center sm:border  border-t dark:border-zinc-600 bg-white dark:bg-[#191c22]">
         <Link href="/admin-dashboard/overview" className="">
