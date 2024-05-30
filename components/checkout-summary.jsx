@@ -176,7 +176,7 @@ const CheckoutSummary = ({
 
     onSuccess: () => {
       orderOnSuccess();
-      sendWelcomeMessage(user.uid, "XlXX0oq60kbjoeIi2S3Pm0VJ4nq2");
+      sendWelcomeMessage(user.uid, "NzLl8SgqN6aStOKcE74A24cXpVo2");
       clearCart();
 
       router.replace(`/chats`);
