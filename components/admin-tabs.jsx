@@ -89,8 +89,12 @@ const AdminTabs = ({ adminOrders, siteInfos }) => {
 
   useEffect(() => {
     setOrders(adminOrders)
+    router.refresh()
   }, [adminOrders]);
+  useEffect(()=>{
+    router.refresh()
 
+  },[])
   return (
     <>
       <div>

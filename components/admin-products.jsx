@@ -129,7 +129,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
   };
   // console.log(vid);
   //  const slg = SlugInput(name)
-
+  const [progress, setProgress] = useState(0);
   const [loadingVideo, setLoadingVideo] = useState(false);
   const uploadVideoAd = async (e) => {
     e.preventDefault();
@@ -145,8 +145,9 @@ const AdminProducts = ({ products, ads, sellers }) => {
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setProgress(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
             console.log(`Upload progress: ${progress}%`);
           },
           (error) => {
@@ -233,15 +234,18 @@ const AdminProducts = ({ products, ads, sellers }) => {
     setAdVidIdx(index);
     setVidLoading(true);
     try {
-      const videoRef = ref(storage, `/ads/${videoName}`); // Assuming 'name' property holds the video filename
+      if (filterAds.length > 0) {
+        const videoRef = ref(storage, `/ads/${videoName}`); // Assuming 'name' property holds the video filename
 
-      await deleteObject(videoRef);
-      const response = await fetch("/api/delete-ad", {
-        method: "POST",
-        body: JSON.stringify({
-          _id: filterAds[0]._id,
-        }),
-      });
+        await deleteObject(videoRef);
+        const response = await fetch("/api/delete-ad", {
+          method: "POST",
+          body: JSON.stringify({
+            _id: filterAds[0]._id,
+          }),
+        });
+      }
+
       setVidLoading(false);
       setAdVidIdx(0);
     } catch (error) {
@@ -738,7 +742,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
                       >
                         <X className="top-5 text-white right-5 absolute" />
                       </button>
-                      
+
                       <form
                         onSubmit={updateProduct}
                         className="flex flex-col gap-y-3"
@@ -973,9 +977,24 @@ const AdminProducts = ({ products, ads, sellers }) => {
             >
               {" "}
               {loadingVideo ? (
-                <>
-                  <Loader2 className="animate-spin" /> uploading Ad...
-                </>
+                <div className="flex flex-col gap-y-2">
+                  <p className="flex gap-x-2">
+                    <Loader2 className="animate-spin" /> uploading Ad...
+                  </p>
+                  <div className="flex gap-x-2">
+                    {" "}
+                    <div
+                      style={{
+                        width: `${progress}%`,
+                        height: "5px",
+                        backgroundColor: "blue", // adjust color as needed
+                        borderRadius: "2px",
+                        marginLeft: "10px",
+                      }}
+                    ></div>{" "}
+                    <span className="">{progress}</span>{" "}
+                  </div>
+                </div>
               ) : (
                 "upload Ad"
               )}
