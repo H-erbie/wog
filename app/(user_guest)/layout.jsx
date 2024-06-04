@@ -56,14 +56,14 @@ export default function PrivateLayout({ children }) {
         );
       }
 
-      // if (data && data.isAdmin && isUserDataStored) {
-      //   isUserDataStored.you = "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=";
-      //   sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
-      // }
-      // if (data && !data.isAdmin && isUserDataStored) {
-      //   isUserDataStored.you = "96s7+Dgc6paXOiR7NwkubA==";
-      //   sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
-      // }
+      if (data && data.isAdmin && isUserDataStored) {
+        isUserDataStored.you = "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=";
+        sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
+      }
+      if (data && !data.isAdmin && isUserDataStored) {
+        isUserDataStored.you = "96s7+Dgc6paXOiR7NwkubA==";
+        sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
+      }
     };
 
     if (user) {
@@ -80,6 +80,6 @@ export default function PrivateLayout({ children }) {
       // console.log('adm')
       redirect("/admin-dashboard/overview");
     }
-  }, [isUserDataStored]);
+  }, [isUserDataStored, user]);
   return <>{children}</>;
 }

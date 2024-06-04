@@ -27,7 +27,7 @@ export default function PrivateLayout({ children }) {
         : isUserDataStored &&
           (isUserDataStored.you = "96s7+Dgc6paXOiR7NwkubA==");
       sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
-      console.log(isUserDataStored)
+      // console.log(isUserDataStored)
     };
 
     if (user) {

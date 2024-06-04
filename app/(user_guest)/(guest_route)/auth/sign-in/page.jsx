@@ -41,7 +41,7 @@ const Page = () => {
     const docSnap = await getDoc(docRef);
     const userData = docSnap.data();
     if (userData) {
-      console.log(userData)
+      // console.log(userData)
 
       sessionStorage.setItem(
         "andamo-user",
@@ -62,9 +62,9 @@ const Page = () => {
       );
 
       // console.log(sellSnap.data())
-      if (userData.admin) {
-        router.replace("/admin-dashboard/overview");
-      }
+      // if (userData.admin) {
+        // router.replace("/admin-dashboard/overview");
+      // }
       // console.log(data);
       if (userData.specialRole === "andamo-seller") {
         const sellRef = doc(db, "sellers", userUID);
@@ -96,8 +96,7 @@ const Page = () => {
           })
         );
       }
-
-      tempUrl ? router.replace(tempUrl) : router.replace("/");
+      userData.isAdmin ? router.replace("/admin-dashboard/overview") : tempUrl ? router.replace(tempUrl) : router.replace("/");
     }
   };
 
