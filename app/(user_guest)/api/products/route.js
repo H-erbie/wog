@@ -11,7 +11,7 @@ export async function POST(request) {
   const description = data.get("description");
   const homepageCategories = data.get("homepageCategories");
   const categories = data.get("categories");
-  const sku = data.get("sku");
+  // const sku = data.get("sku");
 
   if (!file) {
     return NextResponse.json({ success: false, message: "No image uploaded" });
@@ -21,7 +21,7 @@ export async function POST(request) {
     const uploadedImage = await uploadImageToSanity(file);
 
     const generatedSlugString = await slugify(name);
-    const generatedSkuString = await slugify(sku);
+    const generatedSkuString = await slugify('andamo');
 
     const document = await client.create({
       _type: "product", // Adjust to your actual document type

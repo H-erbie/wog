@@ -17,7 +17,7 @@ export const POST = async (request) => {
     const description = data.get("description");
     const homepageCategories = data.get("homepageCategories");
     const categories = data.get("categories");
-    const sku = data.get("sku");
+    // const sku = data.get("sku");
     // if (!file) {
     //     return NextResponse.json({ success: false, message: "No image uploaded" });
     //   }
@@ -42,7 +42,7 @@ export const POST = async (request) => {
       // images.push(uploadedImage);
       // }
       const generatedSlugString = await slugify(name);
-      const generatedSkuString = await slugify(sku);
+      const generatedSkuString = await slugify('andamo');
       // console.log(file);
   try {
     const updatedProduct= await client

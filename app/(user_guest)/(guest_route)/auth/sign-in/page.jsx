@@ -17,116 +17,148 @@ const Page = () => {
   const [error, setError] = useState(null);
   const router = useRouter();
   const [loading, setIsLoading] = useState(false);
-  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, signInError] =
+    useSignInWithEmailAndPassword(auth);
   // const [user] = useAuthState(auth);
-  const user = auth.currentUser
+  const user = auth.currentUser;
 
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
   });
   const { email, password } = userInfo;
-    const [data, setData] = useState(null)
-    const [seller, setSeller] = useState(null)
-    const [driver, setDriver] = useState(null)
-    const tempUrl = JSON.parse(sessionStorage.getItem("temp-url"));
+  const [data, setData] = useState(null);
+  const [seller, setSeller] = useState(null);
+  const [driver, setDriver] = useState(null);
+  const tempUrl = JSON.parse(sessionStorage.getItem("temp-url"));
 
   // Handle user data retrieval on successful sign-in
-  useEffect(() => {
-  const fetchUserData = async () => {
-    if (user) {
-      // Check if user exists before fetching data
-      const userUID = user.uid;
-      const docRef = doc(db, "users", userUID);
-      const docSnap = await getDoc(docRef);
-      setData(docSnap.data());
-      const sellRef = doc(db, "sellers", userUID);
-      const sellSnap = await getDoc(sellRef);
-      setSeller(sellSnap.data());
+  // useEffect(() => {
+  const fetchUserData = async (currentUser) => {
+    // Check if user exists before fetching data
+    const userUID = currentUser.uid;
+    const docRef = doc(db, "users", userUID);
+    const docSnap = await getDoc(docRef);
+    const userData = docSnap.data();
+    if (userData) {
+      console.log(userData)
+
+      sessionStorage.setItem(
+        "andamo-user",
+        JSON.stringify({
+          email: currentUser.email,
+          displayName: currentUser.displayName || "", // Use default if displayName not found
+          phoneNumber: userData.contact || "",
+          spr:
+            userData?.specialRole === "andamo-seller"
+              ? "YW5kYW1vLXVzZXI="
+              : userData?.specialRole === "andamo-driver"
+              ? "YW5kYW1vLWRyaXZlcg=="
+              : "",
+          you: userData.isAdmin
+            ? "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
+            : "96s7+Dgc6paXOiR7NwkubA==", // Use default if contact not found
+        })
+      );
+
       // console.log(sellSnap.data())
-      const driveRef = doc(db, "drivers", userUID);
-      const driveSnap = await getDoc(driveRef);
-      setDriver(driveSnap.data());
+      if (userData.admin) {
+        router.replace("/admin-dashboard/overview");
+      }
       // console.log(data);
-     if(seller && data?.specialRole === 'andamo-seller'){
-      sessionStorage.setItem(
-        "andamo-seller",
-        JSON.stringify({
-          name: seller.name,
-          location: seller.location  ,// Use default if displayName not found
-          sellerContact: seller.sellerContact,
-          paymentMethod: seller.paymentMethod,
-          sellerName: seller.sellerName,
-          category: seller.category, // Use default if contact not found
-        })
-      );
-      } 
-      if(driver  && data?.specialRole === 'andamo-driver'){
-      sessionStorage.setItem(
-        "andamo-driver",
-        JSON.stringify({
-          email: driver.email,
-          available: driver.available,
-          contact: driver.contact
-           // Use default if contact not found
-        })
-      );
-      } 
-      
-      if (data) {
+      if (userData.specialRole === "andamo-seller") {
+        const sellRef = doc(db, "sellers", userUID);
+        const sellSnap = await getDoc(sellRef);
+        setSeller(sellSnap.data());
         sessionStorage.setItem(
-          "andamo-user",
+          "andamo-seller",
           JSON.stringify({
-            email: user.email,
-            displayName: user.displayName || "", // Use default if displayName not found
-            phoneNumber: data.contact || "",
-            spr: data?.specialRole === 'andamo-seller' ? "YW5kYW1vLXVzZXI=": data?.specialRole === 'andamo-driver' ? "YW5kYW1vLWRyaXZlcg==" : "",
-            you: data.isAdmin
-              ? "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
-              : "96s7+Dgc6paXOiR7NwkubA==", // Use default if contact not found
+            name: seller.name,
+            location: seller.location, // Use default if displayName not found
+            sellerContact: seller.sellerContact,
+            paymentMethod: seller.paymentMethod,
+            sellerName: seller.sellerName,
+            category: seller.category, // Use default if contact not found
           })
         );
-        data.isAdmin
-          ? router.replace("/admin-dashboard/overview")
-          : tempUrl ? router.replace(tempUrl) : router.replace("/");
       }
-      
+      if (userData.specialRole === "andamo-driver") {
+        const driveRef = doc(db, "drivers", userUID);
+        const driveSnap = await getDoc(driveRef);
+        const drive = driveSnap.data();
+        sessionStorage.setItem(
+          "andamo-driver",
+          JSON.stringify({
+            email: drive?.email,
+            available: drive?.available,
+            contact: drive?.contact,
+            // Use default if contact not found
+          })
+        );
+      }
+
+      tempUrl ? router.replace(tempUrl) : router.replace("/");
     }
   };
 
-
   //   if (user) {
-  //     // Fetch data only after successful sign-in
-      fetchUserData();
+  //     //     // Fetch data only after successful sign-in
+  //     fetchUserData();
   //   }
-  }, [user, data, seller, driver]);
+  // }, [user, data, seller, driver]);
   // console.log(data);
   const handleChange = async ({ target }) => {
     const { name, value } = target;
     setUserInfo({ ...userInfo, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null)
-    try {
-      const res = await signInWithEmailAndPassword(email, password);
-      if (!res) {
-        setIsLoading(false);
-        setError("Network/Input Error! Try again");
-      }
-      if (res) {
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   setIsLoading(true);
+  //   setError(null);
+  //   // console.log(email, password)
+  //   try {
+  //     const response = await signInWithEmailAndPassword(email, password);
+  // if (response && response.user) {
+  //   const { user } = response;
+  //   await fetchUserData(user.uid);
+  //   // console.log(user);
+  // }
+  // else{
+  //   setError(response.error.message)
+  // }
+  //   } catch (error) {
+  //     console.error(error);
+  //     setError(error)
 
-        setUserInfo({ ...userInfo, email: "", password: "" });
-        setIsLoading(false);
-        // router.replace('/')
+  //     setError("Invalid email or password. Please try again."); // More specific error message
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    // console.log(email, password)
+    try {
+      const response = await signInWithEmailAndPassword(email, password);
+      if (response && response.user) {
+        // const { user } = response;
+        // await fetchUserData(user.uid);
+        // console.log(user);
+        await fetchUserData(response && response?.user);
+      } else {
+        setError(response.error.message);
       }
-      setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setError(error.message);
+
+      // setError("Invalid email or password. Please try again."); // More specific error message
+    } finally {
       setIsLoading(false);
-      setError("Network/Input Error! Try again");
     }
   };
   // useEffect(() => {

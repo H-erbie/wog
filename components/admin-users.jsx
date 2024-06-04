@@ -165,7 +165,7 @@ const AdminUsers = () => {
             </div>
           ) : (
             ads.map((admin, index) => {
-              if (admin?.email !== user?.email)
+              if (admin.email !== user.email)
                 return (
                   <div
                     key={index}

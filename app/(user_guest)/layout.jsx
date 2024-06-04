@@ -11,9 +11,9 @@ export default function PrivateLayout({ children }) {
   const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
 
   const [user] = useAuthState(auth);
-  const [seller, setSeller] = useState(null);
-  const [driver, setDriver] = useState(null);
-  const [data, setData] = useState(null);
+  // const [seller, setSeller] = useState(null);
+  // const [driver, setDriver] = useState(null);
+  // const [data, setData] = useState(null);
   useEffect(() => {
     if (!isUserDataStored) signOut(auth);
   }, [isUserDataStored]);
@@ -27,11 +27,11 @@ export default function PrivateLayout({ children }) {
       const docSnap = await getDoc(docRef);
       const sellSnap = await getDoc(sellRef);
       const driversSnap = await getDoc(driversRef);
-      setData(docSnap.data());
-      setSeller(sellSnap.data());
-      setDriver(driversSnap.data());
+      const data = docSnap.data();
+      const seller = sellSnap.data();
+      const driver = driversSnap.data();
 
-      if (seller) {
+      if (data?.speicalRole === "andamo-seller" && seller) {
         sessionStorage.setItem(
           "andamo-seller",
           JSON.stringify({
@@ -44,32 +44,33 @@ export default function PrivateLayout({ children }) {
           })
         );
       }
-      if (seller) {
+      if (data?.speicalRole === "andamo-driver" && driver) {
         sessionStorage.setItem(
           "andamo-driver",
           JSON.stringify({
-            email: driver.email,
-            available: driver.available,
-            contact: driver.contact,
+            email: driver?.email,
+            available: driver?.available,
+            contact: driver?.contact,
             // Use default if contact not found
           })
         );
       }
 
-      data && data.isAdmin
-        ? isUserDataStored &&
-          (isUserDataStored.you =
-            "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=")
-        : isUserDataStored &&
-          (isUserDataStored.you = "96s7+Dgc6paXOiR7NwkubA==");
-      sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
+      // if (data && data.isAdmin && isUserDataStored) {
+      //   isUserDataStored.you = "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=";
+      //   sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
+      // }
+      // if (data && !data.isAdmin && isUserDataStored) {
+      //   isUserDataStored.you = "96s7+Dgc6paXOiR7NwkubA==";
+      //   sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
+      // }
     };
 
     if (user) {
       // Fetch data only after successful sign-in
       fetchUserData();
     }
-  }, [user, isUserDataStored, seller, data, driver]);
+  }, [user, isUserDataStored]);
   // console.log('happened')
   useEffect(() => {
     // console.log('adm@')

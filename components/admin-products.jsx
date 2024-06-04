@@ -16,6 +16,15 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectLabel,
+  SelectGroup,
+  SelectValue,
+} from "@/components/ui/select";
 // import thumb from "public/thumbnail.png";
 import NoOrders from "./no-orders";
 import defaultImageUrl from "@/public/andamo-logo.png";
@@ -77,11 +86,9 @@ const AdminProducts = ({ products, ads, sellers }) => {
     name: "",
     sku: "",
     price: 0,
-    categories: "",
-    homepageCategories: "",
     description: "",
   });
-  const { name, sku, price, categories, homepageCategories, description } =
+  const { name, sku, price, description } =
     productData;
   const [imageFile, setImageFile] = useState(""); // State for the uploaded image file
   const [loading, setLoading] = useState(false);
@@ -258,6 +265,8 @@ const AdminProducts = ({ products, ads, sellers }) => {
   const uploadProduct = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const currentCategory = e.target[3].value;
+    const currentHomeCategory = e.target[5].value;
 
     const formData = new FormData();
     formData.append("name", productData.name);
@@ -265,8 +274,8 @@ const AdminProducts = ({ products, ads, sellers }) => {
     formData.set("sku", "andamo");
     formData.append("price", Number(productData.price).toFixed(2));
     formData.append("description", productData.description);
-    formData.append("categories", productData.categories); // Optional
-    formData.append("homepageCategories", productData.homepageCategories); // Optional
+    formData.append("categories", currentCategory); // Optional
+    formData.append("homepageCategories", currentHomeCategory); // Optional
 
     try {
       const response = await fetch("/api/products", {
@@ -286,8 +295,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
           name: "",
           sku: "",
           price: 0,
-          categories: "",
-          homepageCategories: "",
+       
           description: "",
         });
         setImageFile("");
@@ -317,15 +325,17 @@ const AdminProducts = ({ products, ads, sellers }) => {
   const updateProduct = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    const currentCategory = e.target[2].value;
+    const currentHomeCategory = e.target[4].value;
+    // console.log(currentHomeCategory, currentCategory)
     const formData = new FormData();
     formData.append("name", productData.name);
     formData.set("imgs", imageFile);
     formData.set("id", showEditProduct.id);
     formData.append("price", Number(productData.price).toFixed(2));
     formData.append("description", productData.description);
-    formData.append("categories", productData.categories); // Optional
-    formData.append("homepageCategories", productData.homepageCategories); // Optional
+    formData.append("categories", currentCategory); // Optional
+    formData.append("homepageCategories", currentHomeCategory); // Optional
 
     try {
       const response = await fetch("/api/update-product", {
@@ -346,8 +356,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
           name: "",
           sku: "",
           price: 0,
-          categories: "",
-          homepageCategories: "",
+        
           description: "",
         });
         setImageFile("");
@@ -501,6 +510,53 @@ const AdminProducts = ({ products, ads, sellers }) => {
       setDelProdLoading(false);
     }
   };
+  const categoriesArray = [
+    { name: "Fashion and Apparel", value: "Fashion and Apparel" },
+    { name: "Beauty and Personal Care", value: "Beauty and Personal Care" },
+    { name: "Home and Garden", value: "Home and Garden" },
+    { name: "Electronics and Computers", value: "Electronics and Computers" },
+
+    { name: "Groceries and Food", value: "Groceries and Food" },
+    { name: "Health and Wellness", value: "Health and Wellness" },
+    { name: "Toys and Games", value: "Toys and Games" },
+    { name: "Pet Supplies", value: "Pet Supplies" },
+    { name: "Sports and Outdoors", value: "Sports and Outdoors" },
+    { name: "Arts and Crafts", value: "Arts and Crafts" },
+    { name: "Books and Media", value: "Books and Media" },
+    {
+      name: "Stationery and Office Supplies",
+      value: "Stationery and Office Supplies",
+    },
+    { name: "Luxury Goods", value: "Luxury Goods" },
+  ];
+
+  const homeCategoriesArray = [
+    { name: "Fashion and Apparel", value: "Fashion and Apparel" },
+    { name: "Drinks and Beverages", value: "Drinks and Beverages" },
+    { name: "Beauty and Personal Care", value: "Beauty and Personal Care" },
+    { name: "Home Supplies, Detergents and Garden", value: "Home Supplies, Detergents and Garden" },
+    { name: "Electronics, Electric gadgets and Computers", value: "Electronics, Electric gadgets and Computers" },
+    { name: "Top Deals", value: "Top Deals" },
+    { name: "Popular", value: "Popular" },
+    { name: "Flash Sales", value: "Flash Sales" },
+    { name: "Breakfast", value: "Breakfast" },
+    { name: "Meat and Fish", value: "Meat and Fish" },
+    { name: "Pantry", value: "Pantry" },
+    { name: "Sneakers", value: "Sneakers" },
+    { name: "Groceries and Food", value: "Groceries and Food" },
+    { name: "Health and Wellness", value: "Health and Wellness" },
+    { name: "Toys and Games", value: "Toys and Games" },
+    { name: "Pet Supplies", value: "Pet Supplies" },
+    { name: "Sports and Outdoors", value: "Sports and Outdoors" },
+    { name: "Arts and Crafts", value: "Arts and Crafts" },
+    { name: "Books and Media", value: "Books and Media" },
+    {
+      name: "Stationery and Office Supplies",
+      value: "Stationery and Office Supplies",
+    },
+    { name: "Luxury Goods", value: "Luxury Goods" },
+  ];
+
 
   // const imageFilesArray = Array.from(imageFile); // Convert FileList to array
   return (
@@ -508,7 +564,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
       <h1 className="text-xl my-3 w-max font-bold flex items-center gap-x-2 mx-auto">
         Manage Products <ShoppingBag />
       </h1>
-      <Tabs defaultValue="products" className="">
+      <Tabs defaultValue="upload" className="">
         <TabsList className="lg:text-lg mx-auto mt-4 text-sm md:text-base">
           <TabsTrigger value="upload">Upload Products</TabsTrigger>
           <TabsTrigger value="products">All Products</TabsTrigger>
@@ -557,7 +613,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
                 className=""
               />
             </div>
-            <div className="w-[90%] sm:w-3/4 mx-auto">
+            {/* <div className="w-[90%] sm:w-3/4 mx-auto">
               <label htmlFor="sku">Product Source</label>
               <Input
                 type="text"
@@ -567,35 +623,49 @@ const AdminProducts = ({ products, ads, sellers }) => {
                 name="sku"
                 id="sku"
               />
-            </div>
-            <div className="w-[90%] sm:w-3/4 mx-auto">
-              <label htmlFor="categories" className="mb-2">
+            </div> */}
+            <label htmlFor="name" className="mb-2 w-[90%] sm:w-3/4 mx-auto">
                 Categories
               </label>
-              <Input
-                type="text"
-                value={categories}
-                onChange={handleChange}
-                required
-                name="categories"
-                id="categories"
-                className=""
-              />
-            </div>{" "}
-            <div className="w-[90%] sm:w-3/4 mx-auto">
-              <label htmlFor="homepageCategories" className="mb-2">
+                    <Select required className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
+                  <SelectTrigger className="w-[90%] gap-x-2 sm:w-3/4 mx-auto dark:border-zinc-600">
+                    <SelectValue placeholder="choose a category" />
+                  </SelectTrigger>
+                  <SelectContent className="focus:outline-none bg-background  dark:bg-[#292e36] dark:border-zinc-600 border-black ">
+                    <SelectGroup className="grid grid-cols-2">
+                      {categoriesArray.map((category) => (
+                        <SelectItem
+                          value={category.value}
+                          key={category.name}
+                          className="dark:hover:bg-[#191c22]"
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <label htmlFor="name" className="mb-2 w-[90%] sm:w-3/4 mx-auto">
                 Homepage Categories
               </label>
-              <Input
-                type="text"
-                value={homepageCategories}
-                onChange={handleChange}
-                required
-                name="homepageCategories"
-                id="homeCateogories"
-                className=""
-              />
-            </div>{" "}
+                <Select required className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
+                  <SelectTrigger className="w-[90%] gap-x-2 sm:w-3/4 mx-auto dark:border-zinc-600">
+                    <SelectValue placeholder="choose a category" />
+                  </SelectTrigger>
+                  <SelectContent className="focus:outline-none bg-background  dark:bg-[#292e36] dark:border-zinc-600 border-black ">
+                    <SelectGroup className="grid grid-cols-2">
+                      {homeCategoriesArray.map((category) => (
+                        <SelectItem
+                          value={category.value}
+                          key={category.name}
+                          className="dark:hover:bg-[#191c22]"
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>{" "}
             <div className="w-[90%] sm:w-3/4 mx-auto">
               <label htmlFor="description" className="mb-2">
                 Description
@@ -719,7 +789,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
                           show: false,
                         })
                       }
-                      className="backdrop-brightness-[.2] backdrop-blur-lg z-[60] dark:backdrop-brightness-0 fixed w-screen h-screen top-0 left-0"
+                      className="backdrop-brightness-[.2] backdrop-blur-lg z-[60] dark:backdrop-brightness-[0.3] fixed w-screen h-screen top-0 left-0"
                     ></div>
                     <div className="fixed w-screen z-[60] h-screen top-0 left-0 ">
                       <button
@@ -781,7 +851,7 @@ const AdminProducts = ({ products, ads, sellers }) => {
                             className=""
                           />
                         </div>
-                        <div className="w-[90%] sm:w-3/4 mx-auto">
+                        {/* <div className="w-[90%] sm:w-3/4 mx-auto">
                           <label htmlFor="sku" className="text-white">
                             Product Source
                           </label>
@@ -793,8 +863,50 @@ const AdminProducts = ({ products, ads, sellers }) => {
                             name="sku"
                             id="sku"
                           />
-                        </div>
-                        <div className="w-[90%] sm:w-3/4 mx-auto">
+                        </div> */}
+<label htmlFor="name" className="mb-2 w-[90%] sm:w-3/4 mx-auto">
+                Categories
+              </label>
+                        <Select required className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
+                  <SelectTrigger className="w-[90%] gap-x-2 sm:w-3/4 mx-auto dark:border-zinc-600">
+                    <SelectValue placeholder="choose a category" />
+                  </SelectTrigger>
+                  <SelectContent className="focus:outline-none z-[60] bg-background  dark:bg-[#292e36] dark:border-zinc-600 border-black ">
+                    <SelectGroup className="grid grid-cols-2">
+                      {categoriesArray.map((category) => (
+                        <SelectItem
+                          value={category.value}
+                          key={category.name}
+                          className="dark:hover:bg-[#191c22]"
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <label htmlFor="name" className="mb-2 w-[90%] sm:w-3/4 mx-auto text-white">
+                Homepage Categories
+              </label>
+                <Select required className="w-[90%] gap-x-2 sm:w-3/4 mx-auto">
+                  <SelectTrigger className="w-[90%] gap-x-2 sm:w-3/4 mx-auto dark:border-zinc-600">
+                    <SelectValue placeholder="choose a category" />
+                  </SelectTrigger>
+                  <SelectContent className="focus:outline-none z-[60] bg-background  dark:bg-[#292e36] dark:border-zinc-600 border-black ">
+                    <SelectGroup className="grid grid-cols-2">
+                      {homeCategoriesArray.map((category) => (
+                        <SelectItem
+                          value={category.value}
+                          key={category.name}
+                          className="dark:hover:bg-[#191c22]"
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                        {/* <div className="w-[90%] sm:w-3/4 mx-auto">
                           <label
                             htmlFor="categories"
                             className="mb-2 text-white"
@@ -810,8 +922,8 @@ const AdminProducts = ({ products, ads, sellers }) => {
                             id="categories"
                             className=""
                           />
-                        </div>{" "}
-                        <div className="w-[90%] sm:w-3/4 mx-auto">
+                        </div>{" "} */}
+                        {/* <div className="w-[90%] sm:w-3/4 mx-auto">
                           <label
                             htmlFor="homepageCategories"
                             className="mb-2 text-white"
@@ -827,7 +939,9 @@ const AdminProducts = ({ products, ads, sellers }) => {
                             id="homeCateogories"
                             className=""
                           />
-                        </div>{" "}
+                        </div>{" "} */}
+
+
                         <div className="w-[90%] sm:w-3/4 mx-auto">
                           <label
                             htmlFor="description"
