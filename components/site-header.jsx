@@ -58,6 +58,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const SiteHeader = ({ products, orders, siteInfos }) => {
+  console.log(products)
   const [search, setSearch] = useState("");
   const handleChange = async ({ target }) => {
     const { value } = target;
