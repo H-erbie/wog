@@ -52,7 +52,7 @@ const HomeAds = ({ ads }) => {
 if(videos.length === 0) return
   return (
     <div>
-    <h2 className='text-xl font-bold my-4'>Product ADs</h2>
+    <h2 className='text-xl font-bold ml-3 my-4'>Product ADs</h2>
     <div className="flex gap-x-8 px-4 no-scroll py-3 scroll-none overflow-x-scroll">
       {ads.map((ad) => (
         <Suspense           key={ad.name}
