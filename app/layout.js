@@ -31,6 +31,14 @@ export default async function RootLayout({ children }) {
     query: groq`*[_type == "siteInfo"]`,
     tags: ["siteInfo"],
   });
+  const orders = await sanityFetch({
+    query: groq`*[_type == "orders"]`,
+    tags:["orders"]
+  })
+  const newOrders = orders.filter(
+    (order) => !order.isDelivered && !order.isCancelled
+  );
+
   // const orders = await sanityFetch({
   //   query: groq`*[_type == "orders"]`,
   //   tags: ["orders"],
@@ -51,12 +59,12 @@ export default async function RootLayout({ children }) {
       <body className={fontSans.variable}>
         {" "}
         <Providers>
-          <SiteHeader products={products} siteInfos={siteInfos} />
+          <SiteHeader products={products} orders={orders} siteInfos={siteInfos} />
         <AdminHeader siteInfos={siteInfos}/> 
           <InstallBtn />
           {children}
           <SiteFooter siteInfos={siteInfos} />
-          <MobileNav />
+          <MobileNav activeOrders={newOrders.length} />
         </Providers>
       </body>
     </html>

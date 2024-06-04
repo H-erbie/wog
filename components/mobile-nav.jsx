@@ -60,7 +60,7 @@ import {
 } from "firebase/firestore";
 import { usePathname } from "next/navigation";
 
-const MobileNav = () => {
+const MobileNav = ({activeOrders}) => {
   const pathname = usePathname();
 
   const { cartCount } = useShoppingCart();
@@ -134,15 +134,18 @@ const MobileNav = () => {
           </div>
           <p className="text-center hidden sm:block"> Admins</p>
         </Link>
-        <Link href="/admin-dashboard/orders" className="">
+        <Link href="/admin-dashboard/orders" className="relative">
           <div
-            className="p-3 rounded-[100%]   
+            className="p-3  rounded-[100%]   
 hover:bg-secondary
 dark:hover:bg-[#292e36]  
 bg-background"
           >
             <ArrowDownUp />
           </div>
+          <span className=" px-2 rounded-[100%] text-white bg-yellow-500 text-base font-bold absolute -top-2  right-0">
+          {activeOrders}
+        </span>
           <p className="text-center hidden sm:block"> Orders</p>
         </Link>
 

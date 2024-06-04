@@ -25,25 +25,14 @@ import { auth, db } from "@/firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
-const Avatar = () => {
+const Avatar = ({userOrders}) => {
   const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"))
   const [userRole, setUserRole] = useState({});
   const [user] = useAuthState(auth);
   const username = isUserDataStored?.displayName;
   const profileName = username && username.split('')
 
-  const getRole = async () => {
-    if(user){
-      const docRef = doc(db, "users", user && user.uid);
-    const docSnap = await getDoc(docRef);
-    // console.log(docSnap.data());
-    setUserRole(docSnap.data());
-    }
-  };
-
-  useEffect(()=>{
-    getRole()
-  },[user, userRole])
+  
   const router = useRouter()
   const revalidateOrders = async() => {
     const orders = await sanityFetch({
@@ -60,8 +49,11 @@ const Avatar = () => {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="text-lg dark:hover:bg-[#292e36] px-2 py-2 rounded-md  capitalize flex items-center cursor-pointer font-bold sm:mx-2">
+          <div className="text-lg relative dark:hover:bg-[#292e36] px-2 py-2 rounded-md  capitalize flex items-center cursor-pointer font-bold sm:mx-2">
             {profileName && profileName[0]}
+            <span className=" px-2 rounded-[100%] text-white bg-yellow-500 text-base font-bold absolute -top-2  -right-2">
+          {userOrders > 0 && userOrders}
+        </span>
             <ChevronDown className='text-yellow-400'/>
           </div>
         </DropdownMenuTrigger>

@@ -38,7 +38,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 const OrdersTab = ({sanityOrders}) => {
   // const { data } = useSession();
   const [user] = useAuthState(auth);
-  console.log(orders.length );
+  // console.log(orders.length );
   const [orders, setOrders] = useState(sanityOrders)
 
   // const getAllOrders = async () => {

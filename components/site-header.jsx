@@ -57,7 +57,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const SiteHeader = ({ products, siteInfos }) => {
+const SiteHeader = ({ products, orders, siteInfos }) => {
   const [search, setSearch] = useState("");
   const handleChange = async ({ target }) => {
     const { value } = target;
@@ -66,6 +66,10 @@ const SiteHeader = ({ products, siteInfos }) => {
   const router = useRouter();
   // const { data, status } = useSession();
   const [user] = useAuthState(auth);
+  const userOrders = orders.filter(
+    (order) =>
+      order.purchaser.id === user?.uid && !order.isDelivered && !order.isCancelled
+  );
   // const username = fullname.split(' ')
   const submitHandler = (event) => {
     event.preventDefault();
@@ -385,7 +389,7 @@ const SiteHeader = ({ products, siteInfos }) => {
                   </span>
                 </Button>
                 <div className={dropSearch ? "hidden lg:block" : "block "}>
-                  <Avatar />
+                  <Avatar userOrders={userOrders.length}/>
                 </div>
                 <Link
                   href="/cart"
