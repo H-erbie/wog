@@ -34,10 +34,9 @@ const Page = () => {
 
   // Handle user data retrieval on successful sign-in
   // useEffect(() => {
-  const fetchUserData = async (currentUser) => {
+  const fetchUserData = async (id) => {
     // Check if user exists before fetching data
-    const userUID = currentUser.uid;
-    const docRef = doc(db, "users", userUID);
+    const docRef = doc(db, "users", id);
     const docSnap = await getDoc(docRef);
     const userData = docSnap.data();
     if (userData) {
@@ -46,8 +45,8 @@ const Page = () => {
       sessionStorage.setItem(
         "andamo-user",
         JSON.stringify({
-          email: currentUser.email,
-          displayName: currentUser.displayName || "", // Use default if displayName not found
+          email: user.email,
+          displayName: user.displayName || "", // Use default if displayName not found
           phoneNumber: userData.contact || "",
           spr:
             userData?.specialRole === "andamo-seller"
@@ -63,7 +62,7 @@ const Page = () => {
 
       // console.log(sellSnap.data())
       // if (userData.admin) {
-        // router.replace("/admin-dashboard/overview");
+      // router.replace("/admin-dashboard/overview");
       // }
       // console.log(data);
       if (userData.specialRole === "andamo-seller") {
@@ -96,7 +95,11 @@ const Page = () => {
           })
         );
       }
-      userData.isAdmin ? router.replace("/admin-dashboard/overview") : tempUrl ? router.replace(tempUrl) : router.replace("/");
+      userData.isAdmin
+        ? router.replace("/admin-dashboard/overview")
+        : tempUrl
+        ? router.replace(tempUrl)
+        : router.replace("/");
     }
   };
 
@@ -143,19 +146,17 @@ const Page = () => {
     // console.log(email, password)
     try {
       const response = await signInWithEmailAndPassword(email, password);
-      if (response && response.user) {
-        // const { user } = response;
-        // await fetchUserData(user.uid);
-        // console.log(user);
-        await fetchUserData(response && response?.user);
-      } else {
-        setError(response.error.message);
+      if (response?.user) {
+        const { user } = response;
+        await fetchUserData(user?.uid);
+      }
+       else  {
+        setError('An error occurred. Please try again.');
       }
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError('An error occurred. Please try again.');
 
-      // setError("Invalid email or password. Please try again."); // More specific error message
     } finally {
       setIsLoading(false);
     }

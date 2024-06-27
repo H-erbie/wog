@@ -9,7 +9,7 @@ export default function PrivateLayout({ children }) {
 // console.log(!user?.emailVerified)
   useEffect(() => {
     if ((!user && !isUserDataStored) || !isUserDataStored) {
-      console.log('tempTry  ')
+      // console.log('tempTry  ')
       sessionStorage.setItem('temp-url', JSON.stringify('/cart/checkout'))
       redirect("/auth/sign-in"); 
     } 
