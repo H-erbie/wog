@@ -32,6 +32,13 @@ const Page = () => {
   const [driver, setDriver] = useState(null);
   const tempUrl = JSON.parse(sessionStorage.getItem("temp-url"));
 
+  useEffect(() => {
+    if (user) {
+      // Check if user exists
+      fetchUserData(user.uid);
+    }
+  }, [user]);
+
   // Handle user data retrieval on successful sign-in
   // useEffect(() => {
   const fetchUserData = async (id) => {
@@ -146,17 +153,9 @@ const Page = () => {
     // console.log(email, password)
     try {
       const response = await signInWithEmailAndPassword(email, password);
-      if (response?.user) {
-        const { user } = response;
-        await fetchUserData(user?.uid);
-      }
-       else  {
-        setError('An error occurred. Please try again.');
-      }
     } catch (error) {
       console.error(error);
-      setError('An error occurred. Please try again.');
-
+      setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
