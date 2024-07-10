@@ -160,25 +160,26 @@ const Page = () => {
       // Successful sign-in, fetch user data
       const { user } = response;
       const userData = await fetchUserData(user);
-      console.log('1')
       if (userData?.isAdmin) {
         router.replace("/admin-dashboard/overview");
       } else {
         router.replace("/");
       }
-      console.log('2')
+      setIsLoading(false);
 
     } else {
       // Handle invalid credentials error
       setError("Invalid Credentials! Please try again.");
+      setIsLoading(false);
+
     }
       
     } catch (error) {
       console.error(error);
       setError("An error occurred! Please check your network and try again.");
-    } finally {
       setIsLoading(false);
-    }
+
+    } 
   };
   // useEffect(() => {
   //   getDocc()
