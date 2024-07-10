@@ -102,11 +102,11 @@ const Page = () => {
           })
         );
       }
-      userData.isAdmin
-        ? router.replace("/admin-dashboard/overview")
-        : tempUrl
-        ? router.replace(tempUrl)
-        : router.replace("/");
+      // userData.isAdmin
+      //   ? router.replace("/admin-dashboard/overview")
+      //   : tempUrl
+      //   ? router.replace(tempUrl)
+      //   : router.replace("/");
       return userData;
     }
   };
@@ -160,12 +160,14 @@ const Page = () => {
       // Successful sign-in, fetch user data
       const { user } = response;
       const userData = await fetchUserData(user);
+      console.log('1')
+      if (userData?.isAdmin) {
+        router.replace("/admin-dashboard/overview");
+      } else {
+        router.replace("/");
+      }
+      console.log('2')
 
-      // if (userData?.isAdmin) {
-      //   router.replace("/admin-dashboard/overview");
-      // } else {
-      //   router.replace("/");
-      // }
     } else {
       // Handle invalid credentials error
       setError("Invalid Credentials! Please try again.");
