@@ -107,7 +107,8 @@ const Page = () => {
       //   : tempUrl
       //   ? router.replace(tempUrl)
       //   : router.replace("/");
-      return userData;
+      const returnValue = userData.isAdmin ? "/admin-dashboard/overview" : tempUrl ? tempUrl : "/"
+      return returnValue;
     }
   };
 
@@ -159,12 +160,13 @@ const Page = () => {
      if (response && response.user) {
       // Successful sign-in, fetch user data
       const { user } = response;
-      const userData = await fetchUserData(user);
-      if (userData?.isAdmin) {
-        router.replace("/admin-dashboard/overview");
-      } else {
-        router.replace("/");
-      }
+      const routerValue = await fetchUserData(user);
+      console.log(routerValue)
+      // if (userData) {
+      //   router.replace("/admin-dashboard/overview");
+      // } else {
+        router.replace(routerValue);
+      // }
       setIsLoading(false);
 
     } else {
