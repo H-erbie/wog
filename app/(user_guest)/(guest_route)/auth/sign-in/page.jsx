@@ -19,8 +19,8 @@ const Page = () => {
   const [loading, setIsLoading] = useState(false);
   const [signInWithEmailAndPassword, signInError] =
     useSignInWithEmailAndPassword(auth);
-  // const [user] = useAuthState(auth);
-  const user = auth.currentUser;
+  const [user] = useAuthState(auth);
+  // const user = auth.currentUser;
 
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -32,18 +32,18 @@ const Page = () => {
   const [driver, setDriver] = useState(null);
   const tempUrl = JSON.parse(sessionStorage.getItem("temp-url"));
 
-  // useEffect(() => {
-  //   if (user) {
-  //     // Check if user exists
-  //     fetchUserData(user.uid);
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user) {
+      // Check if user exists
+      fetchUserData();
+    }
+  }, [user]);
 
   // Handle user data retrieval on successful sign-in
   // useEffect(() => {
-  const fetchUserData = async (currentUser) => {
+  const fetchUserData = async () => {
     // Check if user exists before fetching data
-    const docRef = doc(db, "users", currentUser.uid);
+    const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
     const userData = docSnap.data();
     if (userData) {
@@ -52,8 +52,8 @@ const Page = () => {
       sessionStorage.setItem(
         "andamo-user",
         JSON.stringify({
-          email: currentUser.email,
-          displayName: currentUser.displayName || "", // Use default if displayName not found
+          email: user.email,
+          displayName: user.displayName || "", // Use default if displayName not found
           phoneNumber: userData.contact || "",
           spr:
             userData?.specialRole === "andamo-seller"
@@ -73,7 +73,7 @@ const Page = () => {
       // }
       // console.log(data);
       if (userData.specialRole === "andamo-seller") {
-        const sellRef = doc(db, "sellers", currentUser.uid);
+        const sellRef = doc(db, "sellers", user.uid);
         const sellSnap = await getDoc(sellRef);
         setSeller(sellSnap.data());
         sessionStorage.setItem(
@@ -89,7 +89,7 @@ const Page = () => {
         );
       }
       if (userData.specialRole === "andamo-driver") {
-        const driveRef = doc(db, "drivers", currentUser.uid);
+        const driveRef = doc(db, "drivers", user.uid);
         const driveSnap = await getDoc(driveRef);
         const drive = driveSnap.data();
         sessionStorage.setItem(
@@ -102,13 +102,13 @@ const Page = () => {
           })
         );
       }
-      // userData.isAdmin
-      //   ? router.replace("/admin-dashboard/overview")
-      //   : tempUrl
-      //   ? router.replace(tempUrl)
-      //   : router.replace("/");
-      const returnValue = userData.isAdmin ? "/admin-dashboard/overview" : tempUrl ? tempUrl : "/"
-      return returnValue;
+      userData.isAdmin
+        ? router.replace("/admin-dashboard/overview")
+        : tempUrl
+        ? router.replace(tempUrl)
+        : router.replace("/");
+      // const returnValue = userData.isAdmin ? "/admin-dashboard/overview" : tempUrl ? tempUrl : "/"
+      // return returnValue;
     }
   };
 
@@ -155,33 +155,20 @@ const Page = () => {
     // console.log(email, password)
     try {
       const response = await signInWithEmailAndPassword(email, password);
-    //  console.log(response)
-    
-     if (response && response.user) {
-      // Successful sign-in, fetch user data
-      const { user } = response;
-      const routerValue = await fetchUserData(user);
-      console.log(routerValue)
-      // if (userData) {
-      //   router.replace("/admin-dashboard/overview");
-      // } else {
-        router.replace(routerValue);
-      // }
-      setIsLoading(false);
+      //  console.log(response)
 
-    } else {
-      // Handle invalid credentials error
-      setError("Invalid Credentials! Please try again.");
-      setIsLoading(false);
-
-    }
-      
+      if (!response && !response.user) {
+        // Handle invalid credentials error
+        setError("Invalid Credentials! Please try again.");
+        // setIsLoading(false);
+      }
     } catch (error) {
       console.error(error);
       setError("An error occurred! Please check your network and try again.");
+      // setIsLoading(false);
+    } finally {
       setIsLoading(false);
-
-    } 
+    }
   };
   // useEffect(() => {
   //   getDocc()
