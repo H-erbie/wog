@@ -32,85 +32,85 @@ const Page = () => {
   const [driver, setDriver] = useState(null);
   const tempUrl = JSON.parse(sessionStorage.getItem("temp-url"));
 
-  useEffect(() => {
-    if (user) {
-      // Check if user exists
-      fetchUserData();
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     // Check if user exists
+  //     fetchUserData();
+  //   }
+  // }, [user]);
 
   // Handle user data retrieval on successful sign-in
   // useEffect(() => {
-  const fetchUserData = async () => {
-    // Check if user exists before fetching data
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
-    const userData = docSnap.data();
-    if (userData) {
-      // console.log(userData)
+  // const fetchUserData = async () => {
+  //   // Check if user exists before fetching data
+  //   const docRef = doc(db, "users", user.uid);
+  //   const docSnap = await getDoc(docRef);
+  //   const userData = docSnap.data();
+  //   if (userData) {
+  //     // console.log(userData)
 
-      sessionStorage.setItem(
-        "andamo-user",
-        JSON.stringify({
-          email: user.email,
-          displayName: user.displayName || "", // Use default if displayName not found
-          phoneNumber: userData.contact || "",
-          spr:
-            userData?.specialRole === "andamo-seller"
-              ? "YW5kYW1vLXVzZXI="
-              : userData?.specialRole === "andamo-driver"
-              ? "YW5kYW1vLWRyaXZlcg=="
-              : "",
-          you: userData.isAdmin
-            ? "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
-            : "96s7+Dgc6paXOiR7NwkubA==", // Use default if contact not found
-        })
-      );
+  //     sessionStorage.setItem(
+  //       "andamo-user",
+  //       JSON.stringify({
+  //         email: user.email,
+  //         displayName: user.displayName || "", // Use default if displayName not found
+  //         phoneNumber: userData.contact || "",
+  //         spr:
+  //           userData?.specialRole === "andamo-seller"
+  //             ? "YW5kYW1vLXVzZXI="
+  //             : userData?.specialRole === "andamo-driver"
+  //             ? "YW5kYW1vLWRyaXZlcg=="
+  //             : "",
+  //         you: userData.isAdmin
+  //           ? "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
+  //           : "96s7+Dgc6paXOiR7NwkubA==", // Use default if contact not found
+  //       })
+  //     );
 
       // console.log(sellSnap.data())
       // if (userData.admin) {
       // router.replace("/admin-dashboard/overview");
       // }
       // console.log(data);
-      if (userData.specialRole === "andamo-seller") {
-        const sellRef = doc(db, "sellers", user.uid);
-        const sellSnap = await getDoc(sellRef);
-        setSeller(sellSnap.data());
-        sessionStorage.setItem(
-          "andamo-seller",
-          JSON.stringify({
-            name: seller.name,
-            location: seller.location, // Use default if displayName not found
-            sellerContact: seller.sellerContact,
-            paymentMethod: seller.paymentMethod,
-            sellerName: seller.sellerName,
-            category: seller.category, // Use default if contact not found
-          })
-        );
-      }
-      if (userData.specialRole === "andamo-driver") {
-        const driveRef = doc(db, "drivers", user.uid);
-        const driveSnap = await getDoc(driveRef);
-        const drive = driveSnap.data();
-        sessionStorage.setItem(
-          "andamo-driver",
-          JSON.stringify({
-            email: drive?.email,
-            available: drive?.available,
-            contact: drive?.contact,
-            // Use default if contact not found
-          })
-        );
-      }
-      userData.isAdmin
-        ? router.replace("/admin-dashboard/overview")
-        : tempUrl
-        ? router.replace(tempUrl)
-        : router.replace("/");
-      // const returnValue = userData.isAdmin ? "/admin-dashboard/overview" : tempUrl ? tempUrl : "/"
-      // return returnValue;
-    }
-  };
+  //     if (userData.specialRole === "andamo-seller") {
+  //       const sellRef = doc(db, "sellers", user.uid);
+  //       const sellSnap = await getDoc(sellRef);
+  //       setSeller(sellSnap.data());
+  //       sessionStorage.setItem(
+  //         "andamo-seller",
+  //         JSON.stringify({
+  //           name: seller.name,
+  //           location: seller.location, // Use default if displayName not found
+  //           sellerContact: seller.sellerContact,
+  //           paymentMethod: seller.paymentMethod,
+  //           sellerName: seller.sellerName,
+  //           category: seller.category, // Use default if contact not found
+  //         })
+  //       );
+  //     }
+  //     if (userData.specialRole === "andamo-driver") {
+  //       const driveRef = doc(db, "drivers", user.uid);
+  //       const driveSnap = await getDoc(driveRef);
+  //       const drive = driveSnap.data();
+  //       sessionStorage.setItem(
+  //         "andamo-driver",
+  //         JSON.stringify({
+  //           email: drive?.email,
+  //           available: drive?.available,
+  //           contact: drive?.contact,
+  //           // Use default if contact not found
+  //         })
+  //       );
+  //     }
+  //     userData.isAdmin
+  //       ? router.replace("/admin-dashboard/overview")
+  //       : tempUrl
+  //       ? router.replace(tempUrl)
+  //       : router.replace("/");
+  //     // const returnValue = userData.isAdmin ? "/admin-dashboard/overview" : tempUrl ? tempUrl : "/"
+  //     // return returnValue;
+  //   }
+  // };
 
   //   if (user) {
   //     //     // Fetch data only after successful sign-in
@@ -157,8 +157,75 @@ const Page = () => {
       const response = await signInWithEmailAndPassword(email, password);
       //  console.log(response)
 
-      if (!response && !response.user) {
+      if (response && response.user) {
         // Handle invalid credentials error
+        const docRef = doc(db, "users", response.user.uid);
+    const docSnap = await getDoc(docRef);
+    const userData = docSnap.data();
+    if (userData) {
+      // console.log(userData)
+
+      sessionStorage.setItem(
+        "andamo-user",
+        JSON.stringify({
+          email: response.user.email,
+          displayName: response.user.displayName || "", // Use default if displayName not found
+          phoneNumber: userData.contact || "",
+          spr:
+            userData?.specialRole === "andamo-seller"
+              ? "YW5kYW1vLXVzZXI="
+              : userData?.specialRole === "andamo-driver"
+              ? "YW5kYW1vLWRyaXZlcg=="
+              : "",
+          you: userData.isAdmin
+            ? "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
+            : "96s7+Dgc6paXOiR7NwkubA==", // Use default if contact not found
+        })
+      );
+
+      // console.log(sellSnap.data())
+      // if (userData.admin) {
+      // router.replace("/admin-dashboard/overview");
+      // }
+      // console.log(data);
+      if (userData.specialRole === "andamo-seller") {
+        const sellRef = doc(db, "sellers", response.user.uid);
+        const sellSnap = await getDoc(sellRef);
+        setSeller(sellSnap.data());
+        sessionStorage.setItem(
+          "andamo-seller",
+          JSON.stringify({
+            name: seller.name,
+            location: seller.location, // Use default if displayName not found
+            sellerContact: seller.sellerContact,
+            paymentMethod: seller.paymentMethod,
+            sellerName: seller.sellerName,
+            category: seller.category, // Use default if contact not found
+          })
+        );
+      }
+      if (userData.specialRole === "andamo-driver") {
+        const driveRef = doc(db, "drivers", response.user.uid);
+        const driveSnap = await getDoc(driveRef);
+        const drive = driveSnap.data();
+        sessionStorage.setItem(
+          "andamo-driver",
+          JSON.stringify({
+            email: drive?.email,
+            available: drive?.available,
+            contact: drive?.contact,
+            // Use default if contact not found
+          })
+        );
+      }
+      userData.isAdmin
+        ? router.replace("/admin-dashboard/overview")
+        : tempUrl
+        ? router.replace(tempUrl)
+        : router.replace("/");
+        }
+        
+    }else{
         setError("Invalid Credentials! Please try again.");
         // setIsLoading(false);
       }
