@@ -49,7 +49,12 @@ const HomeAds = ({ ads }) => {
     fetchVideos();
   }, []);
   // console.log(ads, videos)
-if(videos.length === 0) return
+  if (videos.length === 0) {
+    return <div className="flex gap-x-8 px-4 py-3"> {[0, 1, 2, 3].map((ghost, index) => (
+      <div key={index} className="bg-gray-100 animate-pulse dark:bg-[#292e36] rounded-[100%] w-10% sm:h-24 h-10% sm:w-24"></div>
+    ))}
+    </div>
+   }
   return (
     <div>
     <h2 className='text-xl font-bold ml-3 my-4'>Product ADs</h2>
@@ -66,18 +71,18 @@ if(videos.length === 0) return
             setShowAd(ad)
           slugy(ad.name)
           }}
-          className={`block bg-gray-100 dark:bg-[#292e36] outline p-1 outline-yellow-500  rounded-[100%] h-28 w-28 cursor-pointer hover:opacity-50 object-cover `}
+          className={`block bg-gray-100 dark:bg-[#292e36] outline p-1 outline-yellow-500  rounded-[100%] h-20 w-20 sm:h-28 sm:w-28 cursor-pointer hover:opacity-50 object-cover `}
         /></Suspense>
       ))}</div>
-      <div className={` ${showAd ? "fixed" : "hidden"} top-0 left-0 z-[60] w-screen h-screen backdrop-blur-md `}>
+      <div className={` ${showAd ? "fixed" : "hidden"} top-0 left-0 z-[60] w-screen h-screen dark:backdrop-brightness-50 backdrop-blur-md `}>
         {loading && <Loader2 className='text-yellow-500 animate-spin'/>}
-        <button className='absolute right-10 top-16'>
-        <X className=''  onClick={() => {
+        <button  onClick={() => {
       setShowAd("");
       if (videoRef.current) {
         videoRef.current.pause(); // Pause the video
       }
-    }}/></button>
+    }} className='absolute p-3 rounded-[100%] bg-white dark:bg-black right-2 sm:right-10 top-5'>
+        <X className='' /></button>
         {error && <p className="text-red-500">Error: {error}</p>}
         {videos.length > 0 && (
           <ul className='w-full h-full'>
@@ -85,7 +90,7 @@ if(videos.length === 0) return
               // console.log(video.url,showAd)
               if (video.url === showAd.url)
                 return (
-                  <li key={video.name} className="w-full flex-col flex items-center justify-center h-full">
+                  <li key={video.name} className="w-full flex sm:flex-row flex-col items-center justify-evenly h-full">
                     {/* Display video name and potentially a thumbnail or video player component */}
                     <video
                       ref={videoRef}
@@ -97,10 +102,11 @@ if(videos.length === 0) return
                       <source src={video.url} type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
+                    <div className="">
                     <p className='text-xl text-center font-bold my-1'>{showAd.name} - GHS {showAd.price} </p>
-                    <p className='text-lg text-center font-medium my-1'>{showAd.desc}</p>
-                    <p className='text-base text-center font-medium my-1'>                    <Link href={`products/${adSlug.current}`} className='bg-yellow-500 rounded-lg flex gap-x-2 px-3 py-2'>Check out product<ArrowRight/> </Link>
-</p>
+                    <p className='text-lg sm:my-8 my-1 text-center font-medium '>{showAd.desc}</p>
+                    <p className='text-base text-center font-medium my-1'>                    <Link href={`products/${adSlug.current}`} className='bg-yellow-500 w-max mx-auto rounded-lg flex gap-x-2 px-3 py-2'>See more about product<ArrowRight/> </Link>
+</p></div>
                   </li>
                 );
             })}

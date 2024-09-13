@@ -52,9 +52,9 @@ const AdminHeader = ({ siteInfos }) => {
             className="py-2 rounded-lg flex gap-x-3 items-center justify-center px-3 mx-auto disabled:opacity-50  w-3/4 sm:w-1/2 bg-yellow-200 hover:bg-yellow-300 dark:hover:bg-yellow-600 dark:bg-yellow-500"
             onClick={() => {
               signOut(auth);
-              sessionStorage.removeItem("andamo-user");
-              sessionStorage.removeItem("andamo-seller");
-              sessionStorage.removeItem("andamo-driver");
+              localStorage.removeItem("andamo-user");
+              localStorage.removeItem("andamo-seller");
+              localStorage.removeItem("andamo-driver");
               sessionStorage.removeItem("temp-url");
             }}
           >

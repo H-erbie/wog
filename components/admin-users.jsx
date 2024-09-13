@@ -129,7 +129,7 @@ const AdminUsers = () => {
     }
   };
   const [adminInput, setAdminInput] = useState("");
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
+  const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"));
 
   return (
     <div>

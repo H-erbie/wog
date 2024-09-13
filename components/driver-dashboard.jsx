@@ -72,7 +72,7 @@ const DriverDashboard = ({ orders }) => {
 
   const [driver, setDriver] = useState(null);
   
-  const isDriver = JSON.parse(sessionStorage.getItem("andamo-driver"));
+  const isDriver = JSON.parse(localStorage.getItem("andamo-driver"));
 
   useEffect(() => {
     const getDriver = async () => {
@@ -110,7 +110,7 @@ const DriverDashboard = ({ orders }) => {
       setDriver(driveSnap.data());
       setAvail(false);
       isDriver.available = state;
-      sessionStorage.setItem("andamo-driver", JSON.stringify(isDriver));
+      localStorage.setItem("andamo-driver", JSON.stringify(isDriver));
 
       // console.log("Admin status updated for user:", emailValue);
       toast({

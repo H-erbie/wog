@@ -198,6 +198,7 @@ const OrderTab = ({ userOrders, order }) => {
   useEffect(() => {
     setUserOrder(userOrders)
   }, [userOrders]);
+  console.log(calculateBusinessDay(userOrders[0]._updatedAt) )
   return (
     <div className="">
       <h2 className="my-5 text-center text-yellow-500 font-semibold  text-3xl">
@@ -214,7 +215,7 @@ const OrderTab = ({ userOrders, order }) => {
       )}
       {!userOrder[0].isCancelled &&
         userOrder[0].isDelivered &&
-        calculateBusinessDay(userOrders[0]._updatedAt) < new Date() && (
+        calculateBusinessDay(userOrders[0]._updatedAt) > new Date() && (
           <Button
             variant="outline"
             type="button"

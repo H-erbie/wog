@@ -7,7 +7,7 @@ import { auth, db } from "@/firebase/config";
 
 import { doc, getDoc } from "firebase/firestore";
 export default function PrivateLayout({ children }) {
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
+  const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"));
 
   const [user] = useAuthState(auth);
 
@@ -26,7 +26,7 @@ export default function PrivateLayout({ children }) {
             "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=")
         : isUserDataStored &&
           (isUserDataStored.you = "96s7+Dgc6paXOiR7NwkubA==");
-      sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
+      localStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
       // console.log(isUserDataStored)
     };
 

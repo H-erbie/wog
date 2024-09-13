@@ -70,13 +70,14 @@ const Page = () => {
       value: "Stationery and Office Supplies",
     },
     { name: "Luxury Goods", value: "Luxury Goods" },
+    
   ];
   const miniLinks = [
     { text: "home", link: "/" },
     { text: "Become a seller", link: "" },
     // { text: "T&C's of becoming a seller", link: "" },
   ];
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
+  const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"));
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("");
   const [business, setBusiness] = useState({
@@ -101,7 +102,12 @@ const Page = () => {
     const currentCategory = e.target[5].value;
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", user.email));
-
+console.log(name,
+  location,
+  sellerContact,
+  paymentMethod,
+  sellerName,
+currentCategory)
     try {
       const querySnapshot = await getDocs(q);
 
@@ -128,9 +134,9 @@ const Page = () => {
       const userDoc = querySnapshot.docs[0];
       await updateDoc(userDoc.ref, { specialRole: "andamo-seller" });
       isUserDataStored.spr = 'YW5kYW1vLXVzZXI='
-      sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
+      localStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
 
-      sessionStorage.setItem(
+      localStorage.setItem(
         "andamo-seller",
         JSON.stringify({
           name: name,
@@ -235,8 +241,8 @@ const Page = () => {
               <SelectTrigger className="w-[90%] gap-x-2 sm:w-3/4 mx-auto dark:border-zinc-600">
                 <SelectValue placeholder="choose a category" />
               </SelectTrigger>
-              <SelectContent className="focus:outline-none bg-background  dark:bg-[#292e36] dark:border-zinc-600 border-black ">
-                <SelectGroup className="grid grid-cols-2">
+              <SelectContent className="focus:outline-none bg-background overflow-scroll h-72 sm:h-max dark:bg-[#292e36] dark:border-zinc-600 border-black ">
+                <SelectGroup className="grid grid-cols-1 sm:grid-cols-2">
                   {categories.map((category) => (
                     <SelectItem
                       value={category.value}

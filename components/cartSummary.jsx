@@ -46,7 +46,7 @@ const CartSummary = () => {
   const [isLoading, setIsLoading] = useState(false);
   const isDisabled = isLoading || cartCount == 0;
   // console.log({ ...cartDetails, location: "Bono" });
-  const [phone, setPhone] = useState(user ?  JSON.parse(sessionStorage.getItem("andamo-user")).phoneNumber : "");
+  const [phone, setPhone] = useState(user ?  JSON.parse(localStorage.getItem("andamo-user")).phoneNumber : "");
 
   const router = useRouter();
 

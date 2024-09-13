@@ -1,6 +1,6 @@
 "use client";
 import React, { useState,useEffect } from "react";
-import { LogOut, User2, Truck, Briefcase, CarFront, ChevronDown, ShieldHalf, ShoppingBag } from "lucide-react";
+import { LogOut, User2, Shield, Truck, Briefcase, CarFront, ChevronDown, ShieldHalf, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { client, sanityFetch } from "@/sanity/lib/client";
@@ -26,7 +26,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
 const Avatar = ({userOrders}) => {
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"))
+  const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"))
   const [userRole, setUserRole] = useState({});
   const [user] = useAuthState(auth);
   const username = isUserDataStored?.displayName;
@@ -59,7 +59,15 @@ const Avatar = ({userOrders}) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 border-b-[0.01px] dark:bg-[#292e36]  dark:border-zinc-600 border-slate-200">
           <DropdownMenuGroup>
-          
+          {/* isUserDataStored?.you === "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=" */}
+          {isUserDataStored?.you === "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=" && <Link href="/admin-dashboard/overview" >
+              <DropdownMenuItem 
+              // onClick={revalidateOrders}
+               className="dark:hover:bg-[#191c22]">
+                <Shield className="mr-2 h-4 w-4" />
+                <span>Admin Dashboard</span>
+              </DropdownMenuItem>
+            </Link>}
             <Link href="/orders" >
               <DropdownMenuItem 
               // onClick={revalidateOrders}
@@ -82,9 +90,9 @@ const Avatar = ({userOrders}) => {
             </Link>
             <DropdownMenuItem className="dark:hover:bg-[#191c22]" onClick={() =>{ 
               signOut(auth)
-              sessionStorage.removeItem('andamo-user')
-              sessionStorage.removeItem('andamo-seller')
-              sessionStorage.removeItem('andamo-driver')
+              localStorage.removeItem('andamo-user')
+              localStorage.removeItem('andamo-seller')
+              localStorage.removeItem('andamo-driver')
               sessionStorage.removeItem('temp-url')
 
               }}>

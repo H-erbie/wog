@@ -5,7 +5,7 @@ import { auth } from "@/firebase/config";
 import { useAuthState } from "react-firebase-hooks/auth";
 export default function PrivateLayout({ children }) {
   const [user] = useAuthState(auth);
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
+  const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"));
 // console.log(!user?.emailVerified)
   useEffect(() => {
     if ((!user && !isUserDataStored) || !isUserDataStored) {

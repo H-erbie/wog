@@ -156,7 +156,7 @@ const Page = () => {
     try {
       const response = await signInWithEmailAndPassword(email, password);
       //  console.log(response)
-
+        console.log(response)
       if (response && response.user) {
         // Handle invalid credentials error
         const docRef = doc(db, "users", response.user.uid);
@@ -165,7 +165,7 @@ const Page = () => {
     if (userData) {
       // console.log(userData)
 
-      sessionStorage.setItem(
+      localStorage.setItem(
         "andamo-user",
         JSON.stringify({
           email: response.user.email,
@@ -192,7 +192,7 @@ const Page = () => {
         const sellRef = doc(db, "sellers", response.user.uid);
         const sellSnap = await getDoc(sellRef);
         setSeller(sellSnap.data());
-        sessionStorage.setItem(
+        localStorage.setItem(
           "andamo-seller",
           JSON.stringify({
             name: seller.name,
@@ -208,7 +208,7 @@ const Page = () => {
         const driveRef = doc(db, "drivers", response.user.uid);
         const driveSnap = await getDoc(driveRef);
         const drive = driveSnap.data();
-        sessionStorage.setItem(
+        localStorage.setItem(
           "andamo-driver",
           JSON.stringify({
             email: drive?.email,
@@ -218,9 +218,7 @@ const Page = () => {
           })
         );
       }
-      userData.isAdmin
-        ? router.replace("/admin-dashboard/overview")
-        : tempUrl
+       tempUrl        
         ? router.replace(tempUrl)
         : router.replace("/");
         }

@@ -39,7 +39,7 @@ const Chat = ({ orders }) => {
   const [user] = useAuthState(auth);
   const [rooms, setRooms] = useState([]);
   const [currentRoomIndex, setCurrentRoomIndex] = useState("");
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
+  const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"));
 
   const pathname = usePathname();
 

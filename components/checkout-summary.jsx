@@ -51,7 +51,7 @@ const CheckoutSummary = ({
   const [roomId, setRoomId] = useState(uuidv4());
   const fullname = user?.displayName;
   const userPhone =
-    JSON.parse(sessionStorage.getItem("andamo-user"))?.phoneNumber || "";
+    JSON.parse(localStorage.getItem("andamo-user"))?.phoneNumber || "";
   const userEmail = user?.email;
   const userId = user?.uid;
   const { address } = useGlobalContext();

@@ -2,7 +2,7 @@ import React from 'react'
 
 const UserInfo =  () => {
     // console.log(data)
-    const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"))
+    const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"))
     const username = isUserDataStored?.displayName;
 
 

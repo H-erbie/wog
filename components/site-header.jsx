@@ -88,7 +88,7 @@ const SiteHeader = ({ products, orders, siteInfos }) => {
   const defaultSearchQuery = searchParams.get("search") ?? "";
 
   let categories = [];
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
+  const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"));
   products.map((product) => {
     product?.categories?.map((cat) => {
       if (!categories.includes(cat)) categories.push(cat);
@@ -149,9 +149,9 @@ const SiteHeader = ({ products, orders, siteInfos }) => {
                           <span
                             onClick={() => {
                               signOut(auth);
-                              sessionStorage.removeItem("andamo-user");
-                              sessionStorage.removeItem("andamo-seller");
-                              sessionStorage.removeItem("andamo-driver");
+                              localStorage.removeItem("andamo-user");
+                              localStorage.removeItem("andamo-seller");
+                              localStorage.removeItem("andamo-driver");
                               sessionStorage.removeItem("temp-url");
                             }}
                           >

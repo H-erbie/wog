@@ -32,7 +32,7 @@ const Page = () => {
       <h3 className="text-xl font-semibold capitalize my-1">Return Policy</h3>
       {/*  */}
       <p>
-        We accept returns within 30 days of purchase. All returns must be in new
+        We accept returns within 5 days of purchase. All returns must be in new
         and unused condition with the original packaging. To return an item,
         please contact us at weareandamo@gmail.com for a return authorization number
         (RAN). Once you have received an RAN, please ship the item back to us at

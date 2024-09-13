@@ -8,7 +8,7 @@ import { auth, db } from "@/firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 
 export default function PrivateLayout({ children }) {
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
+  const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"));
 
   const [user] = useAuthState(auth);
   // const [seller, setSeller] = useState(null);
@@ -32,7 +32,7 @@ export default function PrivateLayout({ children }) {
       const driver = driversSnap.data();
 
       if (data?.speicalRole === "andamo-seller" && seller) {
-        sessionStorage.setItem(
+        localStorage.setItem(
           "andamo-seller",
           JSON.stringify({
             name: seller.name,
@@ -45,7 +45,7 @@ export default function PrivateLayout({ children }) {
         );
       }
       if (data?.speicalRole === "andamo-driver" && driver) {
-        sessionStorage.setItem(
+        localStorage.setItem(
           "andamo-driver",
           JSON.stringify({
             email: driver?.email,
@@ -58,11 +58,11 @@ export default function PrivateLayout({ children }) {
 
       if (data && data.isAdmin && isUserDataStored) {
         isUserDataStored.you = "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY=";
-        sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
+        localStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
       }
       if (data && !data.isAdmin && isUserDataStored) {
         isUserDataStored.you = "96s7+Dgc6paXOiR7NwkubA==";
-        sessionStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
+        localStorage.setItem("andamo-user", JSON.stringify(isUserDataStored));
       }
     };
 
@@ -72,14 +72,14 @@ export default function PrivateLayout({ children }) {
     }
   }, [user, isUserDataStored]);
   // console.log('happened')
-  useEffect(() => {
-    // console.log('adm@')
-    if (
-      isUserDataStored?.you === "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
-    ) {
-      // console.log('adm')
-      redirect("/admin-dashboard/overview");
-    }
-  }, [isUserDataStored, user]);
+  // useEffect(() => {
+  //   // console.log('adm@')
+  //   if (
+  //     isUserDataStored?.you === "VHzq5s2t+vEV6uwcukPyaxzLq42/jxy4spIrHSyXsZY="
+  //   ) {
+  //     // console.log('adm')
+  //     redirect("/admin-dashboard/overview");
+  //   }
+  // }, [isUserDataStored, user]);
   return <>{children}</>;
 }

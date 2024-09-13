@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 import { redirect } from "next/navigation";
 
 export default function PrivateLayout({ children }) {
-  const isSeller = JSON.parse(sessionStorage.getItem("andamo-user"));
-  const isUserDataStored = JSON.parse(sessionStorage.getItem("andamo-user"));
+  const isSeller = JSON.parse(localStorage.getItem("andamo-user"));
+  const isUserDataStored = JSON.parse(localStorage.getItem("andamo-user"));
 // console.log(!user?.emailVerified)
   useEffect(() => {
     if ( !isUserDataStored) {
-      sessionStorage.setItem('temp-url', JSON.stringify('/become-seller'))
+      localStorage.setItem('temp-url', JSON.stringify('/become-seller'))
       redirect("/auth/sign-in"); 
     } 
   }, [isUserDataStored]);

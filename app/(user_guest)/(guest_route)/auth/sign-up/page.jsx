@@ -91,7 +91,7 @@ const Page = () => {
           // email: profile.displayName,
         });
 
-        sessionStorage.setItem(
+        localStorage.setItem(
           "andamo-user",
           JSON.stringify({
             email: user.email,

@@ -43,7 +43,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const SellerDashboard = ({ products, orders }) => {
   const [user] = useAuthState(auth);
-  const isSeller = JSON.parse(sessionStorage.getItem("andamo-seller"));
+  const isSeller = JSON.parse(localStorage.getItem("andamo-seller"));
   const [uks, setUks] = useState("");
   useEffect(() => {
     const slugifySku = async () => setUks(await slugify(isSeller?.name));
@@ -216,7 +216,7 @@ const SellerDashboard = ({ products, orders }) => {
       setProductData({ ...productData, [name]: value });
     }
   };
-  const sellerInfo = JSON.parse(sessionStorage.getItem("andamo-seller"));
+  const sellerInfo = JSON.parse(localStorage.getItem("andamo-seller"));
 
   const uploadProduct = async (e) => {
     e.preventDefault();
