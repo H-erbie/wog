@@ -195,12 +195,12 @@ const Page = () => {
         localStorage.setItem(
           "andamo-seller",
           JSON.stringify({
-            name: seller.name,
-            location: seller.location, // Use default if displayName not found
-            sellerContact: seller.sellerContact,
-            paymentMethod: seller.paymentMethod,
-            sellerName: seller.sellerName,
-            category: seller.category, // Use default if contact not found
+            name: seller?.name,
+            location: seller?.location, // Use default if displayName not found
+            sellerContact: seller?.sellerContact,
+            paymentMethod: seller?.paymentMethod,
+            sellerName: seller?.sellerName,
+            category: seller?.category, // Use default if contact not found
           })
         );
       }
