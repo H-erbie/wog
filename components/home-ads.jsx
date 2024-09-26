@@ -51,7 +51,7 @@ const HomeAds = ({ ads }) => {
   // console.log(ads, videos)
   if (videos.length === 0) {
     return <div className="flex gap-x-8 px-4 py-3"> {[0, 1, 2, 3].map((ghost, index) => (
-      <div key={index} className="bg-gray-100 animate-pulse dark:bg-[#292e36] rounded-[100%] w-10% sm:h-24 h-10% sm:w-24"></div>
+      <div key={index} className="bg-gray-200 animate-pulse dark:bg-[#292e36] rounded-[100%] w-10% sm:h-24 h-10% sm:w-24"></div>
     ))}
     </div>
    }
@@ -61,7 +61,7 @@ const HomeAds = ({ ads }) => {
     <div className="flex gap-x-8 px-4 no-scroll py-3 scroll-none overflow-x-scroll">
       {ads.map((ad) => (
         <Suspense           key={ad.name}
-        fallback={<div className="bg-gray-100 animate-pulse dark:bg-[#292e36] rounded-[100%] h-36 w-36"></div>}>
+        fallback={<div className="bg-gray-200 animate-pulse dark:bg-[#292e36] rounded-[100%] h-36 w-36"></div>}>
         <Image
           src={urlForImage(ad?.thumbnail)}
           alt={ad.name}
@@ -81,7 +81,7 @@ const HomeAds = ({ ads }) => {
       if (videoRef.current) {
         videoRef.current.pause(); // Pause the video
       }
-    }} className='absolute p-3 rounded-[100%] bg-white dark:bg-black right-2 sm:right-10 top-5'>
+    }} className='absolute p-3 rounded-[100%] bg-white dark:bg-black right-2 z-[65] sm:right-10 top-5'>
         <X className='' /></button>
         {error && <p className="text-red-500">Error: {error}</p>}
         {videos.length > 0 && (

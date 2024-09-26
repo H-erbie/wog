@@ -1,19 +1,22 @@
 import "./globals.css";
 import { fontSans } from "@/lib/font";
-import { Providers } from "@/components/providers";
+// import { Providers } from "@/components/providers";
 import { siteConfig } from "@/config/site";
-import SiteHeader from "@/components/site-header";
+import SiteHeader from "@/components/new-comps/site-header";
 // import { SiteFooter } from "@/components/site-footer";
-import { client, sanityFetch } from "@/sanity/lib/client";
-import { groq } from "next-sanity";
-import SiteFooter from "@/components/site-footer";
-import InstallBtn from "@/components/install-btn";
-import MobileNav from "@/components/mobile-nav";
+// import { client, sanityFetch } from "@/sanity/lib/client";
+// import { groq } from "next-sanity";
+// import SiteFooter from "@/components/site-footer";
+// import InstallBtn from "@/components/install-btn";
+// import MobileNav from "@/components/mobile-nav";
 // import {getServerSession} from 'next-auth'
 // import { authOptions } from "./api/auth/[...nextauth]/route";
 // import {redirect} from 'next/navigation'
 // import { user } from "@/lib/user";
-import AdminHeader from "@/components/admin-header";
+// import AdminHeader from "@/components/admin-header";
+import SiteFooter from "@/components//new-comps/site-footer";
+
+
 export const metadata = {
   title: siteConfig.name,
   description: siteConfig.description,
@@ -23,21 +26,21 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const products = await client.fetch(groq`*[_type == "product"]`, {
-    next: { revalidate: 30 },
-  });
+  // const products = await client.fetch(groq`*[_type == "product"]`, {
+  //   next: { revalidate: 30 },
+  // });
 
-  const siteInfos = await sanityFetch({
-    query: groq`*[_type == "siteInfo"]`,
-    tags: ["siteInfo"],
-  });
-  const orders = await sanityFetch({
-    query: groq`*[_type == "orders"]`,
-    tags:["orders"]
-  })
-  const newOrders = orders.filter(
-    (order) => !order.isDelivered && !order.isCancelled
-  );
+  // const siteInfos = await sanityFetch({
+  //   query: groq`*[_type == "siteInfo"]`,
+  //   tags: ["siteInfo"],
+  // });
+  // const orders = await sanityFetch({
+  //   query: groq`*[_type == "orders"]`,
+  //   tags:["orders"]
+  // })
+  // const newOrders = orders.filter(
+  //   (order) => !order.isDelivered && !order.isCancelled
+  // );
 
   // const orders = await sanityFetch({
   //   query: groq`*[_type == "orders"]`,
@@ -58,14 +61,16 @@ export default async function RootLayout({ children }) {
       </head>
       <body className={fontSans.variable}>
         {" "}
-        <Providers>
-          <SiteHeader products={products} orders={orders} siteInfos={siteInfos} />
-        <AdminHeader siteInfos={siteInfos}/> 
-          <InstallBtn />
+         {/* <Providers> */}
+          <SiteHeader />
+        {/*<AdminHeader siteInfos={siteInfos}/> 
+          <InstallBtn /> */}
           {children}
-          <SiteFooter siteInfos={siteInfos} />
+          <SiteFooter/>
+
+          {/* <SiteFooter siteInfos={siteInfos} />
           <MobileNav activeOrders={newOrders.length} />
-        </Providers>
+        </Providers> */}
       </body>
     </html>
   );

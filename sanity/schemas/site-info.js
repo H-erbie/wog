@@ -21,24 +21,7 @@ export const siteInfo = defineType ({
             title: 'Site Description',
             type: 'string',
         },
-        {
-            name: 'gmail',
-            title: 'Gmail Link',
-            type: 'string',
-        },
-        {
-            name: 'instagram',
-            title: 'Instagram Link',
-            type: 'string',
-        },{
-            name: 'facebook',
-            title: 'Facebook Link',
-            type: 'string',
-        },{
-            name: 'twitter',
-            title: 'Twitter Link',
-            type: 'string',
-        },
+        
        
     ]
 })

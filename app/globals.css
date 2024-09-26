@@ -86,7 +86,7 @@
     
   }
   body {
-    @apply bg-background text-foreground ;
+    @apply bg-[#F4EBEB] text-foreground ;
   }
   .sidemenu{
     @apply h-screen lg:hidden sm:w-96 w-80 fixed transition-all top-0 z-50 bg-background border-r overflow-scroll
@@ -100,6 +100,9 @@
   }
   .chat-height{
     height: 100vh;
+  }
+  .event-card:hover .event-desc{
+    @apply -translate-y-5 transition-all
   }
   .un-left{
     left: unset;

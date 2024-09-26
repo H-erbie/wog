@@ -1,12 +1,13 @@
-import { heroBanner } from "./schemas/hero-banner";
-import { orders } from "./schemas/orders";
-import { product } from "./schemas/product-schema";
+import { home } from "./schemas/home";
+import { events } from "./schemas/events";
+import { about } from "./schemas/about";
+import { sponsors } from "./schemas/sponsors";
+import { gallery } from "./schemas/gallery";
 import { siteInfo } from "./schemas/site-info";
-import { ads } from "./schemas/ads";
-import { delivery } from "./schemas/delivery";
-import { sellersProduct } from "./schemas/sellers-product";
+import { stat } from "./schemas/stat";
+import {  team } from "./schemas/team";
 
 export const schema = {
-  types: [product, siteInfo, delivery, ads, sellersProduct, heroBanner, orders],
+  types: [about, sponsors, gallery, siteInfo, team, stat, home, events],
 }
 
