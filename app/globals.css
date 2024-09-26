@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;  
@@ -75,7 +78,8 @@
 @layer base {
   * {
     @apply border-border ;
-    
+    font-family: 'Montserrat', sans-serif;
+
   }
   html{
      /* background-color: hsl(225, 56%, 15%);    */
@@ -87,6 +91,10 @@
   }
   body {
     @apply bg-[#F4EBEB] text-foreground ;
+  }
+  .del{
+    font-family: 'Dela Gothic One', cursive;
+
   }
   .sidemenu{
     @apply h-screen lg:hidden sm:w-96 w-80 fixed transition-all top-0 z-50 bg-background border-r overflow-scroll

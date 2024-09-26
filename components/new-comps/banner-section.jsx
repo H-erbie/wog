@@ -51,13 +51,13 @@ const BannerSection = () => {
   return (
     <div className="h-max gap-y-6 pb-5 flex-col-reverse  lg:flex-row flex justify-evenly items-center ">
       <div className="w-full flex flex-col justify-center lg:w-1/2">
-        <h2 className="sm:text-4xl text-3xl text-center lg:text-left lg:text-[3rem] lg:ml-16 font-bold">
-          <span className="text-[#EE0505]"> Nurturing</span> Young Minds
+        <h2 className="sm:text-4xl del text-3xl text-center lg:text-left lg:text-[3rem] lg:ml-16 font-bold">
+          <span className="del text-[#EE0505]"> Nurturing</span> Young Minds
         </h2>
-        <h2 className="sm:text-4xl text-3xl  text-center lg:text-left my-3 sm:my-6 lg:text-[3rem] lg:ml-16 font-bold">
-          Transforming <span className="text-[#EE0505]"> Lives</span>.
+        <h2 className="sm:text-4xl del text-3xl  text-center lg:text-left my-3 sm:my-6 lg:text-[3rem] lg:ml-16 font-bold">
+          Transforming <span className="del text-[#EE0505]"> Lives</span>.
         </h2>
-        <h3 className="lg:w-3/4 mb-6 mt-2 sm:mx-0 lg:text-left text-center w-3/4 mx-auto  sm:w-full lg:mx-auto">
+        <h3 className="lg:w-3/4  mb-6 mt-2 sm:mx-0 lg:text-left text-center w-3/4 mx-auto  sm:w-full lg:mx-auto">
           Want to help us help bring up the future builders of our communities?
         </h3>
         {/* <Link href='/donate'  className="hover:scale-[1.1]" >donate</Link> */}

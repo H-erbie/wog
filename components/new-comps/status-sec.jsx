@@ -37,22 +37,22 @@ const StatusSec = () => {
         className="w-full bg-red-200  h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white from-2%" />
-      <div className="flex absolute mt-14 justify-center items-center h-full w-full top-0 left-0 flex-col gap-y-5 sm:gap-y-9">
-          <p className="sm:text-[3rem] text-4xl lg:text-[4rem] text-white font-bold">
+      <div className="flex absolute del mt-14 justify-center items-center h-full w-full top-0 left-0 flex-col gap-y-5 sm:gap-y-9">
+          <p className="sm:text-[3rem] del text-4xl lg:text-[4rem] text-white font-bold">
             {" "}
-            <span className="text-[#F53D3D]">6 years</span> of operation
+            <span className="text-[#F53D3D] del">6 years</span> of operation
           </p>
-          <p className="sm:text-[3rem] text-4xl lg:text-[4rem] text-white font-bold">
+          <p className="sm:text-[3rem] del text-4xl lg:text-[4rem] text-white font-bold">
             {" "}
-            <span className="text-[#F53D3D]">6 years</span> of operation
+            <span className="text-[#F53D3D] del">6 years</span> of operation
           </p>
-          <p className="sm:text-[3rem] text-4xl lg:text-[4rem] text-white font-bold">
+          <p className="sm:text-[3rem] del text-4xl lg:text-[4rem] text-white font-bold">
             {" "}
-            <span className="text-[#F53D3D]">6 years</span> of operation
+            <span className="text-[#F53D3D] del">6 years</span> of operation
           </p>
-          <p className="sm:text-[3rem] text-4xl lg:text-[4rem] text-white font-bold">
+          <p className="sm:text-[3rem] text-4xl del lg:text-[4rem] text-white font-bold">
             {" "}
-            <span className="text-[#F53D3D]">6 years</span> of operation
+            <span className="text-[#F53D3D] del">6 years</span> of operation
           </p>
       </div>
     </div>

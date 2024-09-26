@@ -33,7 +33,7 @@ const Overlay = ({
               {rightMid2}
             </div>
           </div>
-          <p className="leading-8">{rightBottom}</p>
+          <p className="leading-2">{rightBottom}</p>
         </div>
       </div>
     </>

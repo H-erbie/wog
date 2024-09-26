@@ -57,8 +57,8 @@ const PastEvent = () => {
 
   return (
     <div className={`${pathname === '/' ? "bg-white" : ""} relative h-min-[70vh]  pt-6`}>
-      <h3 className="sm:text-4xl text-center sm:text-left text-3xl mb-9 ml-6 font-bold">
-        Past <span className="text-[#F53D3D]">Events</span>{" "}
+      <h3 className="sm:text-4xl text-center sm:text-left del text-3xl mb-9 ml-6 font-bold">
+        Past <span className="text-[#F53D3D] del">Events</span>{" "}
       </h3>
 
         <div className="flex gap-y-8 flex-col">
@@ -122,7 +122,7 @@ const PastEvent = () => {
                           rightTop={event.name}
                           rightMid1={event.date}
                           rightMid2={event.time}
-                          rightBottom="loremLorem ipsum dolor sit amet consectetur, adipisicing elit. Quia tenetur fugit, quasi ipsum quam adipisci perferendis quis praesentium, dicta eaque maiores? Vitae, laudantium qui. Iure amet quo incidunt quos perferendis similique assumenda debitis sunt expedita molestias eligendi voluptate nihil, sint deserunt nobis libero tempore doloremque, dolorem veniam praesentium. Officia et expedita perspiciatis quasi, laboriosam quaerat numquam reiciendis optio quas doloribus natus vitae dolore qui quisquam, unde libero inventore? Voluptates dolorem molestiae, ad aut voluptatem soluta ut. Perspiciatis dolor velit, assumenda qui, pariatur deserunt cumque consequatur nesciunt architecto asperiores corrupti, debitis voluptate ratione quasi porro a alias officia expedita excepturi voluptas"
+                          rightBottom="lumque consequatur nesciunt architecto asperiores corrupti, debitis voluptate ratione quasi porro a alias officia expedita excepturi voluptas"
                           left={
                             <Image
                               src={

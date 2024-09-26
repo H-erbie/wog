@@ -26,8 +26,8 @@ const Gallery = () => {
 
   return (
     <div className="p-5">
-      <h3 className="sm:text-4xl text-center sm:text-left text-3xl mb-9 ml-6 font-bold">
-        Gall<span className="text-[#F53D3D]">ery</span>{" "}
+      <h3 className="sm:text-4xl text-center del sm:text-left text-3xl mb-9 ml-6 font-bold">
+        Gall<span className="text-[#F53D3D] del">ery</span>{" "}
       </h3>
 <div className="sm:columns-2 md:columns-3 lg:columns-4">
 {

@@ -6,8 +6,8 @@ const Contact = () => {
     <>
     
     <div className="p-5  flex justify-center items-center gap-9  flex-col">
-         <h3 className="sm:text-3xl   text-center  lg:text-left text-2xl mb-9  mx-auto lg:mx-0 w-52 font-bold">
-        Get in <span className="text-[#F53D3D]">touch</span>{" "}
+         <h3 className="sm:text-3xl  del  text-center  lg:text-left text-2xl mb-9  mx-auto lg:mx-0 w-52 font-bold">
+        Get in <span className="text-[#F53D3D] del">touch</span>{" "}
       </h3>
 
       {/* <div className="w-3/4 h-40 bg-red-400 lg:w-1/2">Map</div> */}
