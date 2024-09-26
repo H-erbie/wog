@@ -44,7 +44,7 @@ const Gallery = () => {
                   width={180}
                   height={150}
                   alt="stat section background image"
-                  className="w-[90%] bg-red-200  cursor-pointer mx-3 my-3 lg:mx-0 rounded-3xl  object-cover"
+                  className="w-[90%]  bg-red-200  cursor-pointer mx-3 my-3 lg:mx-0 rounded-3xl  object-cover"
                 />
             </SheetTrigger>
             <SheetContent className="" side="bottom">

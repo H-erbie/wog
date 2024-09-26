@@ -52,7 +52,7 @@ const BannerSection = () => {
     <div className="h-max gap-y-6 pb-5 flex-col-reverse  lg:flex-row flex justify-evenly items-center ">
       <div className="w-full flex flex-col justify-center lg:w-1/2">
         <h2 className="sm:text-4xl del text-3xl text-center lg:text-left lg:text-[3rem] lg:ml-16 font-bold">
-          <span className="del text-[#EE0505]"> Nurturing</span> Young Minds
+          <span className="del text-[#EE0505]"> Save Life,</span> Inspire Life
         </h2>
         <h2 className="sm:text-4xl del text-3xl  text-center lg:text-left my-3 sm:my-6 lg:text-[3rem] lg:ml-16 font-bold">
           Transforming <span className="del text-[#EE0505]"> Lives</span>.
