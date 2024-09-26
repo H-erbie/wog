@@ -13,7 +13,7 @@ const Aim = () => {
    <h3 className="sm:text-4xl del text-center lg:text-left text-3xl mb-9 lg:ml-40 mx-auto lg:mx-0 w-52 font-bold">Why we do <span className="text-[#F53D3D] del">What we do</span> </h3>
     <div className='flex flex-col-reverse items-center lg:flex-row gap-y-6 lg:gap-x-12'>
       
-      <p className='w-full lg:w-1/2 px-6 '>o fuga seione eos pariatur veniam minima? Veniam eaque doloribus quae, ducimus in perspiciatis illo temporibus totam ad corporis officiis? Eveniet repellat natus totam praesentium sunt vitae, similique hic officia placeat quas. Commodi, corporis sequi perspiciatis eligendi sunt vitae assumenda quidem veritatis praesentium, pariatur illum temporibus nisi consectetur dignissimos similique. Assumenda quisquam laboriosam incidunt beatae dignissimos inventore, expedita nisi eum. Nihil minus enim incidunt sint!</p>
+      <p className='w-full lg:w-1/2 sm:px-6 '>o fuga seione eos pariatur veniam minima? Veniam eaque doloribus quae, ducimus in perspiciatis illo temporibus totam ad corporis officiis? Eveniet repellat natus totam praesentium sunt vitae, similique hic officia placeat quas. Commodi, corporis sequi perspiciatis eligendi sunt vitae assumenda quidem veritatis praesentium, pariatur illum temporibus nisi consectetur dignissimos similique. Assumenda quisquam laboriosam incidunt beatae dignissimos inventore, expedita nisi eum. Nihil minus enim incidunt sint!</p>
       <Image
                     src={
                       // urlForImage(siteInfo?.images)
@@ -23,7 +23,7 @@ const Aim = () => {
                     width={300}
                     height={200}
                     alt="stat section background image"
-                    className="sm:w-3/4 w-[85%]  bg-red-200 lg:w-1/2  lg:mx-0 rounded-3xl mx-auto object-cover"
+                    className="sm:w-3/4 w-[95%]  bg-red-200 lg:w-1/2  lg:mx-0 rounded-3xl mx-auto object-cover"
                   />
 
     </div>

@@ -46,7 +46,7 @@ const About = () => {
         <h3 className="sm:text-4xl del text-center lg:text-left text-3xl my-9 lg:ml-40 mx-auto lg:mx-0 w-52 font-bold">Tea<span className="text-[#F53D3D] del">m</span> </h3>
         <div className='flex w-full sm:w-3/4 mx-auto flex-wrap gap-9 justify-center items-center'>
            {
-               [1,2,3,4,5,6,7,8].map((sponsor, index)=>(
+               [1,2,3,4,].map((sponsor, index)=>(
                    <div className='w-32 h-32 bg-white rounded-xl' key={index}></div>
                ))
            }
