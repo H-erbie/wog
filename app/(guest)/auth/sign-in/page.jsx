@@ -9,10 +9,10 @@ import { redirect, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 
 import { Loader2, Home } from "lucide-react";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth, db } from "@/firebase/config";
+// import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+// import { auth, db } from "@/firebase/config";
 // import { doc, getDoc } from "firebase/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
 // import firebase_app from "../config";
 // import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 
@@ -33,11 +33,11 @@ const Page = () => {
   const [error, setError] = useState(null);
   const router = useRouter();
   const [loading, setIsLoading] = useState(false);
-  const [
-    signInWithEmailAndPassword,
-    signInError,
-  ] = useSignInWithEmailAndPassword(auth);
-  const [user] = useAuthState(auth);
+  // const [
+  //   signInWithEmailAndPassword,
+  //   signInError,
+  // ] = useSignInWithEmailAndPassword(auth);
+  // const [user] = useAuthState(auth);
   // const user = auth.currentUser;
 
   const [userInfo, setUserInfo] = useState({
@@ -50,61 +50,61 @@ const Page = () => {
     setUserInfo({ ...userInfo, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setError(null);
-    // console.log(email, password)
-    try {
-      const response = await signInWithEmailAndPassword(email, password);
-      //  console.log(response)
-      console.log(response);
-      if (response && response.user) {
-        // Handle invalid credentials error
-        //     const docRef = doc(db, "users", response.user.uid);
-        // const docSnap = await getDoc(docRef);
-        // const userData = docSnap.data();
-        // if (userData) {
-        // console.log(userData)
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   setIsLoading(true);
+  //   setError(null);
+  //   // console.log(email, password)
+  //   try {
+  //     const response = await signInWithEmailAndPassword(email, password);
+  //     //  console.log(response)
+  //     console.log(response);
+  //     if (response && response.user) {
+  //       // Handle invalid credentials error
+  //       //     const docRef = doc(db, "users", response.user.uid);
+  //       // const docSnap = await getDoc(docRef);
+  //       // const userData = docSnap.data();
+  //       // if (userData) {
+  //       // console.log(userData)
 
-        storageSession.setItem(
-          "wog-user",
-          JSON.stringify({
-            email: response.user.email,
-            displayName: response.user.displayName || "", // Use default if displayName not found
-          })
-        );
-        setUserInfo({
-          ...userInfo,
-    email: "",
-    password: "",
-        })
-        router.replace("/");
+  //       storageSession.setItem(
+  //         "wog-user",
+  //         JSON.stringify({
+  //           email: response.user.email,
+  //           displayName: response.user.displayName || "", // Use default if displayName not found
+  //         })
+  //       );
+  //       setUserInfo({
+  //         ...userInfo,
+  //   email: "",
+  //   password: "",
+  //       })
+  //       router.replace("/");
 
-        // }
-      } else {
-        setUserInfo({
-          ...userInfo,
+  //       // }
+  //     } else {
+  //       setUserInfo({
+  //         ...userInfo,
 
-    email: "",
-    password: "",
-  })
-        setError("Invalid Credentials! Please try again.");
-        // setIsLoading(false);
-      }
-    } catch (error) {
-      setUserInfo({
-        ...userInfo,
+  //   email: "",
+  //   password: "",
+  // })
+  //       setError("Invalid Credentials! Please try again.");
+  //       // setIsLoading(false);
+  //     }
+  //   } catch (error) {
+  //     setUserInfo({
+  //       ...userInfo,
 
-    email: "",
-    password: "",
-  })
-      setError("An error occurred! Please check your network and try again.");
-      // setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   email: "",
+  //   password: "",
+  // })
+  //     setError("An error occurred! Please check your network and try again.");
+  //     // setIsLoading(false);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <>

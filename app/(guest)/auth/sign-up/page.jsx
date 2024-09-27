@@ -4,97 +4,97 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+// import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Input } from "@/components/ui/input";
 
 import { Loader2 ,Home} from "lucide-react";
-import { auth, db } from "@/firebase/config";
-import {
-  updateProfile,
-  updatePhoneNumber,
-  RecaptchaVerifier,
-  PhoneAuthProvider,
-  sendEmailVerification,
-} from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
-import { fetchSignInMethodsForEmail } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { auth, db } from "@/firebase/config";
+// import {
+//   updateProfile,
+//   updatePhoneNumber,
+//   RecaptchaVerifier,
+//   PhoneAuthProvider,
+//   sendEmailVerification,
+// } from "firebase/auth";
+// import { setDoc, doc } from "firebase/firestore";
+// import { fetchSignInMethodsForEmail } from "firebase/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
 
 import aim from "@/public/signup.jpg";
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [err, setErr] = useState("");
-  const [user] = useAuthState(auth);
+  // const [user] = useAuthState(auth);
 
-  const [createUserWithEmailAndPassword] =
-    useCreateUserWithEmailAndPassword(auth);
-  const [userInfo, setUserInfo] = useState({
-    fname: '',
-    email: "",
-    password: "",
+  // const [createUserWithEmailAndPassword] =
+  //   useCreateUserWithEmailAndPassword(auth);
+  // const [userInfo, setUserInfo] = useState({
+  //   fname: '',
+  //   email: "",
+  //   password: "",
    
-  });
+  // });
 
-  const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
+  // const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
   const { fname, email, password } = userInfo;
   // auth.currentUser
   const handleChange = async ({ target }) => {
     const { name, value } = target;
     setUserInfo({ ...userInfo, [name]: value });
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setErr("");
-    // console.log(phone, profile.phoneNumber)
-    try {
-      const res = await createUserWithEmailAndPassword(email, password);
-      if (!res) {
-        setErr("Network/Input Error! Try again");
-        setUserInfo({
-          ...userInfo,
-          email: "",
-          fname:'',
-          password: "",
-        });
-        setLoading(false); // console.log(res)
-      }
-        const user = auth.currentUser;
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setErr("");
+  //   // console.log(phone, profile.phoneNumber)
+  //   try {
+  //     const res = await createUserWithEmailAndPassword(email, password);
+  //     if (!res) {
+  //       setErr("Network/Input Error! Try again");
+  //       setUserInfo({
+  //         ...userInfo,
+  //         email: "",
+  //         fname:'',
+  //         password: "",
+  //       });
+  //       setLoading(false); // console.log(res)
+  //     }
+  //       const user = auth.currentUser;
 
       
-        // console.log(docRef);
-        // update user
-        updateProfile(auth.currentUser, {
-          displayName: fname,
-          // email: profile.displayName,
-        });
+  //       // console.log(docRef);
+  //       // update user
+  //       updateProfile(auth.currentUser, {
+  //         displayName: fname,
+  //         // email: profile.displayName,
+  //       });
 
-        storageSession.setItem(
-          "wog-user",
-          JSON.stringify({
-            email: email,
-            displayName: fname, // Use default if displayName not found
+  //       storageSession.setItem(
+  //         "wog-user",
+  //         JSON.stringify({
+  //           email: email,
+  //           displayName: fname, // Use default if displayName not found
            
-          })
-        );
-        sendEmailVerification(user && user);
+  //         })
+  //       );
+  //       sendEmailVerification(user && user);
 
-        setUserInfo({
-          ...userInfo,
-          email: "",
-          fname: "",
-          password: "",
-        });
-        setLoading(false);
-        router.replace("/verify-email");
+  //       setUserInfo({
+  //         ...userInfo,
+  //         email: "",
+  //         fname: "",
+  //         password: "",
+  //       });
+  //       setLoading(false);
+  //       router.replace("/verify-email");
   
-    } catch (error) {
-      setLoading(false);
-      setErr("Network/Input Error! Try again");
-      console.error(error);
-    }
-  };
+  //   } catch (error) {
+  //     setLoading(false);
+  //     setErr("Network/Input Error! Try again");
+  //     console.error(error);
+  //   }
+  // };
   return (
     <>
     <p className="mr-auto ml-9 absolute top-6 w-max hover:underline font-bold text-lg ">
