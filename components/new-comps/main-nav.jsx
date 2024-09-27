@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { urlForImage } from "@/sanity/lib/image";
+// import { urlForImage } from "@/sanity/lib/image";
 import Image from "next/image";
 import logo from '@/public/wog-logo1.png'
 const MainNav = ({ siteInfos }) => {
