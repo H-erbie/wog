@@ -29,12 +29,12 @@ const Page = () => {
 
   // const [createUserWithEmailAndPassword] =
   //   useCreateUserWithEmailAndPassword(auth);
-  // const [userInfo, setUserInfo] = useState({
-  //   fname: '',
-  //   email: "",
-  //   password: "",
+  const [userInfo, setUserInfo] = useState({
+    fname: '',
+    email: "",
+    password: "",
    
-  // });
+  });
 
   // const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
   const { fname, email, password } = userInfo;
@@ -112,7 +112,7 @@ const Page = () => {
         alt="stat section background image"
         className="sm:w-3/4 w-[85%] hidden lg:block lg:w-1/2 bg-red-200  lg:mx-0 rounded-3xl mx-auto object-cover"
       />
-      <form onSubmit={handleSubmit} className="sm:w-3/4 mx-auto w-[85%]  lg:w-1/2 flex flex-col gap-y-6">
+      <form className="sm:w-3/4 mx-auto w-[85%]  lg:w-1/2 flex flex-col gap-y-6">
       <h3 className="sm:text-4xl text-center lg:text-left text-3xl mb-9 lg:ml-40 mx-auto lg:mx-0 w-52 font-bold">Sign <span className="text-[#F53D3D]">Up</span> </h3>
       <Input
           type="text"

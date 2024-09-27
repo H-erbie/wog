@@ -5,7 +5,7 @@ import {redirect} from 'next/navigation'
 // import { auth } from "@/firebase/config";
 
 export default  function PrivateLayout ({children}){
-    const isUserDataStored = JSON.parse(sessionStorage.getItem("wog-user"))
+    // const isUserDataStored = JSON.parse(sessionStorage.getItem("wog-user"))
     // const [user] = useAuthState(auth);
 
     // useEffect(()=> {
