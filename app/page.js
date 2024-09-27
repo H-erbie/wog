@@ -3,12 +3,11 @@
 
 // import { register } from "swiper/element/bundle";
 
-import { client, sanityFetch } from "@/sanity/lib/client";
-import { groq } from "next-sanity";
+
 import { XCircle } from "lucide-react";
 import Link from "next/link";
 import { ImSad } from "react-icons/im";
-import { heroQuery } from "@/lib/sanity-queries";
+// import { heroQuery } from "@/lib/sanity-queries";
 import BannerSection from "@/components/new-comps/banner-section";
 import StatusSec from "@/components//new-comps/status-sec";
 import UpEvent from "@/components//new-comps/up-events";
