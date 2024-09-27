@@ -11,14 +11,13 @@ import { usePathname } from "next/navigation";
 
 const SiteFooter = () => {
   const pathname = usePathname();
-
   if (
     pathname.startsWith("/auth") ||
     pathname.startsWith("/chats") ||
     pathname.startsWith("/admin-dashboard")
   )
     return null;
-  const [color, setColor] = useState("#FFF");
+
   
   return (
     <footer className=" bg-[#F53D3D] pt-28 sm:pt-36 pb-9 h-min-[75vh] relative ">

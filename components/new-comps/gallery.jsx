@@ -32,7 +32,8 @@ const Gallery = () => {
 <div className="sm:columns-2 md:columns-3 lg:columns-4">
 {
           imgs.map((img, index) => (
-            <Sheet>
+            <Sheet                   key={index}
+>
             <SheetTrigger asChild>
             <Image
                   src={
