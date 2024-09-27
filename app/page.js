@@ -1,7 +1,5 @@
-require("dotenv").config();
-import CategorySlide from "@/components/category-slide";
-import Hero from "@/components/hero";
-import HomeAds from "@/components/home-ads";
+// require("dotenv").config();
+
 
 // import { register } from "swiper/element/bundle";
 
